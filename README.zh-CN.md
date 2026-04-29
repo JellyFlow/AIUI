@@ -44,7 +44,7 @@ npm create @yodaos-pkg/aiui-agent my-agent
 你可以使用 `npx skills add` 命令轻松将 AIUI 开发技能安装到你的项目中。该命令会拉取所需的上下文文件，并使其可供你的 AI 编码助手使用：
 
 ```bash
-npx skills add https://github.com/jsar-project/JSUI/tree/main/skills/jsui-dev
+npx skills add https://github.com/jsar-project/AIUI/tree/main/skills/aiui-dev
 ```
 
 - **`jsui-dev` Skill**：位于 [`skills/jsui-dev/SKILL.md`](./skills/jsui-dev/SKILL.md)，该文档包含完整的 API 参考、项目结构指引以及 `.ink` SFC 规范。你可以将该文件提供给 AI 助手，使其具备开发 AIUI 应用的“技能”。

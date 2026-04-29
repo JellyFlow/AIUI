@@ -79,7 +79,7 @@ After scaffolding the project, you can use the `aiui-dev` skill documentation to
 You can add the development skill with `npx skills add`:
 
 ```bash
-npx skills add https://github.com/jsar-project/JSUI/tree/main/skills/jsui-dev
+npx skills add https://github.com/jsar-project/AIUI/tree/main/skills/aiui-dev
 ```
 
 If you are working directly inside this repository, the local skill source currently lives at:

@@ -44,7 +44,7 @@ We provide built-in instructions and context files to help LLMs (Large Language 
 You can easily install the AIUI developer skill into your project using the `npx skills add` command. This will fetch the necessary context files and make them available to your AI coding assistant:
 
 ```bash
-npx skills add https://github.com/jsar-project/JSUI/tree/main/skills/jsui-dev
+npx skills add https://github.com/jsar-project/AIUI/tree/main/skills/aiui-dev
 ```
 
 - **`jsui-dev` Skill**: Located in [`skills/jsui-dev/SKILL.md`](./skills/jsui-dev/SKILL.md), this document contains comprehensive API references, project structure guidelines, and `.ink` SFC specifications. You can feed this file to your AI assistant to grant it the "skill" of developing AIUI applications.
