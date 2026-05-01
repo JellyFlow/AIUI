@@ -1,0 +1,11 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/maid/maid",
+    "pages/card/card",
+    "pages/mahjong/mahjong"
+  ],
+  "window": {
+    "navigationBarTitleText": "my-card-agent"
+  }
+}
