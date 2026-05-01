@@ -15,19 +15,19 @@ export default {
   },
 
   onSingleInput(e) {
-    this.setData({ singleValue: e.detail.value });
+    this.setData({ singleValue: e.currentTarget.value });
   },
 
   onMultiInput(e) {
-    this.setData({ multiValue: e.detail.value });
+    this.setData({ multiValue: e.currentTarget.value });
   },
 
   onSearchInput(e) {
-    this.setData({ searchQuery: e.detail.value });
+    this.setData({ searchQuery: e.currentTarget.value });
   },
 
   onMaxInput(e) {
-    this.setData({ maxValue: e.detail.value });
+    this.setData({ maxValue: e.currentTarget.value });
   },
 
   onSubmit() {
@@ -142,22 +142,20 @@ export default {
   .container {
     display: flex;
     flex-direction: column;
-    padding: 20px;
-    background-color: #f5f5f5;
+    padding: var(--theme-padding, 20px);
   }
 
   .page-title {
     font-size: 24px;
     font-weight: bold;
-    color: #1d1d1f;
-    margin-bottom: 20px;
+    margin-bottom: var(--spacing-lg, 20px);
   }
 
   .card {
-    background-color: #ffffff;
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 20px;
+    border: var(--theme-border);
+    border-radius: var(--theme-radius, 12px);
+    padding: var(--card-padding, 16px);
+    margin-bottom: var(--spacing-lg, 20px);
   }
 
   .section {
@@ -167,39 +165,34 @@ export default {
   .title {
     font-size: 16px;
     font-weight: bold;
-    color: #333;
     margin-bottom: 12px;
     padding-bottom: 8px;
-    border-bottom: 2px solid #1989fa;
+    border-bottom: var(--border-width-default, 2px) solid var(--border-color-accent, var(--theme-color, #1989fa));
   }
 
   .text-input {
     width: 100%;
-    background-color: #f8f8f8;
-    border: 1px solid #d0d0d0;
-    border-radius: 8px;
-    padding: 10px 14px;
+    border: var(--input-border-width, var(--border-width-thin, 1px)) solid var(--input-border-color, var(--border-color-default, #d0d0d0));
+    border-radius: var(--input-radius, 8px);
+    box-sizing: border-box;
+    padding: var(--input-padding-y, 10px) var(--input-padding-x, 14px);
     font-size: 15px;
-    color: #1d1d1f;
     margin-bottom: 8px;
   }
 
   .text-area {
     width: 100%;
-    background-color: #f8f8f8;
-    border: 1px solid #d0d0d0;
-    border-radius: 8px;
-    padding: 10px 14px;
+    border: var(--input-border-width, var(--border-width-thin, 1px)) solid var(--input-border-color, var(--border-color-default, #d0d0d0));
+    border-radius: var(--input-radius, 8px);
+    box-sizing: border-box;
+    padding: var(--input-padding-y, 10px) var(--input-padding-x, 14px);
     font-size: 15px;
-    color: #1d1d1f;
     margin-bottom: 8px;
     min-height: 80px;
   }
 
   .disabled-input {
-    background-color: #ebebeb;
-    color: #aaa;
-    border-color: #e0e0e0;
+    border-color: var(--border-color-muted, var(--color-primary-40, #e0e0e0));
   }
 
   .search-row {
@@ -210,22 +203,19 @@ export default {
 
   .search-input {
     flex-grow: 1;
-    background-color: #f8f8f8;
-    border: 1px solid #d0d0d0;
+    border: var(--input-border-width, var(--border-width-thin, 1px)) solid var(--input-border-color, var(--border-color-default, #d0d0d0));
     border-radius: 20px;
-    padding: 8px 16px;
+    box-sizing: border-box;
+    padding: 8px var(--input-padding-x, 16px);
     font-size: 14px;
-    color: #1d1d1f;
   }
 
   .hint {
     font-size: 13px;
-    color: #555;
     margin-top: 4px;
   }
 
   .muted {
-    color: #aaa;
   }
 
   .btn-row {
@@ -235,8 +225,8 @@ export default {
   }
 
   .btn {
-    border-radius: 8px;
-    padding: 10px 20px;
+    border-radius: var(--radius-sm, 8px);
+    padding: 10px var(--spacing-lg, 20px);
     font-size: 14px;
     font-weight: bold;
     margin-right: 10px;
@@ -244,33 +234,26 @@ export default {
   }
 
   .btn-primary {
-    background-color: #007aff;
-    color: #ffffff;
   }
 
   .btn-secondary {
-    background-color: #e5e5ea;
-    color: #333;
   }
 
   .result-box {
     flex-direction: column;
-    background-color: #f0fff4;
-    border: 1px solid #34c759;
-    border-radius: 8px;
-    padding: 12px;
+    border: var(--border-width-thin, 1px) solid var(--border-color-success, var(--theme-color, #34c759));
+    border-radius: var(--radius-sm, 8px);
+    padding: var(--theme-padding, 12px);
     margin-top: 8px;
   }
 
   .result-label {
     font-size: 13px;
     font-weight: bold;
-    color: #34c759;
     margin-bottom: 4px;
   }
 
   .result-text {
     font-size: 14px;
-    color: #1d1d1f;
   }
 </style>

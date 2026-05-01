@@ -1,15 +1,23 @@
 <view class="container">
   <view class="page-title">Lottie</view>
+
   <view class="card">
-    <lottie-view 
-      class="lottie"
-      src="./lottielogo.json"
-      auto-play="true"
-      loop="true"
-      speed="1.0"
-    ></lottie-view>
+    <view class="section-title">Player</view>
+    <view class="lottie-stage {{previewStageClass}}">
+      <lottie-view
+        class="lottie"
+        src="{{activeSrc}}"
+        autoplay="{{autoplay}}"
+        loop="true"
+        speed="{{speed}}"
+        progress="{{progress}}"
+      ></lottie-view>
+    </view>
     <view class="controls">
-      <button bindtap="togglePlay">Toggle Play</button>
+      <button bindtap="toggleAutoplay">Toggle Autoplay</button>
+      <button bindtap="toggleProgress">Toggle Progress</button>
+      <button bindtap="toggleSource">Toggle Source</button>
+      <button bindtap="cycleSpeed">Cycle Speed</button>
     </view>
   </view>
 </view>

@@ -1,8 +1,12 @@
 .container {
+  --transform-page-background: var(--color-background);
+  --transform-text-color: var(--color-text-primary);
+  --transform-stage-background: var(--color-surface-highlight);
+  --transform-box-background: var(--color-primary);
   display: flex;
   flex-direction: column;
   padding: 20px;
-  background-color: #f0f0f0;
+  background-color: var(--transform-page-background);
 }
 
 .title {
@@ -10,6 +14,7 @@
   font-weight: bold;
   margin-bottom: 20px;
   display: block;
+  color: var(--transform-text-color);
 }
 
 .section {
@@ -18,7 +23,7 @@
 }
 
 .label {
-  color: black;
+  color: var(--transform-text-color);
   font-size: 16px;
   margin-bottom: 10px;
   display: block;
@@ -27,14 +32,14 @@
 .box-container {
   width: 100px;
   height: 100px;
-  background-color: #ddd;
-  border: 1px dashed #999;
+  background-color: var(--transform-stage-background);
+  border: var(--border-width-thin, 1px) dashed var(--border-color-muted, #999);
 }
 
 .box {
   width: 60px;
   height: 60px;
-  background-color: #007aff;
+  background-color: var(--transform-box-background);
   opacity: 0.8;
 }
 

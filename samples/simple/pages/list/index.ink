@@ -63,13 +63,11 @@
     display: flex;
     flex-direction: column;
     padding: 20px;
-    background-color: #f5f5f5;
   }
 
   .section {
     flex-direction: column;
     margin-bottom: 24px;
-    background-color: white;
     border-radius: 12px;
     padding: 16px;
   }
@@ -77,9 +75,8 @@
   .title {
     font-size: 18px;
     font-weight: bold;
-    color: #333;
     margin-bottom: 12px;
-    border-bottom: 2px solid #1989fa;
+    border-bottom: var(--border-width-default, 2px) solid var(--border-color-accent, #1989fa);
     padding-bottom: 8px;
   }
 
@@ -88,22 +85,19 @@
     flex-direction: row;
     align-items: center;
     padding: 10px 0;
-    border-bottom: 1px solid #eee;
+    border-bottom: var(--border-width-thin, 1px) solid var(--border-color-muted, #eee);
   }
 
   .item-index {
     font-size: 14px;
-    color: #999;
     width: 30px;
   }
 
   .item-name {
     font-size: 16px;
-    color: #333;
   }
 
   .list-card {
-    background-color: #e8f4fd;
     border-radius: 8px;
     padding: 12px;
     margin-bottom: 8px;
@@ -112,12 +106,10 @@
   .card-name {
     font-size: 16px;
     font-weight: bold;
-    color: #1989fa;
   }
 
   .card-role {
     font-size: 13px;
-    color: #666;
     margin-top: 4px;
   }
 
@@ -127,11 +119,9 @@
 
   .task-done {
     font-size: 15px;
-    color: #07c160;
   }
 
   .task-pending {
     font-size: 15px;
-    color: #888;
   }
 </style>

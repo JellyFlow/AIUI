@@ -6,7 +6,6 @@
 .category-title {
   font-size: 14px;
   font-weight: bold;
-  color: #666;
   margin-top: 12px;
   margin-bottom: 12px;
   padding-left: 4px;
@@ -14,20 +13,20 @@
 
 .nav-item {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   padding: 20px;
   margin-bottom: 12px;
+  box-sizing: border-box;
   width: 100%;
 }
 
 .nav-text {
   font-size: 16px;
   font-weight: 500;
-  color: #333;
 }
 
 .nav-arrow {
   font-size: 16px;
-  color: #999;
 }

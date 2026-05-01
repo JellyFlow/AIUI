@@ -65,10 +65,16 @@ export default {
 
 <style>
   .container {
+    --filter-page-background: var(--color-background);
+    --filter-text-color: var(--color-text-primary);
+    --filter-box-background: var(--color-primary);
+    --filter-red-box-background: #e74c3c;
+    --filter-green-box-background: #2ecc71;
+    --filter-blue-box-background: #2980b9;
     display: flex;
     flex-direction: column;
     padding: 20px;
-    background-color: #f0f0f0;
+    background-color: var(--filter-page-background);
   }
 
   .title {
@@ -76,6 +82,7 @@ export default {
     font-weight: bold;
     margin-bottom: 20px;
     display: block;
+    color: var(--filter-text-color);
   }
 
   .section {
@@ -84,7 +91,7 @@ export default {
   }
 
   .label {
-    color: black;
+    color: var(--filter-text-color);
     font-size: 16px;
     margin-bottom: 12px;
     display: block;
@@ -93,7 +100,7 @@ export default {
   .box {
     width: 80px;
     height: 80px;
-    background-color: #3498db;
+    background-color: var(--filter-box-background);
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -108,9 +115,9 @@ export default {
     border-radius: 4px;
   }
 
-  .bg-red { background-color: #e74c3c; }
-  .bg-green { background-color: #2ecc71; }
-  .bg-blue { background-color: #2980b9; }
+  .bg-red { background-color: var(--filter-red-box-background); }
+  .bg-green { background-color: var(--filter-green-box-background); }
+  .bg-blue { background-color: var(--filter-blue-box-background); }
 
   .drop-shadow {
     filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.5));

@@ -1,13 +1,52 @@
+const SOURCES = ['./lottielogo.json', './watermelon.json'];
+const SPEEDS = [0.5, 1, 1.75];
+
 export default {
   data: {
-    isPlaying: true,
+    activeSrc: './lottielogo.json',
+    autoplay: true,
+    progress: '',
+    speed: 1,
+    previewStageClass: 'dark-stage',
   },
   onLoad() {
-    console.log('Lottie test page loaded');
+    this.syncPlaybackState();
   },
-  togglePlay() {
+  syncPlaybackState(patch = {}) {
+    const next = {
+      ...this.data,
+      ...patch,
+    };
+    const isLightArtwork = next.activeSrc.includes('lottielogo');
+
     this.setData({
-      isPlaying: !this.data.isPlaying,
+      ...patch,
+      previewStageClass: isLightArtwork ? 'dark-stage' : 'light-stage',
+    });
+  },
+  toggleAutoplay() {
+    this.syncPlaybackState({
+      autoplay: !this.data.autoplay,
+      progress: '',
+    });
+  },
+  toggleProgress() {
+    this.syncPlaybackState({
+      progress: this.data.progress === '' ? 0.35 : '',
+    });
+  },
+  toggleSource() {
+    const currentIndex = SOURCES.indexOf(this.data.activeSrc);
+    const nextIndex = (currentIndex + 1) % SOURCES.length;
+    this.syncPlaybackState({
+      activeSrc: SOURCES[nextIndex],
+    });
+  },
+  cycleSpeed() {
+    const currentIndex = SPEEDS.indexOf(this.data.speed);
+    const nextIndex = (currentIndex + 1) % SPEEDS.length;
+    this.syncPlaybackState({
+      speed: SPEEDS[nextIndex],
     });
   },
 };

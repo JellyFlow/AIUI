@@ -40,29 +40,25 @@
 
 <style>
   .container {
-    padding: 40px;
-    background-color: #f8f9fa;
+    padding: var(--spacing-lg, 18px);
     flex-direction: column;
   }
 
   .page-title {
-    color: #333;
     font-size: 28px;
     font-weight: bold;
-    margin-bottom: 30px;
+    margin-bottom: var(--spacing-lg, 18px);
   }
 
   .section {
     flex-direction: column;
-    margin-bottom: 30px;
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid #dee2e6;
+    margin-bottom: var(--spacing-lg, 18px);
+    padding: var(--theme-padding, 12px);
+    border-radius: var(--theme-radius, 12px);
+    border: var(--theme-border);
   }
 
   .section-title {
-    color: #6c757d;
     font-size: 14px;
     font-weight: bold;
     margin-bottom: 12px;
@@ -71,19 +67,16 @@
   .error-box {
     flex-direction: row;
     align-items: center;
-    padding: 16px;
-    border-radius: 8px;
-    background-color: #fff3f3;
-    border: 1px solid #f5c6cb;
+    padding: var(--theme-padding, 12px);
+    border-radius: var(--radius-sm, 8px);
+    border: var(--error-state-border-width, var(--border-width-thin, 1px)) solid var(--error-state-border-color, var(--border-color-muted, #f5c6cb));
   }
 
   .error-box--warning {
-    background-color: #fff8e1;
-    border: 1px solid #ffe082;
+    border: var(--border-width-thin, 1px) solid var(--border-color-warning, var(--color-primary-40, #ffe082));
   }
 
   .error-box--critical {
-    background-color: #fce4ec;
-    border: 1px solid #f48fb1;
+    border: var(--border-width-thin, 1px) solid var(--border-color-danger, var(--color-primary-60, #f48fb1));
   }
 </style>

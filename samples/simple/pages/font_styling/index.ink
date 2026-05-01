@@ -44,16 +44,22 @@ export default {
 
 <style>
   .container {
+    --font-demo-page-background: var(--color-background);
+    --font-demo-section-background: var(--color-surface-highlight);
+    --font-demo-text-color: var(--color-text-primary);
+    --font-demo-muted-text-color: var(--color-text-secondary);
+    --font-demo-emphasis-color: var(--color-primary);
+
     display: flex;
     flex-direction: column;
     padding: 20px;
-    background-color: #f8f8f8;
+    background-color: var(--font-demo-page-background);
   }
 
   .page-title {
     font-size: 22px;
     font-weight: bold;
-    color: #222;
+    color: var(--font-demo-text-color);
     margin-bottom: 20px;
   }
 
@@ -62,15 +68,15 @@ export default {
     flex-direction: column;
     margin-bottom: 24px;
     padding: 14px;
-    background-color: #fff;
-    border: 1px solid #ddd;
+    background-color: var(--font-demo-section-background);
+    border: var(--border-width-thin, 1px) solid var(--border-color-default, #ddd);
     border-radius: 8px;
   }
 
   .section-title {
     font-size: 14px;
     font-weight: bold;
-    color: #888;
+    color: var(--font-demo-muted-text-color);
     margin-bottom: 10px;
   }
 
@@ -79,26 +85,26 @@ export default {
     font-family: Georgia, serif;
     font-size: 16px;
     margin-bottom: 6px;
-    color: #333;
+    color: var(--font-demo-text-color);
   }
 
   .family-sans {
     font-family: Helvetica, Arial, sans-serif;
     font-size: 16px;
     margin-bottom: 6px;
-    color: #333;
+    color: var(--font-demo-text-color);
   }
 
   .family-mono {
     font-family: "Courier New", monospace;
     font-size: 16px;
     margin-bottom: 6px;
-    color: #333;
+    color: var(--font-demo-text-color);
   }
 
   .family-inherit {
     font-size: 16px;
-    color: #666;
+    color: var(--font-demo-muted-text-color);
   }
 
   /* font-style rows */
@@ -106,20 +112,20 @@ export default {
     font-size: 18px;
     font-style: normal;
     margin-bottom: 6px;
-    color: #333;
+    color: var(--font-demo-text-color);
   }
 
   .style-italic {
     font-size: 18px;
     font-style: italic;
     margin-bottom: 6px;
-    color: #333;
+    color: var(--font-demo-text-color);
   }
 
   .style-oblique {
     font-size: 18px;
     font-style: oblique;
-    color: #333;
+    color: var(--font-demo-text-color);
   }
 
   /* font-variant rows */
@@ -127,13 +133,13 @@ export default {
     font-size: 18px;
     font-variant: normal;
     margin-bottom: 6px;
-    color: #333;
+    color: var(--font-demo-text-color);
   }
 
   .variant-small-caps {
     font-size: 18px;
     font-variant: small-caps;
-    color: #333;
+    color: var(--font-demo-text-color);
   }
 
   /* combined */
@@ -142,6 +148,6 @@ export default {
     font-style: italic;
     font-variant: small-caps;
     font-size: 18px;
-    color: #1a5276;
+    color: var(--font-demo-emphasis-color);
   }
 </style>

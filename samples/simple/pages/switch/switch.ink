@@ -58,7 +58,7 @@ export default {
       <text class="section-title">Custom Color Switch</text>
       <view class="row">
         <text>Status: {{switch5Value}}</text>
-        <switch id="switch5" color="#ff0000" checked="{{switch5Value}}" bindchange="onSwitchChange" />
+        <switch id="switch5" checked="{{switch5Value}}" bindchange="onSwitchChange" />
       </view>
     </view>
 
@@ -70,7 +70,7 @@ export default {
       </view>
       <view class="row mt-10">
         <text>Status: {{checkbox2Value}}</text>
-        <switch id="checkbox2" type="checkbox" color="#00ff00" checked="{{checkbox2Value}}" bindchange="onSwitchChange" />
+        <switch id="checkbox2" type="checkbox" checked="{{checkbox2Value}}" bindchange="onSwitchChange" />
       </view>
     </view>
 
@@ -82,29 +82,25 @@ export default {
     display: flex;
     flex-direction: column;
     padding: 20px;
-    background-color: #f8f9fa;
   }
 
   .page-title {
     font-size: 24px;
     font-weight: bold;
-    color: #1d1d1f;
     margin-bottom: 24px;
   }
 
   .section {
     flex-direction: column;
     margin-bottom: 24px;
-    background-color: #ffffff;
     padding: 16px;
     border-radius: 8px;
-    border: 1px solid #e5e5ea;
+    border: var(--border-width-thin, 1px) solid var(--border-color-default, #e5e5ea);
   }
 
   .section-title {
     font-size: 16px;
     font-weight: bold;
-    color: #333333;
     margin-bottom: 12px;
   }
 

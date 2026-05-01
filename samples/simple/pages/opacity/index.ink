@@ -69,11 +69,20 @@ export default {
 
 <style>
   .container {
+    --opacity-page-background: var(--color-background);
+    --opacity-surface-background: var(--color-surface);
+    --opacity-text-color: var(--color-text-primary);
+    --opacity-muted-text-color: var(--color-text-secondary);
+    --opacity-section-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --opacity-box-background: #3498db;
+    --opacity-inner-box-background: #e74c3c;
+    --opacity-complex-box-background: #2ecc71;
+    --opacity-contrast-text-color: #ffffff;
     display: flex;
     flex-direction: column;
     padding: 20px;
     box-sizing: border-box;
-    background-color: #f0f0f0;
+    background-color: var(--opacity-page-background);
     width: 100vw;
   }
 
@@ -81,29 +90,29 @@ export default {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 20px;
-    color: #333;
+    color: var(--opacity-text-color);
   }
 
   .section {
     display: flex;
     flex-direction: column;
     margin-bottom: 24px;
-    background-color: #fff;
+    background-color: var(--opacity-surface-background);
     padding: 16px;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--opacity-section-shadow);
   }
 
   .label {
     font-size: 16px;
-    color: #666;
+    color: var(--opacity-muted-text-color);
     margin-bottom: 12px;
   }
 
   .box {
     width: 120px;
     height: 60px;
-    background-color: #3498db;
+    background-color: var(--opacity-box-background);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -113,7 +122,7 @@ export default {
   .inner-box {
     width: 60px;
     height: 40px;
-    background-color: #e74c3c;
+    background-color: var(--opacity-inner-box-background);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -123,8 +132,8 @@ export default {
   .complex-box {
     width: 200px;
     height: 120px;
-    background-color: #2ecc71;
-    border: 4px solid #27ae60;
+    background-color: var(--opacity-complex-box-background);
+    border: var(--border-width-strong, 4px) solid var(--border-color-success, #27ae60);
     border-radius: 12px;
     display: flex;
     flex-direction: column;
@@ -133,7 +142,7 @@ export default {
   }
 
   .inner-text {
-    color: #fff;
+    color: var(--opacity-contrast-text-color);
     font-weight: bold;
     font-size: 16px;
   }

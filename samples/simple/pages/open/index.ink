@@ -69,31 +69,45 @@ export default {
 
 <style>
   .container {
+    --open-page-background: var(--color-background);
+    --open-surface-background: var(--color-surface);
+    --open-surface-muted-background: var(--color-surface-highlight);
+    --open-text-color: var(--color-text-primary);
+    --open-muted-text-color: var(--color-text-secondary);
+    --open-status-idle-color: var(--color-text-secondary);
+    --open-status-loading-color: var(--border-color-warning, #ff9f0a);
+    --open-status-success-color: var(--border-color-success, #34c759);
+    --open-status-error-color: var(--border-color-danger, #ff3b30);
+    --open-result-background: var(--open-surface-muted-background, #f0fff4);
+    --open-error-background: var(--open-surface-muted-background, #fff5f5);
+    --open-button-background: var(--color-primary);
+    --open-button-text-color: var(--open-contrast-text-color, #ffffff);
     display: flex;
     flex-direction: column;
     padding: 40px;
-    background-color: #f8f9fa;
+    background-color: var(--open-page-background);
   }
 
+  .page-title,
   .title {
     font-size: 28px;
     font-weight: bold;
-    color: #1d1d1f;
+    color: var(--open-text-color);
     margin-bottom: 24px;
   }
 
   .info-card {
-    background-color: #ffffff;
+    background-color: var(--open-surface-background);
     border-radius: 10px;
     padding: 16px;
     margin-bottom: 20px;
-    border: 1px solid #e5e5ea;
+    border: var(--border-width-thin, 1px) solid var(--border-color-default, #e5e5ea);
     flex-direction: column;
   }
 
   .label {
     font-size: 14px;
-    color: #6c757d;
+    color: var(--open-muted-text-color);
     margin-bottom: 4px;
     font-family: monospace;
   }
@@ -106,7 +120,7 @@ export default {
 
   .status-label {
     font-size: 16px;
-    color: #1d1d1f;
+    color: var(--open-text-color);
     margin-right: 8px;
   }
 
@@ -116,68 +130,68 @@ export default {
   }
 
   .status-idle {
-    color: #6c757d;
+    color: var(--open-status-idle-color);
   }
 
   .status-loading {
-    color: #ff9f0a;
+    color: var(--open-status-loading-color);
   }
 
   .status-success {
-    color: #34c759;
+    color: var(--open-status-success-color);
   }
 
   .status-error {
-    color: #ff3b30;
+    color: var(--open-status-error-color);
   }
 
   .result-box {
-    background-color: #f0fff4;
+    background-color: var(--open-result-background);
     border-radius: 10px;
     padding: 16px;
     margin-bottom: 20px;
-    border: 1px solid #34c759;
+    border: var(--border-width-thin, 1px) solid var(--border-color-success, #34c759);
     flex-direction: column;
   }
 
   .result-title {
     font-size: 14px;
     font-weight: bold;
-    color: #34c759;
+    color: var(--open-status-success-color);
     margin-bottom: 8px;
   }
 
   .result-text {
     font-size: 13px;
-    color: #1d1d1f;
+    color: var(--open-text-color);
     font-family: monospace;
   }
 
   .error-box {
-    background-color: #fff5f5;
+    background-color: var(--open-error-background);
     border-radius: 10px;
     padding: 16px;
     margin-bottom: 20px;
-    border: 1px solid #ff3b30;
+    border: var(--border-width-thin, 1px) solid var(--border-color-danger, #ff3b30);
     flex-direction: column;
   }
 
   .error-title {
     font-size: 14px;
     font-weight: bold;
-    color: #ff3b30;
+    color: var(--open-status-error-color);
     margin-bottom: 8px;
   }
 
   .error-text {
     font-size: 13px;
-    color: #1d1d1f;
+    color: var(--open-text-color);
     font-family: monospace;
   }
 
   .btn {
-    background-color: #007aff;
-    color: #ffffff;
+    background-color: var(--open-button-background);
+    color: var(--open-button-text-color);
     font-size: 16px;
     font-weight: bold;
     border-radius: 8px;

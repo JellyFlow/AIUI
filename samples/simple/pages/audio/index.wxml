@@ -1,0 +1,24 @@
+<view class="container">
+  <view class="page-title">Audio</view>
+
+  <view class="card player-card">
+    <text class="section-title">Local WAV Playback</text>
+    <text class="status-label">Status</text>
+    <text class="status-text">{{statusText}}</text>
+    <text class="source-label">Source</text>
+    <text class="source-text">{{audioSrc}}</text>
+
+    <view class="controls">
+      <button class="control-button" bindtap="playAudio">Play</button>
+      <button class="control-button" bindtap="pauseAudio">Pause</button>
+      <button class="control-button" bindtap="replayAudio">Replay</button>
+    </view>
+
+    <text class="hint" ink:if="{{!isSupported}}">
+      This runtime does not expose the browser Audio API.
+    </text>
+    <text class="hint" ink:if="{{isSupported}}">
+      Tap Play to hear the bundled local audio asset.
+    </text>
+  </view>
+</view>

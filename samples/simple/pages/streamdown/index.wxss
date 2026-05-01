@@ -1,11 +1,17 @@
 .container {
+  --streamdown-page-background: var(--color-background);
+  --streamdown-surface-background: var(--color-surface);
+  --streamdown-text-color: var(--color-text-primary);
+  --streamdown-muted-text-color: var(--color-text-secondary);
+  --streamdown-button-background: var(--color-primary);
+  --streamdown-button-text-color: var(--streamdown-contrast-text-color, #ffffff);
   padding: 40px;
-  background-color: #f8f9fa;
+  background-color: var(--streamdown-page-background);
   flex-direction: column;
 }
 
 .title {
-  color: #333;
+  color: var(--streamdown-text-color);
   font-size: 28px;
   font-weight: bold;
   margin-bottom: 30px;
@@ -14,14 +20,14 @@
 .section {
   flex-direction: column;
   margin-bottom: 40px;
-  background-color: #ffffff;
+  background-color: var(--streamdown-surface-background);
   padding: 20px;
   border-radius: 12px;
-  border: 1px solid #dee2e6;
+  border: var(--border-width-thin, 1px) solid var(--border-color-muted, #dee2e6);
 }
 
 .section-title {
-  color: #6c757d;
+  color: var(--streamdown-muted-text-color);
   font-size: 14px;
   font-weight: bold;
   text-transform: uppercase;
@@ -30,7 +36,7 @@
 }
 
 .markdown-box {
-  background-color: #ffffff;
+  background-color: var(--streamdown-surface-background);
   padding: 15px;
   border-radius: 8px;
   min-height: 100px;
@@ -38,8 +44,8 @@
 
 .btn {
   margin-top: 20px;
-  background-color: #007bff;
-  color: white;
+  background-color: var(--streamdown-button-background);
+  color: var(--streamdown-button-text-color);
   padding: 10px 20px;
   border-radius: 6px;
   text-align: center;

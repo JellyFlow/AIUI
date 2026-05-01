@@ -46,17 +46,22 @@ export default {
 
 <style>
   .container {
+    --outline-page-background: var(--color-background);
+    --outline-text-color: var(--color-text-primary);
+    --outline-box-background: var(--color-surface-highlight);
     display: flex;
     flex-direction: column;
     padding: 20px;
-    background-color: #f0f0f0;
+    background-color: var(--outline-page-background);
   }
 
+  .page-title,
   .title {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 20px;
     display: block;
+    color: var(--outline-text-color);
   }
 
   .section {
@@ -65,7 +70,7 @@ export default {
   }
 
   .label {
-    color: black;
+    color: var(--outline-text-color);
     font-size: 16px;
     margin-bottom: 12px;
     display: block;
@@ -74,7 +79,7 @@ export default {
   .box {
     width: 80px;
     height: 80px;
-    background-color: #e0e8ff;
+    background-color: var(--outline-box-background);
   }
 
   .solid-outline {
@@ -103,7 +108,7 @@ export default {
   }
 
   .border-and-outline {
-    border: 2px solid #333;
+    border: var(--border-width-default, 2px) solid var(--border-color-contrast, #333);
     outline: 3px solid #e74c3c;
     outline-offset: 3px;
   }

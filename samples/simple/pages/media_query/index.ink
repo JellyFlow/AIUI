@@ -31,13 +31,24 @@ export default {
 
 <style>
 .container {
+  --media-query-page-background: var(--color-background);
+  --media-query-surface-background: var(--color-surface);
+  --media-query-text-color: var(--color-text-primary);
+  --media-query-muted-text-color: var(--color-text-secondary);
+  --media-query-responsive-default-background: #4CAF50;
+  --media-query-mobile-background: #F44336;
+  --media-query-tablet-background: #2196F3;
+  --media-query-orientation-background: #607D8B;
+  --media-query-vw-background: #9C27B0;
+  --media-query-vh-background: #FF9800;
+  --media-query-contrast-text-color: #ffffff;
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
   padding: 20px;
   box-sizing: border-box;
-  background-color: #f5f5f5;
+  background-color: var(--media-query-page-background);
   gap: 20px;
 }
 
@@ -45,7 +56,7 @@ export default {
   font-size: 24px;
   font-weight: bold;
   text-align: center;
-  color: #333;
+  color: var(--media-query-text-color);
 }
 
 /* Base styles for the responsive box */
@@ -55,7 +66,7 @@ export default {
   align-items: center;
   width: 100%;
   padding: 20px;
-  background-color: white;
+  background-color: var(--media-query-surface-background);
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
@@ -64,7 +75,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #4CAF50;
+  background-color: var(--media-query-responsive-default-background);
   border-radius: 8px;
   transition: all 0.3s ease;
   
@@ -74,7 +85,7 @@ export default {
 }
 
 .box-text {
-  color: white;
+  color: var(--media-query-contrast-text-color);
   font-size: 16px;
   font-weight: bold;
 }
@@ -84,7 +95,7 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background-color: white;
+  background-color: var(--media-query-surface-background);
   padding: 15px;
   border-radius: 8px;
 }
@@ -92,7 +103,7 @@ export default {
 .info-item {
   padding: 10px;
   border-radius: 4px;
-  color: white;
+  color: var(--media-query-contrast-text-color);
   font-weight: bold;
   text-align: center;
   display: none; /* Hidden by default */
@@ -103,14 +114,14 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background-color: white;
+  background-color: var(--media-query-surface-background);
   padding: 15px;
   border-radius: 8px;
 }
 
 .vw-box {
-  background-color: #9C27B0;
-  color: white;
+  background-color: var(--media-query-vw-background);
+  color: var(--media-query-contrast-text-color);
   height: 50px;
   width: 50vw;
   display: flex;
@@ -120,8 +131,8 @@ export default {
 }
 
 .vh-box {
-  background-color: #FF9800;
-  color: white;
+  background-color: var(--media-query-vh-background);
+  color: var(--media-query-contrast-text-color);
   width: 100%;
   height: 20vh;
   display: flex;
@@ -136,14 +147,14 @@ export default {
 @media (orientation: portrait) {
   .portrait-only {
     display: flex;
-    background-color: #607D8B;
+    background-color: var(--media-query-orientation-background);
   }
 }
 
 @media (orientation: landscape) {
   .landscape-only {
     display: flex;
-    background-color: #607D8B;
+    background-color: var(--media-query-orientation-background);
   }
 }
 
@@ -152,7 +163,7 @@ export default {
   .responsive-box {
     width: 150px;
     height: 100px;
-    background-color: #F44336; /* Red */
+    background-color: var(--media-query-mobile-background);
   }
   
   .box-text {
@@ -161,7 +172,7 @@ export default {
 
   .mobile-only {
     display: flex;
-    background-color: #F44336;
+    background-color: var(--media-query-mobile-background);
   }
 }
 
@@ -170,12 +181,12 @@ export default {
   .responsive-box {
     width: 200px;
     height: 150px;
-    background-color: #2196F3; /* Blue */
+    background-color: var(--media-query-tablet-background);
   }
 
   .tablet-only {
     display: flex;
-    background-color: #2196F3;
+    background-color: var(--media-query-tablet-background);
   }
 }
 
@@ -183,7 +194,7 @@ export default {
 @media (min-width: 800px) {
   .desktop-only {
     display: flex;
-    background-color: #4CAF50;
+    background-color: var(--media-query-responsive-default-background);
   }
 }
 

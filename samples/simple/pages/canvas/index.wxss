@@ -13,7 +13,7 @@
   width: 96vw;
   height: 75vh;
   background-color: #f0f0f0;
-  border: 1px solid #ccc;
+  border: var(--border-width-thin, 1px) solid var(--border-color-default, #ccc);
   border-radius: 16px;
   margin: auto;
   margin-bottom: 20px;

@@ -1,9 +1,30 @@
 .container {
+  --font-weight-demo-section-background: var(--color-surface-highlight);
+  --font-weight-demo-text-color: var(--color-text-primary);
+  --font-weight-demo-muted-text-color: var(--color-text-secondary);
+  --font-weight-demo-emphasis-color: var(--color-primary);
+  --font-weight-demo-card-border-color: var(--border-color-default);
+  --font-weight-demo-card-border-width: var(--border-width-thin);
+  --font-weight-demo-canvas-border-color: var(--border-color-contrast);
+  --font-weight-demo-canvas-border-width: var(--border-width-thin);
+
   padding: 20px;
+  color: var(--font-weight-demo-text-color);
+}
+.page-title {
+  color: var(--font-weight-demo-text-color);
+}
+.card {
+  background-color: var(--font-weight-demo-section-background);
+  border: var(--font-weight-demo-card-border-width, 1px) solid
+    var(--font-weight-demo-card-border-color, #ccc);
+  border-radius: 8px;
+  padding: 14px;
 }
 .item {
   margin-bottom: 10px;
   font-size: 16px;
+  color: inherit;
 }
 .normal {
   font-weight: normal;
@@ -13,25 +34,28 @@
 }
 .bolder-parent {
   font-weight: 400;
-  border: 1px solid #ccc;
+  background-color: var(--font-weight-demo-section-background);
+  border: var(--border-width-thin, 1px) solid var(--border-color-default, #ccc);
   padding: 10px;
 }
 .bold-parent {
   font-weight: 700;
-  border: 1px solid #ccc;
+  background-color: var(--font-weight-demo-section-background);
+  border: var(--border-width-thin, 1px) solid var(--border-color-default, #ccc);
   padding: 10px;
 }
 .bolder {
   font-weight: bolder;
-  color: red;
+  color: var(--font-weight-demo-emphasis-color);
 }
 .lighter {
   font-weight: lighter;
-  color: blue;
+  color: var(--font-weight-demo-muted-text-color);
 }
 .canvas {
   width: 300px;
   height: 150px;
-  border: 1px solid #000;
+  border: var(--font-weight-demo-canvas-border-width, var(--border-width-thin, 1px))
+    solid var(--font-weight-demo-canvas-border-color, var(--border-color-contrast, #000));
   margin-top: 20px;
 }
