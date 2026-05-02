@@ -209,6 +209,8 @@ AIUI provides a set of built-in components that you can use within your WXML tem
 
 For parameter-by-parameter documentation, event behavior, content model notes, and examples, see [components.md](./components.md). The reference there is intentionally aligned with the current component registry and implementation details in `ink-builtin-components`.
 
+For runtime API details, constructor behavior, supported overloads, and current implementation limits, see [apis.md](./apis.md).
+
 - **`<view>`**: The fundamental layout container, similar to `<div>` in HTML.
 - **`<swiper>`**: A swipeable container currently backed by the base view implementation.
 - **`<swiper-item>`**: An item inside `<swiper>`, currently backed by the base view implementation.
@@ -294,74 +296,18 @@ When developing AIUI applications, especially for wearable devices, it is crucia
 
 ### 5.3 Prohibitions
 
-- 🚫 **DO NOT use large areas of solid color blocks.** This can be visually overwhelming and uncomfortable on wearable displays. Keep backgrounds subtle and use colors primarily for accents, text, and interactive elements.
+- **DO NOT use emoji in generated UI copy, labels, status text, or decorative content by default.** Emoji may only be used when the developer explicitly requests them or the product requirements clearly require them.
+- **DO NOT use large areas of solid color blocks.** This can be visually overwhelming and uncomfortable on wearable displays. Keep backgrounds subtle and use colors primarily for accents, text, and interactive elements.
 
 ## 6. AIUI API Reference
 
-AIUI aims to provide a development experience that conforms to modern Web standards while also maintaining compatibility with the WeChat Mini Program ecosystem to facilitate smooth migration and code reuse. The APIs are divided into two main categories: **Web APIs** and **WeChat Compatible APIs**.
+The detailed runtime API reference lives in [apis.md](./apis.md).
 
-### 6.1 Web APIs
+When generating code:
 
-AIUI supports the WinterCG (Web-interoperable Runtimes Community Group) Minimum Common Web API and several other critical Web standards, optimized for wearable devices.
-
-- **Console API**: Standard debugging output interface (`console.log`, `info`, `warn`, `error`, `debug`, `group`, `groupEnd`).
-- **Window API**: Basic global environment interfaces (`window`, `self`, `global`, `setTimeout`, `setInterval`, `clearTimeout`, `clearInterval`, `atob`, `btoa`).
-- **URL API**: Standard URL parsing and manipulation (`URL`, `URLSearchParams`).
-- **Encoding API**: Text encoding and decoding (`TextEncoder`, `TextDecoder`).
-- **Crypto API**: Web Crypto API for cryptographic operations (`crypto.subtle`, `crypto.randomUUID()`).
-- **Performance API**: For monitoring agent runtime performance (`performance.now()`, `performance.timeOrigin`).
-- **Storage API**: Web-like local data persistence (`localStorage`).
-- **Canvas API**: Provides 2D drawing capabilities with spatial rendering support.
-- **Speech API**: Speech recognition and synthesis (`speechSynthesis`, `SpeechSynthesisUtterance`).
-- **Barcode Detection API**: Used for identifying barcodes and QR codes in the environment (`BarcodeDetector`).
-
-#### Web API Examples
-
-**Barcode Detection**
-```javascript
-import { BarcodeDetector } from 'barcode';
-const detector = new BarcodeDetector({ formats: ['qr_code'] });
-const results = await detector.detect({ data, width, height });
-```
-
-**Speech Synthesis**
-```javascript
-const utterance = new SpeechSynthesisUtterance('Hello, welcome to AIUI');
-utterance.lang = 'en-US';
-utterance.rate = 1.0;
-speechSynthesis.speak(utterance);
-```
-
-### 6.2 WeChat Compatible APIs (`wx.*`)
-
-To allow developers to reuse existing Mini Program code and resources, AIUI provides a set of APIs compatible with WeChat Mini Programs.
-
-#### Base / System
-- `wx.canIUse(schema)`: Check API support.
-- `wx.getWindowInfo()`: Get screen metrics (`pixelRatio`, `screenWidth`, `windowHeight`, `safeArea`).
-- `wx.getSystemInfoSync()`: Alias for `getWindowInfo`.
-- `wx.exitMiniProgram()`: Exit the application.
-
-#### UI & Canvas
-- `wx.setBackgroundColor(options)`: Set background color.
-- Canvas-related APIs for UI rendering.
-
-#### Networking
-- `wx.request(options)`: Initiate an HTTPS network request. Returns a `RequestTask`.
-  - **Options**: `url`, `method`, `data`, `header`, `responseType`, `dataType`, `success`, `fail`.
-- `wx.connectSocket(options)` / `wx.createSocket(options)`: Create a WebSocket connection. Returns a `SocketTask`.
-
-#### Media
-- `wx.media.getRecorderManager()`: Get the globally unique recorder manager for audio recording.
-- `wx.media.createCameraContext()`: Create a camera context for taking photos.
-  - `takePhoto({ quality: 'high' | 'normal' | 'low' })`: Returns a Promise containing image data.
-
-#### Speech
-- `wx.speech.playTTS(options)`: Text-to-Speech (TTS) playback.
-- `wx.speech.startRecognition(options)`: Start speech recognition.
-
-#### Router
-- Navigation and routing APIs compatible with the Mini Program routing system.
+- Treat `apis.md` as the source of truth for currently supported API shapes and behaviors.
+- Follow the implementation-aligned definitions there instead of assuming standard Web API compatibility.
+- Do not infer unlisted overloads, return shapes, or browser semantics.
 
 ## 7. Usage Examples (WeChat APIs)
 
