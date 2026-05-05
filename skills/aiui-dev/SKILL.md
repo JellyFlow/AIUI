@@ -191,7 +191,7 @@ WXML uses double curly braces `{{ }}` for data binding. You can bind properties 
 <view>{{ count + 1 }}</view>
 ```
 
-### 3.2 Directives (Conditional Rendering)
+### 3.2 Directives (Conditional Rendering and Lists)
 
 AIUI supports conditional rendering using the `ink:if`, `ink:elif`, and `ink:else` directives to control whether a component is rendered based on a condition.
 
@@ -201,7 +201,18 @@ AIUI supports conditional rendering using the `ink:if`, `ink:elif`, and `ink:els
 <view ink:else> Rendered otherwise </view>
 ```
 
-> **Important Note:** AIUI's WXML implementation currently **does not support list rendering** (e.g., `wx:for` or `ink:for` are NOT supported). If you need to render lists, you should handle the logic manually in JavaScript or flatten the UI structure as needed.
+AIUI supports basic list rendering with `ink:for`, allowing you to repeat a component structure for each item in an array.
+
+```html
+<view ink:for="{{cities}}" ink:key="name">
+  <text>{{item.name}}</text>
+  <text>{{item.temperature}}</text>
+</view>
+```
+
+Use `item` to access the current element and `index` to access its position in the array. Prefer providing a stable `ink:key` when rendering dynamic collections.
+
+> **Current Limitation:** Nested `ink:for` is not supported yet. Keep list rendering to a single level, and flatten data in JavaScript first when you need to present hierarchical content.
 
 ### 3.3 Built-in Components
 
