@@ -12,15 +12,19 @@
         },
         "food": {
           "type": "string",
-          "description": "可选的食品名称；传入后可作为当前卡片的指定推荐菜品。"
+          "minLength": 1,
+          "description": "必须返回食品名称，且必须是非空字符串；该字段用于作为当前卡片的指定推荐菜品，不可为 null、空字符串或省略。"
         },
         "tip": {
           "type": "string",
-          "description": "饮食贴士，用于补充当前推荐卡片的说明文案。"
+          "minLength": 1,
+          "description": "必须返回饮食贴士，且必须是非空字符串；该字段用于补充当前推荐卡片的说明文案，不可为 null、空字符串或省略。"
         }
       },
       "required": [
-        "meal"
+        "meal",
+        "food",
+        "tip"
       ]
     }
   }
@@ -178,6 +182,7 @@ export default {
   },
 
   onLoad(query) {
+    console.info('=>', query);
     this.setData({
       recommendation: buildRecommendation(query)
     });
