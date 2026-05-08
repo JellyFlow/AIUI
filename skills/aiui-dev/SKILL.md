@@ -241,11 +241,51 @@ For runtime API details, constructor behavior, supported overloads, and current 
 - **`<a2ui>`**: A specialized component for rendering agent-generated UI commands dynamically.
 - **`<error-state>`**: A compact status component that displays an optional icon with a message.
 
-## 4. WXSS (WeiXin Style Sheets)
+## 4. Events
+
+AIUI supports event handling at different levels. Component interaction events are declared in WXML attributes such as `bindtap`, `catchtap`, `bindinput`, and `bindchange`. Page-level events are defined as methods on the exported page object.
+
+### 4.1 Page-Level Events
+
+If a page needs to react to framework-delivered hardware key input, define `onKeyDown(event)` and `onKeyUp(event)` on the exported page object.
+
+These handlers are page methods, not WXML binding attributes. Put the logic on the page instance and update page state with `this.setData(...)` when needed.
+
+```html
+<script setup>
+export default {
+  data: {
+    lastKeyAction: 'None'
+  },
+  onKeyDown(event) {
+    console.log('Key down:', event);
+    this.setData({
+      lastKeyAction: 'Key pressed'
+    });
+  },
+  onKeyUp(event) {
+    console.log('Key up:', event);
+    this.setData({
+      lastKeyAction: 'Key released'
+    });
+  }
+}
+</script>
+
+<page>
+  <view class="container">
+    <text>Last key action: {{ lastKeyAction }}</text>
+  </view>
+</page>
+```
+
+Use this pattern when keyboard input should be handled by the page itself, such as shortcuts, directional navigation, or confirming actions from a hardware key.
+
+## 5. WXSS (WeiXin Style Sheets)
 
 WXSS is a style language used to describe the visual presentation of components. It is highly compatible with standard CSS and is used within the `<style>` block of an `.ink` file (or a standalone `.wxss` file).
 
-### 4.1 Features
+### 5.1 Features
 
 WXSS extends standard CSS with features tailored for mobile and wearable devices:
 
@@ -261,7 +301,7 @@ WXSS extends standard CSS with features tailored for mobile and wearable devices
 }
 ```
 
-### 4.2 Selectors
+### 5.2 Selectors
 
 AIUI supports most standard CSS selectors:
 - **Class Selector (`.class`)**: The recommended way to style components.
@@ -271,7 +311,7 @@ AIUI supports most standard CSS selectors:
 
 *Recommendation: Prioritize using Class Selectors to ensure optimal rendering performance.*
 
-### 4.3 Flexbox Layout
+### 5.3 Flexbox Layout
 
 AIUI's view engine provides robust support for Flexbox. It is the primary and recommended method for building responsive layouts in AIUI.
 
@@ -284,11 +324,11 @@ AIUI's view engine provides robust support for Flexbox. It is the primary and re
 }
 ```
 
-## 5. Design Guidelines
+## 6. Design Guidelines
 
 When developing AIUI applications, especially for wearable devices, it is crucial to follow these design guidelines to ensure a consistent and user-friendly experience.
 
-### 5.1 Dimensions and Layout
+### 6.1 Dimensions and Layout
 
 - **Width**: The application width is strictly **480px**.
 - **Height**: The recommended application height is between **120px and 380px**. Avoid creating overly tall pages that require excessive scrolling.
@@ -297,7 +337,7 @@ When developing AIUI applications, especially for wearable devices, it is crucia
 - **Default Border**: Use a **2px** border as the default border width for cards and key interactive elements.
 - **Border Radius**: The recommended border radius (e.g., for cards, buttons, and images) is **12px**.
 
-### 5.2 Color Palette
+### 6.2 Color Palette
 
 - **Primary Color**: Use `#40FF5E` as the primary brand/action color.
   - 100% Opacity: `#40FF5E` (Main elements, active states)
@@ -305,12 +345,12 @@ When developing AIUI applications, especially for wearable devices, it is crucia
   - 40% Opacity: `rgba(64, 255, 94, 0.4)` (Background highlights, disabled states)
 - **Default Text Color**: Use the Primary Color `#40FF5E` as the default text color unless a more specific semantic color is required.
 
-### 5.3 Prohibitions
+### 6.3 Prohibitions
 
 - **DO NOT use emoji in generated UI copy, labels, status text, or decorative content by default.** Emoji may only be used when the developer explicitly requests them or the product requirements clearly require them.
 - **DO NOT use large areas of solid color blocks.** This can be visually overwhelming and uncomfortable on wearable displays. Keep backgrounds subtle and use colors primarily for accents, text, and interactive elements.
 
-## 6. AIUI API Reference
+## 7. AIUI API Reference
 
 The detailed runtime API reference lives in [apis.md](./apis.md).
 
@@ -320,7 +360,7 @@ When generating code:
 - Follow the implementation-aligned definitions there instead of assuming standard Web API compatibility.
 - Do not infer unlisted overloads, return shapes, or browser semantics.
 
-## 7. Usage Examples (WeChat APIs)
+## 8. Usage Examples (WeChat APIs)
 
 ### Take a Photo with Camera
 ```javascript
