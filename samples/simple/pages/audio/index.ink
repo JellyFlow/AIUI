@@ -18,6 +18,49 @@ function formatNumber(value) {
   return value.toFixed(2);
 }
 
+async function playSound(src) {
+  const player = new AudioPlayer();
+  let settled = false;
+
+  try {
+    player.src = src;
+    return await new Promise((resolve, reject) => {
+      const cleanup = () => {
+        player.offEnded();
+        player.offError();
+      };
+
+      const handleEnded = () => {
+        if (settled) {
+          return;
+        }
+        settled = true;
+        cleanup();
+        resolve(true);
+      };
+
+      const handleError = (error) => {
+        if (settled) {
+          return;
+        }
+        settled = true;
+        cleanup();
+        reject(error || new Error('Audio playback failed'));
+      };
+
+      player.onEnded(handleEnded);
+      player.onError(handleError);
+      player.play();
+    });
+  } finally {
+    if (!settled) {
+      player.offEnded();
+      player.offError();
+    }
+    player.destroy();
+  }
+}
+
 export default {
   data: {
     assetPath: ASSET_PATH,
@@ -25,6 +68,7 @@ export default {
     srcLoaded: false,
     playCount: 0,
     recreateCount: 0,
+    autoDestroyCount: 0,
     lastError: '',
     actualSrc: '',
     paused: true,
@@ -426,6 +470,31 @@ export default {
       this.setError(String(error));
     }
   },
+
+  async playThenAutoDestroy() {
+    this.repeatSequenceToken += 1;
+    this.destroyPlayerInternal(false);
+    this.clearError();
+    this.log('Started standalone auto-destroy playback');
+
+    try {
+      const completed = await playSound(ASSET_PATH);
+      if (!completed) {
+        this.setError('Auto-destroy playback did not complete before timeout');
+        return;
+      }
+
+      this.setData({
+        playCount: this.data.playCount + 1,
+        autoDestroyCount: this.data.autoDestroyCount + 1,
+      });
+      this.clearError();
+      this.log('Standalone playback completed and destroyed automatically');
+      this.refreshPlayerState(true);
+    } catch (error) {
+      this.setError(String(error));
+    }
+  },
 };
 </script>
 
@@ -441,6 +510,7 @@ export default {
       <text class="meta-line">Source Loaded: {{srcLoaded}}</text>
       <text class="meta-line">Play Count: {{playCount}}</text>
       <text class="meta-line">Recreate Count: {{recreateCount}}</text>
+      <text class="meta-line">Auto Destroy Count: {{autoDestroyCount}}</text>
       <text class="meta-line">Last Error: {{lastError || 'None'}}</text>
     </view>
 
@@ -475,6 +545,7 @@ export default {
         <button class="btn btn-secondary" bindtap="playThreeTimes">Play x3</button>
         <button class="btn btn-secondary" bindtap="destroyAndRecreate">Destroy And Recreate</button>
         <button class="btn btn-secondary" bindtap="newInstanceAndPlay">New Instance And Play</button>
+        <button class="btn btn-secondary" bindtap="playThenAutoDestroy">Play Then Auto Destroy</button>
         <button class="btn btn-secondary" bindtap="toggleLoop">Toggle Loop</button>
         <button class="btn btn-secondary" bindtap="setVolume0">Volume 0</button>
         <button class="btn btn-secondary" bindtap="setVolumeHalf">Volume 0.5</button>

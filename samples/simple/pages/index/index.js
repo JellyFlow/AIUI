@@ -31,6 +31,7 @@ export default {
       { name: 'A2UI', path: '../a2ui/index' },
       { name: 'Calendar', path: '../calendar/index' },
       { name: 'Error State', path: '../error_state/index' },
+      { name: 'Storage', path: '../storage/index' },
       { name: 'Streamdown', path: '../streamdown/index' },
       { name: 'Open', path: '../open/index' },
       { name: 'Image', path: '../image/index' },

@@ -24,6 +24,7 @@
     "pages/grid/index",
     "pages/css_vars/index",
     "pages/error_state/index",
+    "pages/storage/index",
     "pages/font_styling/index",
     "pages/input_textarea/index",
     "pages/transition_animation/index",
