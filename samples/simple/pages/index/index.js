@@ -24,6 +24,7 @@ export default {
       { isHeader: true, name: 'Graphics & Canvas' },
       { name: 'Canvas', path: '../canvas/index' },
       { name: 'Canvas API', path: '../canvas_api/index' },
+      { name: 'Audio', path: '../audio/index' },
       { name: 'Chart', path: '../chart/index' },
       { name: 'Lottie', path: '../lottie/index' },
       { isHeader: true, name: 'Components & Other' },

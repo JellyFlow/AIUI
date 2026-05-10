@@ -1,7 +1,6 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/audio/index",
     "pages/open/index",
     "pages/a2ui/index",
     "pages/calendar/index",
@@ -16,6 +15,7 @@
     "pages/streamdown/index",
     "pages/canvas_api/index",
     "pages/canvas/index",
+    "pages/audio/index",
     "pages/layout/index",
     "pages/lottie/index",
     "pages/position/index",
