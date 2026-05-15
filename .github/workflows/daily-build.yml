@@ -18,9 +18,9 @@ jobs:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Publish create-jsui-agent
+      - name: Publish create-aiui-agent
         run: |
-          cd packages/create-jsui-agent
+          cd packages/create-aiui-agent
           npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
