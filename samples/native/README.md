@@ -1,4 +1,4 @@
-# Chat Sample
+# Native Sample
 
 This sample now contains two focused demo pages:
 
