@@ -222,7 +222,7 @@ AIUI provides a set of built-in components that you can use within your WXML tem
 
 For parameter-by-parameter documentation, event behavior, content model notes, and examples, see [components.md](./components.md). The reference there is intentionally aligned with the current component registry and implementation details in `ink-builtin-components`.
 
-For runtime API details, constructor behavior, supported overloads, and current implementation limits, see [apis.md](./apis.md).
+For runtime API details, constructor behavior, supported overloads, and current implementation limits, see [apis.md](./apis.md). Use the linked domain reference files there when you need Canvas, `wx`, device, media, or AI-specific details.
 
 - **`<view>`**: The fundamental layout container, similar to `<div>` in HTML.
 - **`<text>`**: Displays text content. Similar to `<span>` in HTML.
@@ -487,6 +487,89 @@ Built-in green theme token reference:
 | `--theme-radius` | Compatibility tokens | Compatibility token mapping to the default radius. |
 | `--theme-padding` | Compatibility tokens | Compatibility token mapping to the default padding. |
 
+### 5.5 Fonts
+
+AIUI applications can use both system fonts provided by the host platform and bundled custom fonts declared in `app.json`.
+
+#### System fonts
+
+For common cases, reference a system font directly in `font-family` or in a canvas 2D `font` string:
+
+```xml
+<text style="font-family: Arial, sans-serif; font-size: 18px;">
+  System font example
+</text>
+```
+
+```javascript
+const ctx = wx.createCanvasContext('myCanvas');
+ctx.font = '18px Arial';
+ctx.fillText('Canvas system font example', 12, 40);
+```
+
+Recommendations:
+
+- Prefer a fallback chain such as `Arial, sans-serif` instead of a single family.
+- Do not assume every platform ships the same system fonts.
+- Test the final visual result on the actual target host.
+
+#### Bundled custom fonts
+
+If the UI requires a specific typeface, declare it in `app.json` under `fonts`. The runtime bundles the font files with the app and lets both text rendering and canvas rendering reuse the same family name.
+
+```json
+{
+  "pages": [
+    "pages/index/index"
+  ],
+  "fonts": [
+    {
+      "family": "Bundled Serif",
+      "src": "assets/fonts/NotoSerif-Regular.ttf",
+      "weight": 400,
+      "style": "normal"
+    },
+    {
+      "family": "Bundled Serif",
+      "src": "assets/fonts/NotoSerif-BoldItalic.ttf",
+      "weight": 700,
+      "style": "italic"
+    }
+  ]
+}
+```
+
+After declaration, reference the family name exactly as declared:
+
+```xml
+<text style="font-family: 'Bundled Serif', serif; font-size: 20px;">
+  Bundled font example
+</text>
+```
+
+```javascript
+const ctx = wx.createCanvasContext('myCanvas');
+ctx.font = 'italic 700 24px "Bundled Serif"';
+ctx.fillText('Canvas uses bundled fonts', 12, 40);
+
+ctx.font = '24px "Bundled Serif"';
+ctx.fillText('Missing glyphs still fall back to system fonts', 12, 80);
+```
+
+Bundled font notes:
+
+- `font-family` and canvas `font` share the same bundled family name.
+- When multiple weights or styles are declared for one family, the nearest matching face is selected automatically.
+- If a bundled resource is missing or cannot be parsed, the app falls back to system fonts.
+- Store bundled font files under app-owned assets such as `assets/fonts/` so they can be packaged with the app.
+- Prefer a generic fallback family such as `serif` or `sans-serif` after the bundled family name.
+
+When generating AIUI code:
+
+- Use `app.json` `fonts` only when the UI explicitly needs a non-system typeface.
+- Keep family names consistent between `app.json`, WXSS, inline `style`, and canvas `font` strings.
+- Do not assume web font loading patterns such as remote `@font-face` URLs.
+
 ## 6. Design Guidelines
 
 When developing AIUI applications, especially for wearable devices, it is crucial to follow these design guidelines to ensure a consistent and user-friendly experience.
@@ -514,11 +597,11 @@ When developing AIUI applications, especially for wearable devices, it is crucia
 
 ## 7. AIUI API Reference
 
-The detailed runtime API reference lives in [apis.md](./apis.md).
+The detailed runtime API index lives in [apis.md](./apis.md). It links to domain-specific reference files for Canvas, `wx`, device, media, and AI APIs.
 
 When generating code:
 
-- Treat `apis.md` as the source of truth for currently supported API shapes and behaviors.
+- Treat `apis.md` and its linked domain reference files as the source of truth for currently supported API shapes and behaviors.
 - Follow the implementation-aligned definitions there instead of assuming standard Web API compatibility.
 - Do not infer unlisted overloads, return shapes, or browser semantics.
 
