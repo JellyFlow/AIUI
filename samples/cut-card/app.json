@@ -1,6 +1,7 @@
 {
   "lifetime": "cut",
   "pages": [
-    "pages/index/index"
+    "pages/index/index",
+    "pages/air-quality/index"
   ]
 }

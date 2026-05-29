@@ -99,6 +99,80 @@ function getMockWeather(location) {
   );
 }
 
+function buildWeatherSpeechText(weather) {
+  if (!weather) {
+    return "";
+  }
+
+  const segments = [];
+
+  if (weather.location || weather.condition) {
+    const summary = [
+      weather.location ? `${weather.location}今天` : "",
+      weather.condition || ""
+    ]
+      .filter(Boolean)
+      .join("");
+
+    if (summary) {
+      segments.push(summary);
+    }
+  }
+
+  if (weather.currentTemp) {
+    segments.push(`当前${weather.currentTemp}`);
+  }
+
+  if (weather.highTemp) {
+    segments.push(`最高${weather.highTemp}`);
+  }
+
+  if (weather.lowTemp) {
+    segments.push(`最低${weather.lowTemp}`);
+  }
+
+  if (weather.humidity) {
+    segments.push(`湿度${weather.humidity}`);
+  }
+
+  if (weather.wind) {
+    segments.push(weather.wind);
+  }
+
+  const sentence = segments.join("，");
+  if (!sentence) {
+    return weather.note || "";
+  }
+
+  return weather.note ? `${sentence}。${weather.note}` : sentence;
+}
+
+function speakWeatherSummary(weather) {
+  const text = buildWeatherSpeechText(weather);
+  if (!text) {
+    return;
+  }
+
+  if (
+    typeof speechSynthesis === "undefined" ||
+    typeof SpeechSynthesisUtterance === "undefined"
+  ) {
+    console.warn("Speech synthesis is not available in this runtime.");
+    return;
+  }
+
+  try {
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "zh-CN";
+    utterance.rate = 1.0;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+    speechSynthesis.speak(utterance);
+  } catch (error) {
+    console.error("Failed to speak weather summary:", error);
+  }
+}
+
 export default {
   data: {
     isMock: true,
@@ -110,6 +184,7 @@ export default {
     this.setData({
       weather
     });
+    speakWeatherSummary(weather);
   }
 };
 </script>
