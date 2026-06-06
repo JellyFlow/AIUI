@@ -1,0 +1,193 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-lg, 20px);
+  background-color: var(--color-background);
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 700;
+  display: block;
+  color: var(--color-text-primary);
+}
+
+.page-subtitle {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-sm, 8px);
+  margin-bottom: var(--spacing-lg, 20px);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: var(--spacing-lg, 20px);
+  padding: var(--spacing-md, 16px);
+  border-radius: var(--radius-md, 12px);
+  border: var(--border-width-thin, 1px) solid var(--border-color-default, #ccc);
+  background-color: var(--color-surface-highlight);
+}
+
+.label {
+  color: var(--color-text-primary);
+  font-size: 16px;
+  font-weight: 700;
+  display: block;
+}
+
+.stage {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 128px;
+  padding: 18px;
+  border-radius: var(--radius-md, 12px);
+  border: var(--border-width-thin, 1px) dashed var(--border-color-muted, #999);
+  background-color: var(--color-surface);
+}
+
+.stage-wide {
+  min-height: 156px;
+}
+
+.stage-center {
+  justify-content: center;
+}
+
+.photo-card,
+.promo-card,
+.ribbon-card,
+.origin-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md, 12px);
+  background-color: var(--color-primary);
+  color: #ffffff;
+}
+
+.photo-card {
+  position: relative;
+  width: 164px;
+  height: 108px;
+}
+
+.photo-sticker,
+.promo-badge,
+.ribbon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 72px;
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.sticker-shift {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  transform: translate(18px, -12px) rotate(-10deg);
+}
+
+.promo-card {
+  position: relative;
+  width: 200px;
+  height: 96px;
+  justify-content: flex-start;
+  padding-left: 18px;
+  box-sizing: border-box;
+}
+
+.promo-title,
+.note-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: inherit;
+}
+
+.promo-badge {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+}
+
+.badge-rotate {
+  transform: rotate(12deg);
+}
+
+.tile-row {
+  display: flex;
+  gap: 14px;
+}
+
+.mini-tile {
+  width: 62px;
+  height: 62px;
+  border-radius: var(--radius-md, 12px);
+  background-color: var(--color-primary);
+  opacity: 0.5;
+}
+
+.tile-scale {
+  transform: scale(1.25);
+  opacity: 1;
+}
+
+.ribbon-card {
+  width: 208px;
+  height: 92px;
+}
+
+.skew-ribbon {
+  transform: skew(-20deg, 0deg);
+}
+
+.note-card {
+  width: 190px;
+  min-height: 112px;
+  padding: 14px;
+  border-radius: var(--radius-md, 12px);
+  background-color: var(--color-surface-highlight);
+  border: var(--border-width-thin, 1px) solid var(--border-color-contrast, #333);
+  box-sizing: border-box;
+}
+
+.note-title {
+  color: var(--color-text-primary);
+  margin-bottom: 8px;
+}
+
+.note-copy {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--color-text-secondary);
+}
+
+.matrix-note {
+  transform: matrix(1, 0.08, -0.06, 1, 0, 0);
+}
+
+.origin-frame {
+  width: 140px;
+  height: 120px;
+  position: relative;
+}
+
+.origin-card {
+  width: 112px;
+  height: 80px;
+}
+
+.origin-top-left {
+  transform: rotate(16deg);
+  transform-origin: 0 0;
+}

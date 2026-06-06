@@ -1,0 +1,126 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-lg, 20px);
+  color: var(--color-text-primary);
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.page-subtitle {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-sm, 8px);
+  margin-bottom: var(--spacing-lg, 20px);
+}
+
+.card {
+  background-color: var(--color-surface-highlight);
+  border: var(--border-width-thin, 1px) solid var(--border-color-default, #ccc);
+  border-radius: var(--radius-md, 12px);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm, 8px);
+  margin-bottom: var(--spacing-lg, 20px);
+  padding: var(--spacing-md, 16px);
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.section-note,
+.setting-description,
+.summary-label,
+.summary-meta,
+.message-meta {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--color-text-secondary);
+}
+
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: var(--border-width-thin, 1px) solid var(--border-color-muted, #e5e7eb);
+}
+
+.setting-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.setting-label,
+.message-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.setting-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.summary-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.summary-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: calc(50% - 6px);
+  box-sizing: border-box;
+  padding: 12px;
+  border-radius: var(--radius-md, 10px);
+  background-color: var(--color-surface);
+}
+
+.summary-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.message-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  border-radius: var(--radius-md, 10px);
+  background-color: var(--color-surface);
+}
+
+.message-body {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  color: var(--color-text-primary);
+}
+
+.canvas {
+  width: 100%;
+  height: 180px;
+  border: var(--border-width-thin, 1px) solid var(--border-color-contrast, #000);
+  border-radius: var(--radius-md, 10px);
+  margin-top: var(--spacing-sm, 8px);
+}

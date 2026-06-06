@@ -1,0 +1,273 @@
+<view class="container">
+  <view class="page-header">
+    <text class="page-kicker">Analytics Dashboard</text>
+    <text class="page-title">运营总览与实时洞察</text>
+    <text class="page-subtitle"
+      >把 line、area、bar、funnel、scatter、pie、radar 都收进真实经营问题里，而不是继续按图表类型做能力清单。</text
+    >
+  </view>
+
+  <view class="summary-row">
+    <view class="card summary-card summary-card-left">
+      <text class="summary-label">{{ sessionMetric.label }}</text>
+      <text class="summary-value">{{ sessionMetric.value }}</text>
+      <text class="summary-delta summary-delta-{{ sessionMetric.tone }}">{{ sessionMetric.delta }}</text>
+      <text class="summary-hint">{{ sessionMetric.hint }}</text>
+    </view>
+    <view class="card summary-card">
+      <text class="summary-label">{{ conversionMetric.label }}</text>
+      <text class="summary-value">{{ conversionMetric.value }}</text>
+      <text class="summary-delta summary-delta-{{ conversionMetric.tone }}"
+        >{{ conversionMetric.delta }}</text
+      >
+      <text class="summary-hint">{{ conversionMetric.hint }}</text>
+    </view>
+  </view>
+
+  <view class="summary-row">
+    <view class="card summary-card summary-card-left">
+      <text class="summary-label">{{ latencyMetric.label }}</text>
+      <text class="summary-value">{{ latencyMetric.value }}</text>
+      <text class="summary-delta summary-delta-{{ latencyMetric.tone }}">{{ latencyMetric.delta }}</text>
+      <text class="summary-hint">{{ latencyMetric.hint }}</text>
+    </view>
+    <view class="card summary-card">
+      <text class="summary-label">{{ satisfactionMetric.label }}</text>
+      <text class="summary-value">{{ satisfactionMetric.value }}</text>
+      <text class="summary-delta summary-delta-{{ satisfactionMetric.tone }}"
+        >{{ satisfactionMetric.delta }}</text
+      >
+      <text class="summary-hint">{{ satisfactionMetric.hint }}</text>
+    </view>
+  </view>
+
+  <view class="card dashboard-card">
+    <text class="section-kicker">实时总览</text>
+    <text class="section-title">流量与转化脉冲</text>
+    <text class="section-note"
+      >每 2 秒推进一次可视窗口，用来模拟值班台看流量波动、转化变化和接口压力。</text
+    >
+    <view class="mode-row" role="navigation">
+      <text class="mode-label">刷新范围：{{ updateModeLabel }}</text>
+      <button class="mode-toggle" bindtap="toggleUpdateMode">切换刷新范围</button>
+    </view>
+    <view class="chart-frame large-chart-frame">
+      <chart
+        type="{{ liveTrafficChartProps.type }}"
+        series="{{ liveTrafficChartProps.series }}"
+        data="{{ liveTrafficChartProps.data }}"
+        animate="{{ liveTrafficChartProps.animate }}"
+        y-axis="{{ liveTrafficChartProps.yAxis }}"
+        x-axis="{{ liveTrafficChartProps.xAxis }}"
+        width="{{ liveChartWidth }}"
+        height="{{ liveChartHeight }}"
+        class="chart"
+      ></chart>
+    </view>
+    <view class="insight-row">
+      <view class="card insight-card insight-card-left">
+        <text class="insight-title">目标基线</text>
+        <text class="insight-value">1.84k / min</text>
+      </view>
+      <view class="card insight-card">
+        <text class="insight-title">值班提醒</text>
+        <text class="insight-value">低于 1.60k 触发巡检</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card dashboard-card">
+    <text class="section-kicker">增长质量</text>
+    <text class="section-title">留存热度与高效渠道</text>
+    <text class="section-note"
+      >同一张卡里先看 7 日留存温度，再看哪些来源还值得继续加预算。</text
+    >
+    <text class="chart-title">7 日留存热度</text>
+    <chart
+      type="{{ retentionChartProps.type }}"
+      series="{{ retentionChartProps.series }}"
+      data="{{ retentionChartProps.data }}"
+      y-axis="{{ retentionChartProps.yAxis }}"
+      x-axis="{{ retentionChartProps.xAxis }}"
+      smooth="{{ retentionChartProps.smooth }}"
+      animate="true"
+      color="var(--chart-page-area-color, #FF6B6B)"
+      height="140"
+      class="chart"
+    ></chart>
+    <text class="chart-title chart-title-spaced">拉新渠道效率</text>
+    <chart
+      type="{{ channelBarChartProps.type }}"
+      direction="{{ channelBarChartProps.direction }}"
+      series="{{ channelBarChartProps.series }}"
+      data="{{ channelBarChartProps.data }}"
+      y-axis="{{ channelBarChartProps.yAxis }}"
+      x-axis="{{ channelBarChartProps.xAxis }}"
+      show-value-labels="true"
+      value-label-format="grouped"
+      class="chart"
+      animate="true"
+    ></chart>
+  </view>
+
+  <view class="card dashboard-card">
+    <text class="section-kicker">转化诊断</text>
+    <text class="section-title">漏斗收口与分群对比</text>
+    <text class="section-note"
+      >先回答“人在哪一步流失”，再回答“哪些分群值得继续提投放和运营资源”。</text
+    >
+    <text class="chart-title">体验漏斗</text>
+    <chart
+      type="{{ funnelChartProps.type }}"
+      data="{{ funnelChartProps.data }}"
+      label-key="{{ funnelChartProps.labelKey }}"
+      value-key="{{ funnelChartProps.valueKey }}"
+      show-conversion="{{ funnelChartProps.showConversion }}"
+      height="220"
+      class="chart"
+    ></chart>
+    <text class="chart-title chart-title-spaced">激活率与 7 日留存</text>
+    <chart
+      type="{{ segmentScatterChartProps.type }}"
+      series="{{ segmentScatterChartProps.series }}"
+      data="{{ segmentScatterChartProps.data }}"
+      y-axis="{{ segmentScatterChartProps.yAxis }}"
+      x-axis="{{ segmentScatterChartProps.xAxis }}"
+      point-size="{{ segmentScatterChartProps.pointSize }}"
+      height="220"
+      class="chart"
+    ></chart>
+    <text class="chart-note">横轴是激活率，纵轴是 7 日留存，第二组点代表目标带宽。</text>
+  </view>
+
+  <view class="card dashboard-card">
+    <text class="section-kicker">业务结构</text>
+    <text class="section-title">品类贡献、流量来源与团队能力</text>
+    <text class="section-note"
+      >一次经营复盘里往往会连续看到 vertical bar、pie 和 radar，而不是拆成三种孤立 demo。</text
+    >
+    <text class="chart-title">重点品类 GMV</text>
+    <chart
+      type="{{ categoryBarChartProps.type }}"
+      direction="{{ categoryBarChartProps.direction }}"
+      series="{{ categoryBarChartProps.series }}"
+      data="{{ categoryBarChartProps.data }}"
+      y-axis="{{ categoryBarChartProps.yAxis }}"
+      x-axis="{{ categoryBarChartProps.xAxis }}"
+      height="220"
+      class="chart"
+    ></chart>
+    <text class="chart-title chart-title-spaced">流量来源占比</text>
+    <chart
+      type="pie"
+      series="value"
+      data="{{ sourceMixData }}"
+      show-percentage="true"
+      class="chart-pie"
+      color="var(--chart-page-pie-color, #FFCC00)"
+    ></chart>
+    <view class="legend-row">
+      <view class="legend-item legend-item-left">
+        <view class="legend-dot legend-dot-direct"></view>
+        <text class="legend-label">自然推荐 34%</text>
+      </view>
+      <view class="legend-item">
+        <view class="legend-dot legend-dot-push"></view>
+        <text class="legend-label">Push 回流 27%</text>
+      </view>
+    </view>
+    <view class="legend-row legend-row-last">
+      <view class="legend-item legend-item-left">
+        <view class="legend-dot legend-dot-search"></view>
+        <text class="legend-label">搜索入口 21%</text>
+      </view>
+      <view class="legend-item">
+        <view class="legend-dot legend-dot-partner"></view>
+        <text class="legend-label">伙伴分发 18%</text>
+      </view>
+    </view>
+    <text class="chart-title chart-title-spaced">团队能力雷达</text>
+    <chart
+      type="radar"
+      series="value"
+      data="{{ radarData }}"
+      label-key="label"
+      levels="5"
+      show-points="true"
+      class="chart-radar"
+      color="var(--chart-color, #40ff5e)"
+    ></chart>
+  </view>
+
+  <view class="card dashboard-card">
+    <text class="section-kicker">Viewport Story</text>
+    <text class="section-title">同一条实时曲线在不同阶段如何取窗</text>
+    <text class="section-note"
+      >保留 viewport 示例，但改成值班同学真实会看到的“开场、爬升、满窗、滚动窗口”阅读顺序。</text
+    >
+
+    <text class="chart-title">开场信号（1 / 120）</text>
+    <view class="chart-frame mini-chart-frame">
+      <chart
+        type="{{ viewportStorySamples.launch.type }}"
+        series="{{ viewportStorySamples.launch.series }}"
+        data="{{ viewportStorySamples.launch.data }}"
+        animate="{{ viewportStorySamples.launch.animate }}"
+        y-axis="{{ viewportStorySamples.launch.yAxis }}"
+        x-axis="{{ viewportStorySamples.launch.xAxis }}"
+        width="{{ sampleChartWidth }}"
+        height="{{ sampleChartHeight }}"
+        class="chart"
+      ></chart>
+    </view>
+    <text class="chart-note">首个点也会锁定完整时间窗，适合直播开场或活动冷启动。</text>
+
+    <text class="chart-title chart-title-spaced">流量爬升（45 / 120）</text>
+    <view class="chart-frame mini-chart-frame">
+      <chart
+        type="{{ viewportStorySamples.rampUp.type }}"
+        series="{{ viewportStorySamples.rampUp.series }}"
+        data="{{ viewportStorySamples.rampUp.data }}"
+        animate="{{ viewportStorySamples.rampUp.animate }}"
+        y-axis="{{ viewportStorySamples.rampUp.yAxis }}"
+        x-axis="{{ viewportStorySamples.rampUp.xAxis }}"
+        width="{{ sampleChartWidth }}"
+        height="{{ sampleChartHeight }}"
+        class="chart"
+      ></chart>
+    </view>
+    <text class="chart-note">中段开始出现波峰，值班台会更关注基线偏离而不是单点值。</text>
+
+    <text class="chart-title chart-title-spaced">满窗观察（120 / 120）</text>
+    <view class="chart-frame mini-chart-frame">
+      <chart
+        type="{{ viewportStorySamples.fullWindow.type }}"
+        series="{{ viewportStorySamples.fullWindow.series }}"
+        data="{{ viewportStorySamples.fullWindow.data }}"
+        animate="{{ viewportStorySamples.fullWindow.animate }}"
+        y-axis="{{ viewportStorySamples.fullWindow.yAxis }}"
+        x-axis="{{ viewportStorySamples.fullWindow.xAxis }}"
+        width="{{ sampleChartWidth }}"
+        height="{{ sampleChartHeight }}"
+        class="chart"
+      ></chart>
+    </view>
+    <text class="chart-note">满窗时段更适合值班复盘，能完整对比一段连续运营动作。</text>
+
+    <text class="chart-title chart-title-spaced">滚动窗口（最新 120 / 180）</text>
+    <view class="chart-frame mini-chart-frame">
+      <chart
+        type="{{ viewportStorySamples.rollingWindow.type }}"
+        series="{{ viewportStorySamples.rollingWindow.series }}"
+        data="{{ viewportStorySamples.rollingWindow.data }}"
+        animate="{{ viewportStorySamples.rollingWindow.animate }}"
+        y-axis="{{ viewportStorySamples.rollingWindow.yAxis }}"
+        x-axis="{{ viewportStorySamples.rollingWindow.xAxis }}"
+        width="{{ sampleChartWidth }}"
+        height="{{ sampleChartHeight }}"
+        class="chart"
+      ></chart>
+    </view>
+    <text class="chart-note">数据继续增长时只保留最近窗口，适合实时监控页的长期驻留。</text>
+  </view>
+</view>

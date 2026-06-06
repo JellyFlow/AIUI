@@ -1,0 +1,243 @@
+.container {
+  --chart-page-background: var(--color-background);
+  --chart-text-color: var(--color-text-primary);
+  --chart-muted-text-color: var(--color-text-secondary);
+  --chart-note-color: var(--color-text-secondary);
+  --chart-page-frame-background: var(--chart-frame-background, var(--color-surface-highlight));
+  --chart-page-pie-color: var(--chart-page-pie-color, #FFCC00);
+  --chart-page-strip-line-color: var(--chart-reference-color, #FBC02D);
+  padding: 62.5px;
+  background-color: var(--chart-page-background);
+  flex-direction: column;
+}
+
+.page-header {
+  flex-direction: column;
+  margin-bottom: var(--spacing-lg, 20px);
+}
+
+.page-kicker {
+  color: var(--chart-muted-text-color);
+  font-size: 12px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.page-title {
+  color: var(--chart-text-color);
+  font-size: 24px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.page-subtitle {
+  color: var(--chart-muted-text-color);
+  font-size: 13px;
+  display: block;
+}
+
+.summary-row {
+  flex-direction: row;
+  margin-bottom: 12px;
+}
+
+.summary-card {
+  flex: 1;
+  flex-direction: column;
+  padding: 14px;
+}
+
+.summary-card-left {
+  margin-right: 10px;
+}
+
+.summary-label {
+  color: var(--chart-muted-text-color);
+  font-size: 12px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.summary-value {
+  color: var(--chart-text-color);
+  font-size: 24px;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.summary-delta {
+  font-size: 12px;
+  display: block;
+}
+
+.summary-delta-positive {
+  color: var(--chart-positive-color, #00C853);
+}
+
+.summary-delta-negative {
+  color: var(--chart-negative-color, #F44336);
+}
+
+.summary-hint {
+  color: var(--chart-note-color);
+  font-size: 12px;
+  margin-top: 6px;
+  display: block;
+}
+
+.dashboard-card {
+  flex-direction: column;
+  margin-bottom: 20px;
+  padding: 16px;
+}
+
+.section-kicker {
+  color: var(--chart-muted-text-color);
+  font-size: 12px;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.section-title {
+  color: var(--chart-text-color);
+  font-size: 16px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.section-note {
+  color: var(--chart-note-color);
+  font-size: 12px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.chart-title {
+  color: var(--chart-text-color);
+  font-size: 14px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.chart-note {
+  color: var(--chart-note-color);
+  font-size: 12px;
+  margin-top: 6px;
+  display: block;
+}
+
+.chart-title-spaced {
+  margin-top: 14px;
+}
+
+.chart-frame {
+  width: 350px;
+  border-radius: var(--radius-sm, 8px);
+  background-color: var(--chart-page-frame-background);
+  margin-bottom: 8px;
+}
+
+.large-chart-frame {
+  height: 120px;
+}
+
+.mini-chart-frame {
+  height: 64px;
+}
+
+.mode-row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.mode-label {
+  color: var(--chart-muted-text-color);
+  font-size: 12px;
+}
+
+.mode-toggle {
+  margin-left: 12px;
+}
+
+.insight-row {
+  flex-direction: row;
+  margin-top: 4px;
+}
+
+.insight-card {
+  flex: 1;
+  flex-direction: column;
+  padding: 12px;
+}
+
+.insight-card-left {
+  margin-right: 10px;
+}
+
+.insight-title {
+  color: var(--chart-muted-text-color);
+  font-size: 12px;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.insight-value {
+  color: var(--chart-text-color);
+  font-size: 14px;
+  display: block;
+}
+
+.legend-row {
+  flex-direction: row;
+  margin-top: 8px;
+}
+
+.legend-row-last {
+  margin-bottom: 2px;
+}
+
+.legend-item {
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+}
+
+.legend-item-left {
+  margin-right: 10px;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  margin-right: 8px;
+}
+
+.legend-dot-direct {
+  background-color: #ffcc00;
+}
+
+.legend-dot-push {
+  background-color: #ff8a65;
+}
+
+.legend-dot-search {
+  background-color: #4db6ac;
+}
+
+.legend-dot-partner {
+  background-color: #64b5f6;
+}
+
+.legend-label {
+  color: var(--chart-muted-text-color);
+  font-size: 12px;
+}
+
+.chart-pie,
+.chart-radar {
+  margin: 0 auto;
+  display: block;
+}

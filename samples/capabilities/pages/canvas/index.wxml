@@ -1,0 +1,10 @@
+<view class="container">
+  <view class="page-title">Canvas</view>
+  <view class="page-subtitle">
+    A live status board with animated progress, activity, and sync indicators.
+  </view>
+  <view class="card">
+    <view class="section-title">Realtime Status Surface</view>
+    <canvas id="myCanvas" width="400" height="420" class="canvas"></canvas>
+  </view>
+</view>

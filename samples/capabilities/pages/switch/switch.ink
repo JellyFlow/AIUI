@@ -1,0 +1,117 @@
+<script setup>
+export default {
+  data: {
+    switch1Value: false,
+    switch2Value: true,
+    switch3Value: false,
+    switch4Value: true,
+    switch5Value: false,
+    checkbox1Value: false,
+    checkbox2Value: true,
+  },
+
+  onSwitchChange(e) {
+    console.log('switch changed:', e.detail.value);
+    const id = e.currentTarget.attributes['id'];
+    if (id) {
+      this.setData({
+        [`${id}Value`]: e.detail.value
+      });
+    }
+  }
+};
+</script>
+
+<page>
+  <view class="container">
+    <view class="page-title">Switch Component</view>
+
+    <view class="section">
+      <text class="section-title">Default Switch</text>
+      <view class="row">
+        <text>Status: {{switch1Value}}</text>
+        <switch id="switch1" checked="{{switch1Value}}" bindchange="onSwitchChange" />
+      </view>
+    </view>
+
+    <view class="section">
+      <text class="section-title">Checked Switch</text>
+      <view class="row">
+        <text>Status: {{switch2Value}}</text>
+        <switch id="switch2" checked="{{switch2Value}}" bindchange="onSwitchChange" />
+      </view>
+    </view>
+
+    <view class="section">
+      <text class="section-title">Disabled Switch</text>
+      <view class="row">
+        <text>Status: {{switch3Value}}</text>
+        <switch id="switch3" disabled="true" checked="{{switch3Value}}" bindchange="onSwitchChange" />
+      </view>
+      <view class="row mt-10">
+        <text>Status: {{switch4Value}}</text>
+        <switch id="switch4" disabled="true" checked="{{switch4Value}}" bindchange="onSwitchChange" />
+      </view>
+    </view>
+
+    <view class="section">
+      <text class="section-title">Custom Color Switch</text>
+      <view class="row">
+        <text>Status: {{switch5Value}}</text>
+        <switch id="switch5" checked="{{switch5Value}}" bindchange="onSwitchChange" />
+      </view>
+    </view>
+
+    <view class="section">
+      <text class="section-title">Checkbox Type</text>
+      <view class="row">
+        <text>Status: {{checkbox1Value}}</text>
+        <switch id="checkbox1" type="checkbox" checked="{{checkbox1Value}}" bindchange="onSwitchChange" />
+      </view>
+      <view class="row mt-10">
+        <text>Status: {{checkbox2Value}}</text>
+        <switch id="checkbox2" type="checkbox" checked="{{checkbox2Value}}" bindchange="onSwitchChange" />
+      </view>
+    </view>
+
+  </view>
+</page>
+
+<style>
+  .container {
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-lg, 20px);
+  }
+
+  .page-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 24px;
+  }
+
+  .section {
+    flex-direction: column;
+    margin-bottom: 24px;
+    padding: var(--spacing-md, 16px);
+    border-radius: var(--radius-sm, 8px);
+    border: var(--border-width-thin, 1px) solid var(--border-color-default, #e5e5ea);
+  }
+
+  .section-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: var(--spacing-md, 12px);
+  }
+
+  .row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .mt-10 {
+    margin-top: 10px;
+  }
+</style>

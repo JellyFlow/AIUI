@@ -1,0 +1,98 @@
+<view class="container">
+  <view class="page-hero">
+    <view class="page-title">AIUI Capabilities</view>
+  </view>
+  <view class="nav-list">
+    <card class="nav-card">
+      <view class="category-title">Layout &amp; Navigation</view>
+      <view class="nav-group">
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../layout/index" tabindex="0">Layout</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../row_column/index" tabindex="1">Row / Column</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../size_constraints/index" tabindex="2">Size Constraints</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../position/index" tabindex="3">Position</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../grid/index" tabindex="4">Grid</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../list/index" tabindex="5">List</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../input_textarea/index" tabindex="45">Input &amp; Textarea</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../switch/switch" tabindex="46">Switch</button></view>
+      </view>
+    </card>
+
+    <card class="nav-card">
+      <view class="category-title">Content &amp; Presentation</view>
+      <view class="nav-group">
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../bundled_fonts/index">Bundled Fonts</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../font_styling/index" tabindex="6">Font Styling</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../font_weight/index" tabindex="7">Font Weight</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../image/index" tabindex="44">Image</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../image_clip_progress/index" tabindex="47">Image Clip &amp; Progress</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../calendar/index" tabindex="37">Calendar</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../error_state/index" tabindex="39">Error State</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../streamdown/index" tabindex="41">Streamdown</button></view>
+      </view>
+    </card>
+
+    <card class="nav-card">
+      <view class="category-title">Visual &amp; Motion</view>
+      <view class="nav-group">
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../transform/index" tabindex="8">Transform</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../filter/index" tabindex="9">Filter</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../box_shadow/index" tabindex="10">Box Shadow</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../opacity/index" tabindex="11">Opacity</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../outline/index" tabindex="12">Outline</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../transition_animation/index" tabindex="13">Transition and Animation</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../css_vars/index" tabindex="14">CSS Variables</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../media_query/index" tabindex="15">Media Query</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../canvas/index" tabindex="16">Canvas</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../canvas_api/index" tabindex="17">Canvas API</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../chart/index" tabindex="18">Chart</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../lottie/index" tabindex="19">Lottie</button></view>
+      </view>
+    </card>
+
+    <card class="nav-card">
+      <view class="category-title">Media &amp; Capture</view>
+      <view class="nav-group">
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../image_apis/index" tabindex="20">Image APIs</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../barcode_detector/index" tabindex="21">Barcode Detector</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../audio/index" tabindex="25">Audio Player</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../audio_streaming/index" tabindex="48">Audio Streaming</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../sound/index" tabindex="26">Sound</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../recorder/index" tabindex="27">Recorder</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../speech/index" tabindex="28">Speech Recognition</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../speech/index" tabindex="29">Text To Speech</button></view>
+      </view>
+    </card>
+
+    <card class="nav-card">
+      <view class="category-title">Network &amp; Integration</view>
+      <view class="nav-group">
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../network_https/index" tabindex="22">HTTPS</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../network_sse/index" tabindex="23">SSE</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../network_websocket/index" tabindex="24">WebSocket</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../open/index" tabindex="42">Open</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../close/index" tabindex="38">Close</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../storage/index" tabindex="40">Storage</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../esm/index" tabindex="43">ESM Import</button></view>
+      </view>
+    </card>
+
+    <card class="nav-card">
+      <view class="category-title">AI &amp; Agents</view>
+      <view class="nav-group">
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../chat/index" tabindex="30">Chat</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../a2ui/index" tabindex="36">A2UI</button></view>
+      </view>
+    </card>
+
+    <card class="nav-card">
+      <view class="category-title">Sensors &amp; Orientation</view>
+      <view class="nav-group nav-group-list">
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../accelerometer/index" tabindex="31">Accelerometer</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../gyroscope/index" tabindex="32">Gyroscope</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../magnetometer/index" tabindex="33">Magnetometer</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../absolute-orientation-sensor/index" tabindex="34">AbsoluteOrientationSensor</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../compass/index" tabindex="35">Compass</button></view>
+      </view>
+    </card>
+  </view>
+</view>

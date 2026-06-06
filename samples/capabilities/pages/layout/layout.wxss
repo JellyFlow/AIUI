@@ -1,0 +1,18 @@
+.container {
+  flex-direction: column;
+  padding: var(--spacing-md, 16px);
+}
+.section {
+  margin-bottom: var(--spacing-md, 16px);
+  padding: var(--spacing-md, 16px);
+  border-radius: var(--radius-md, 12px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: var(--border-width-thin, 1px) solid var(--border-color-muted, #ebedf0);
+}
+.title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: var(--spacing-md, 12px);
+  padding-bottom: 8px;
+  border-bottom: var(--border-width-thin, 1px) solid var(--border-color-muted, #ebedf0);
+}

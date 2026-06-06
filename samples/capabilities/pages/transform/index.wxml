@@ -1,0 +1,66 @@
+<view class="container">
+  <view class="page-title">Transform</view>
+  <view class="page-subtitle">
+    Real interface accents that use transform for emphasis, badges, and media presentation.
+  </view>
+
+  <view class="card section">
+    <text class="label">Pinned Sticker</text>
+    <view class="stage stage-wide">
+      <view class="photo-card">
+        <view class="photo-sticker sticker-shift">Pinned</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card section">
+    <text class="label">Rotated Promo Badge</text>
+    <view class="stage stage-center">
+      <view class="promo-card">
+        <text class="promo-title">Launch Week</text>
+        <view class="promo-badge badge-rotate">New</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card section">
+    <text class="label">Featured Tile Emphasis</text>
+    <view class="stage">
+      <view class="tile-row">
+        <view class="mini-tile"></view>
+        <view class="mini-tile tile-scale"></view>
+        <view class="mini-tile"></view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card section">
+    <text class="label">Editorial Ribbon</text>
+    <view class="stage stage-center">
+      <view class="ribbon-card">
+        <view class="ribbon skew-ribbon">Editor Pick</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card section">
+    <text class="label">Perspective Note</text>
+    <view class="stage stage-center">
+      <view class="note-card matrix-note">
+        <text class="note-title">Preview Note</text>
+        <text class="note-copy">A slight matrix transform makes the note feel more tactile.</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card section">
+    <text class="label">Origin Anchored Media Card</text>
+    <view class="stage stage-center">
+      <view class="origin-frame">
+        <view class="origin-card origin-top-left">
+          <text class="note-title">Tilted Cover</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

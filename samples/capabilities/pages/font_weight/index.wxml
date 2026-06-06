@@ -1,0 +1,80 @@
+<view class="container">
+  <view class="page-title">Font Weight</view>
+  <view class="page-subtitle">
+    Real interface hierarchy examples instead of isolated font-weight values.
+  </view>
+
+  <view class="card section">
+    <view class="section-title">Settings Hierarchy</view>
+    <view class="section-note">Different weights separate primary labels, secondary descriptions, and current values.</view>
+    <view class="setting-row">
+      <view class="setting-copy">
+        <view class="setting-label">Notifications</view>
+        <view class="setting-description">Delivery channels and quiet hours</view>
+      </view>
+      <view class="setting-value">Enabled</view>
+    </view>
+    <view class="setting-row">
+      <view class="setting-copy">
+        <view class="setting-label">Privacy</view>
+        <view class="setting-description">Profile visibility and contact sharing</view>
+      </view>
+      <view class="setting-value">Friends</view>
+    </view>
+    <view class="setting-row">
+      <view class="setting-copy">
+        <view class="setting-label">Storage</view>
+        <view class="setting-description">Offline downloads and cache cleanup</view>
+      </view>
+      <view class="setting-value">2.4 GB</view>
+    </view>
+  </view>
+
+  <view class="card section">
+    <view class="section-title">Summary Cards</view>
+    <view class="section-note">Dashboard cards use stronger weights for numbers and lighter weights for context.</view>
+    <view class="summary-grid">
+      <view class="summary-card">
+        <view class="summary-label">Revenue</view>
+        <view class="summary-value">$48K</view>
+        <view class="summary-meta">This month</view>
+      </view>
+      <view class="summary-card">
+        <view class="summary-label">Orders</view>
+        <view class="summary-value">312</view>
+        <view class="summary-meta">Processed</view>
+      </view>
+      <view class="summary-card">
+        <view class="summary-label">Errors</view>
+        <view class="summary-value">7</view>
+        <view class="summary-meta">Need review</view>
+      </view>
+      <view class="summary-card">
+        <view class="summary-label">Response</view>
+        <view class="summary-value">182ms</view>
+        <view class="summary-meta">Average</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card section">
+    <view class="section-title">Notification Center</view>
+    <view class="section-note">Unread messages, sender names, and metadata each get a distinct text weight.</view>
+    <view class="message-card">
+      <view class="message-title">Build completed for release preview</view>
+      <view class="message-body">The latest preview package is available for internal testing.</view>
+      <view class="message-meta">2 minutes ago</view>
+    </view>
+    <view class="message-card">
+      <view class="message-title">Design review moved to 3:30 PM</view>
+      <view class="message-body">Agenda now includes dashboard typography and information hierarchy.</view>
+      <view class="message-meta">Calendar update</view>
+    </view>
+  </view>
+
+  <view class="card section">
+    <view class="section-title">Canvas Text Hierarchy</view>
+    <view class="section-note">The canvas preview now draws a realistic title stack instead of raw weight labels.</view>
+    <canvas id="myCanvas" class="canvas"></canvas>
+  </view>
+</view>

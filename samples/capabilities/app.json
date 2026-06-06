@@ -1,0 +1,25 @@
+{
+  "pages": [
+    "pages/index/index"
+  ],
+  "fonts": [
+    {
+      "family": "Bundled Serif",
+      "src": "assets/fonts/NotoSerif-Regular.ttf",
+      "weight": 400,
+      "style": "normal"
+    },
+    {
+      "family": "Bundled Serif",
+      "src": "assets/fonts/NotoSerif-BoldItalic.ttf",
+      "weight": 700,
+      "style": "italic"
+    }
+  ],
+  "window": {
+    "navigationBarTitleText": "Ink Demo",
+    "viewport": {
+      "width": "device-width"
+    }
+  }
+}

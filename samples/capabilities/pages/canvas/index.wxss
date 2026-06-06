@@ -1,0 +1,43 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-lg, 20px);
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.page-subtitle {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-sm, 8px);
+  margin-bottom: var(--spacing-lg, 20px);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm, 10px);
+  padding: var(--spacing-md, 16px);
+  border-radius: var(--radius-md, 12px);
+  background-color: var(--color-surface-highlight);
+  border: var(--border-width-thin, 1px) solid var(--border-color-default, #ccc);
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+}
+
+.canvas {
+  width: 100%;
+  height: 420px;
+  background-color: var(--color-surface);
+  border: var(--border-width-thin, 1px) solid var(--border-color-default, #ccc);
+  border-radius: 16px;
+}
