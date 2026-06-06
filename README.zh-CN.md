@@ -23,7 +23,7 @@ npm create @yodaos-pkg/aiui-agent my-agent
 
 [`samples/`](./samples/) 目录包含可运行的示例项目，用于展示 AIUI 的功能特性，并为常见 UI 模式提供参考实现。
 
-当前仓库内提供了 [`samples/simple/`](./samples/simple/)，这是一个完整的示例应用，你可以通过它集中了解页面结构、静态资源、辅助模块以及多个功能演示。
+当前仓库内提供了 [`samples/capabilities/`](./samples/capabilities/)，这是一个完整的示例应用，你可以通过它集中了解页面结构、静态资源、辅助模块以及多个功能演示。
 
 - `pages/`：包含多种 AIUI 能力与 UI 模式的页面示例
 - `assets/`：示例中使用的静态资源，例如图片、SVG 和音频文件
@@ -47,18 +47,18 @@ npm create @yodaos-pkg/aiui-agent my-agent
 npx skills add https://github.com/jsar-project/AIUI/tree/main/skills/aiui-dev
 ```
 
-- **`jsui-dev` Skill**：位于 [`skills/jsui-dev/SKILL.md`](./skills/jsui-dev/SKILL.md)，该文档包含完整的 API 参考、项目结构指引以及 `.ink` SFC 规范。你可以将该文件提供给 AI 助手，使其具备开发 AIUI 应用的“技能”。
+- **`aiui-dev` Skill**：位于 [`skills/aiui-dev/SKILL.md`](./skills/aiui-dev/SKILL.md)，该文档包含完整的 API 参考、项目结构指引以及 `.ink` SFC 规范。你可以将该文件提供给 AI 助手，使其具备开发 AIUI 应用的“技能”。
 
 ## 📂 仓库结构
 
 ```text
 .
 ├── packages/
-│   └── create-jsui-agent/    # 用于创建 AIUI Agent 项目的 npm CLI
+│   └── create-aiui-agent/    # 用于创建 AIUI Agent 项目的 npm CLI
 ├── samples/
-│   └── simple/               # 可运行的 AIUI 示例应用与功能演示
+│   └── capabilities/         # 可运行的 AIUI capabilities 应用与功能演示
 ├── skills/
-│   └── jsui-dev/             # AI Agent 技能文档（SKILL.md）
+│   └── aiui-dev/             # AI Agent 技能文档（SKILL.md）
 └── .github/workflows/        # 自动化每日构建与发布工作流
 ```
 

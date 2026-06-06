@@ -23,7 +23,7 @@ This will generate a ready-to-use AIUI project template including:
 
 The [`samples/`](./samples/) directory contains runnable example projects that demonstrate AIUI features and provide reference implementations for common UI patterns.
 
-At the moment, the repository includes [`samples/simple/`](./samples/simple/), a complete sample app that you can use to explore page structure, assets, helper modules, and feature demos in one place.
+At the moment, the repository includes [`samples/capabilities/`](./samples/capabilities/), a complete sample app that you can use to explore page structure, assets, helper modules, and feature demos in one place.
 
 - `pages/`: Example pages covering a range of AIUI capabilities and UI patterns.
 - `assets/`: Static resources used by the demos, such as images, SVGs, and audio files.
@@ -47,16 +47,16 @@ You can easily install the AIUI developer skill into your project using the `npx
 npx skills add https://github.com/jsar-project/AIUI/tree/main/skills/aiui-dev
 ```
 
-- **`jsui-dev` Skill**: Located in [`skills/jsui-dev/SKILL.md`](./skills/jsui-dev/SKILL.md), this document contains comprehensive API references, project structure guidelines, and `.ink` SFC specifications. You can feed this file to your AI assistant to grant it the "skill" of developing AIUI applications.
+- **`aiui-dev` Skill**: Located in [`skills/aiui-dev/SKILL.md`](./skills/aiui-dev/SKILL.md), this document contains comprehensive API references, project structure guidelines, and `.ink` SFC specifications. You can feed this file to your AI assistant to grant it the "skill" of developing AIUI applications.
 
 ## 📂 Repository Structure
 
 ```text
 .
 ├── packages/
-│   └── create-jsui-agent/    # npm CLI for scaffolding AIUI agent projects
+│   └── create-aiui-agent/    # npm CLI for scaffolding AIUI agent projects
 ├── samples/
-│   └── simple/               # runnable AIUI sample app and feature demos
+│   └── capabilities/         # runnable AIUI capabilities app and feature demos
 ├── skills/
 │   └── aiui-dev/             # AI Agent skill documentation (SKILL.md)
 └── .github/workflows/        # Automated daily build and publish workflows
