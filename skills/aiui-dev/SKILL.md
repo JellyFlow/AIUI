@@ -238,43 +238,128 @@ For runtime API details, constructor behavior, supported overloads, and current 
 
 ## 4. Events
 
-AIUI supports event handling at different levels. Component interaction events are declared in WXML attributes such as `bindtap`, `catchtap`, `bindinput`, and `bindchange`. Page-level events are defined as methods on the exported page object.
+Besides lifecycle callbacks, AIUI pages also support page-level event handlers for device input such as hardware keys and voice wakeup. These handlers are defined directly on the exported page object.
 
 ### 4.1 Page-Level Events
 
-If a page needs to react to framework-delivered hardware key input, define `onKeyDown(event)` and `onKeyUp(event)` on the exported page object.
+Page-level events are page methods, not WXML binding attributes. Use them when the page itself should react to framework-delivered input events.
 
-These handlers are page methods, not WXML binding attributes. Put the logic on the page instance and update page state with `this.setData(...)` when needed.
-
-```html
-<script setup>
+```js
 export default {
-  data: {
-    lastKeyAction: 'None'
-  },
   onKeyDown(event) {
-    console.log('Key down:', event);
-    this.setData({
-      lastKeyAction: 'Key pressed'
-    });
+    console.log('key down:', event.code);
   },
+
   onKeyUp(event) {
-    console.log('Key up:', event);
-    this.setData({
-      lastKeyAction: 'Key released'
-    });
+    console.log('key up:', event.code);
+  },
+
+  onVoiceWakeup(event) {
+    console.log('voice wakeup:', event.keyword);
   }
 }
-</script>
-
-<page>
-  <view class="container">
-    <text>Last key action: {{ lastKeyAction }}</text>
-  </view>
-</page>
 ```
 
-Use this pattern when keyboard input should be handled by the page itself, such as shortcuts, directional navigation, or confirming actions from a hardware key.
+Supported page-level event callbacks:
+
+| Callback | Description | Trigger |
+|---|---|---|
+| `onKeyDown(event)` | Handles page-level key press events | Triggered when a key is pressed |
+| `onKeyUp(event)` | Handles page-level key release events | Triggered when a key is released |
+| `onVoiceWakeup(event)` | Handles page-level voice wakeup events | Triggered when a wake word is detected |
+
+Some page-level events notify the page and then continue the host's built-in default behavior, such as navigating back, scrolling, or activating the focused target. To take over that behavior in the page, call `event.preventDefault()` inside the handler.
+
+```js
+export default {
+  data: {
+    status: 'idle'
+  },
+
+  onKeyUp(event) {
+    if (event.code === 'Backspace') {
+      event.preventDefault();
+      this.setData({
+        status: 'back action intercepted'
+      });
+    }
+  }
+}
+```
+
+Use these rules when handling page-level events:
+
+- If `event.preventDefault()` is not called, the host may continue the event's default behavior after the callback finishes.
+- If `event.preventDefault()` is called, the page takes over the event and the host should not continue its default behavior.
+- Interception only matters for events that actually have host-level default behavior.
+
+### 4.2 Key Events
+
+`onKeyDown(event)` is useful for immediate feedback when a hardware key is pressed, such as moving focus or reacting to directional input.
+
+`onKeyUp(event)` is useful when the page needs to react after a key is released. In AIUI hosts such as Rokid Glasses, `event.code` commonly includes:
+
+- `Backspace`: usually navigates back or requests app close unless intercepted
+- `ArrowUp`: usually scrolls the root view upward unless intercepted
+- `ArrowDown`: usually scrolls the root view downward unless intercepted
+- `Enter`: usually enters navigation mode or activates the current target unless intercepted
+- `GlobalHook`: a device-specific Rokid Glasses key code for hardware-side touch or shortcut input
+
+```js
+export default {
+  data: {
+    status: 'idle'
+  },
+
+  onKeyDown(event) {
+    if (event.code === 'Enter') {
+      this.setData({
+        status: 'enter pressed'
+      });
+    }
+  },
+
+  onKeyUp(event) {
+    switch (event.code) {
+      case 'Backspace':
+        event.preventDefault();
+        this.setData({ status: 'back action intercepted' });
+        break;
+      case 'ArrowDown':
+        this.setData({ status: 'arrow down received' });
+        break;
+      case 'Enter':
+        this.setData({ status: 'enter released' });
+        break;
+      case 'GlobalHook':
+        this.setData({ status: 'temple button touched' });
+        break;
+      default:
+        break;
+    }
+  }
+}
+```
+
+### 4.3 Voice Wakeup Events
+
+`onVoiceWakeup(event)` runs when the host reports a voice wakeup event. Read the matched wake word from `event.keyword`. Some hosts may also provide default handling for voice wakeup; whether interception is supported depends on the host implementation.
+
+```js
+export default {
+  data: {
+    status: 'idle'
+  },
+
+  onVoiceWakeup(event) {
+    if (event.keyword === 'leqi') {
+      this.setData({
+        status: 'voice wakeup received'
+      });
+    }
+  }
+}
+```
 
 ## 5. WXSS (WeiXin Style Sheets)
 
