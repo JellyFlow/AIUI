@@ -1,8 +1,8 @@
 {
-  "name": "jsui-dev-tools",
+  "name": "aiui-dev-tools",
   "type": "module",
   "version": "1.0.0",
-  "description": "JSUI is a *JavaScript User Interface* agentic runtime designed for the AI glasses with Display. It empowers developers to build intelligent, interactive, and context-aware agents with GUI seamlessly.",
+  "description": "AIUI is a *JavaScript User Interface* agentic runtime designed for the AI glasses with Display. It empowers developers to build intelligent, interactive, and context-aware agents with GUI seamlessly.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
