@@ -8,6 +8,11 @@ description: "Specialized agent for developing AIUI applications. Invoke when wr
 
 This guide provides independent and comprehensive context for AI agents developing AIUI applications. It includes project structure, SFC `.ink` support specifications, and standard API references, designed to help Large Language Models (LLMs) generate accurate AIUI pages and logic code.
 
+At present, AIUI is used in two forms. These two forms describe the current AIUI product shape only; more forms may be added in the future. Different forms can also transition into one another as the user flow changes, for example from a conversation-flow card into a full-screen page.
+
+- **Conversation-flow cards**: Cards embedded in a conversation flow are display-only and should be treated as non-interactive surfaces for presenting information.
+- **Full-screen pages**: Full-screen pages provide complete interaction capabilities and support richer page logic, event handling, and user input.
+
 ## 1. Project Structure
 
 A standard AIUI application project typically contains the following core files:
@@ -43,7 +48,7 @@ The manifest file defines the agent's basic information and required permissions
 
 ### 1.2 Global Configuration (app.json)
 
-Defines application page paths and global UI styles:
+Defines application page paths and global UI styles. The `pages` field is required and declares the routing order for all application pages:
 
 ```json
 {
@@ -58,6 +63,11 @@ Defines application page paths and global UI styles:
   }
 }
 ```
+
+- `pages` is an array of page route strings without file extensions.
+- Each entry maps to a page directory such as `pages/index/index`, which resolves to the corresponding page files in that folder.
+- The first item in the array is treated as the application's default landing page.
+- Add new pages here whenever you create additional screens, otherwise the framework will not register them for navigation.
 
 ### 1.3 Application Registration (app.js)
 
@@ -74,29 +84,41 @@ export default {
 };
 ```
 
-### 1.4 Page Configuration (page.json)
+### 1.4 Page
 
-In AIUI, each page acts as a Model Context Protocol (MCP) UI component. The configuration for each page is defined in its respective `page.json` (or within the `<script def>` block of an `.ink` file). This configuration declares the page's capabilities and the expected input parameters for rendering.
+In AIUI, each page acts as a Model Context Protocol (MCP) UI component. A complete page should define the following parts:
 
-Key fields in page configuration:
+- **Configuration**: Page-level metadata such as `description`, and `schema`. The `description` explains what the page represents, and `schema.data` uses JSON Schema to declare the input data required to render the page.
+- **Logic**: Page state, lifecycle hooks, and custom methods used to initialize data and respond to user interactions.
+- **Structure**: The UI template that describes the page layout and binds data to components.
+- **Style**: The WXSS or CSS rules that control the visual presentation of the page.
 
-- `description`: A clear, natural language description of what the page UI represents or what task it accomplishes. This helps the AI or system understand the page's purpose.
-- `schema`: Defines the expected input data structure for rendering the UI.
-  - `data`: A JSON Schema object specifying the properties, types, and required fields needed to populate the page's initial state.
+When writing page configuration, pay special attention to `description` and `schema.data`:
 
-**Example Page Configuration:**
+- `description` should describe the page in natural language from a UI perspective.
+  - State what the page displays or helps the user accomplish.
+  - Mention the most important dynamic data if the page depends on external input.
+  - Keep it specific and observable. Prefer "Displays a weather summary for a city" over "Weather page".
+- `schema.data` should define the complete input contract required to render the page.
+  - Use `type: "object"` at the top level.
+  - Put all render-time fields in `properties`.
+  - Use `required` for fields that must exist before the page can render correctly.
+  - Add `description`, `enum`, `items`, and nested object definitions when they help clarify the data contract.
+
+Examples:
+
+**Example 1: Weather card page**
 
 ```json
 {
-  "navigationBarTitleText": "Weather Card",
-  "description": "A UI component that displays the current weather conditions for a specific city.",
+  "description": "Displays the current weather summary for a city, including temperature, condition, and humidity.",
   "schema": {
     "data": {
       "type": "object",
       "properties": {
         "city": {
           "type": "string",
-          "description": "The name of the city"
+          "description": "City name shown in the page header"
         },
         "temperature": {
           "type": "number",
@@ -104,7 +126,12 @@ Key fields in page configuration:
         },
         "condition": {
           "type": "string",
-          "enum": ["sunny", "rainy", "cloudy", "snowy"]
+          "enum": ["sunny", "cloudy", "rainy", "snowy"],
+          "description": "Current weather condition"
+        },
+        "humidity": {
+          "type": "number",
+          "description": "Current humidity percentage"
         }
       },
       "required": ["city", "temperature", "condition"]
@@ -112,6 +139,106 @@ Key fields in page configuration:
   }
 }
 ```
+
+**Example 2: Product detail page**
+
+```json
+{
+  "description": "Shows product information for an item, including title, price, primary image, and purchase status.",
+  "schema": {
+    "data": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Product title"
+        },
+        "price": {
+          "type": "number",
+          "description": "Current selling price"
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "Primary product image URL"
+        },
+        "inStock": {
+          "type": "boolean",
+          "description": "Whether the product can be purchased"
+        },
+        "tags": {
+          "type": "array",
+          "description": "Short product labels shown near the title",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["title", "price", "imageUrl", "inStock"]
+    }
+  }
+}
+```
+
+**Example 3: Task list page**
+
+```json
+{
+  "description": "Renders a task list with completion status, assignee information, and an optional empty-state message.",
+  "schema": {
+    "data": {
+      "type": "object",
+      "properties": {
+        "tasks": {
+          "type": "array",
+          "description": "Tasks displayed in the list",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Task identifier"
+              },
+              "title": {
+                "type": "string",
+                "description": "Task title"
+              },
+              "completed": {
+                "type": "boolean",
+                "description": "Whether the task has been completed"
+              },
+              "assignee": {
+                "type": "string",
+                "description": "Person responsible for the task"
+              }
+            },
+            "required": ["id", "title", "completed"]
+          }
+        },
+        "emptyMessage": {
+          "type": "string",
+          "description": "Message shown when there are no tasks"
+        }
+      },
+      "required": ["tasks"]
+    }
+  }
+}
+```
+
+AIUI supports two page authoring modes:
+
+1. **Multi-file mode**: Split the page across separate files such as `page.json`, `page.js`, `page.wxml`, and `page.wxss`.
+   - `page.json`: Page configuration and metadata.
+   - `page.js`: Page logic, data, lifecycle hooks, and methods.
+   - `page.wxml`: Page template structure.
+   - `page.wxss`: Page styles.
+2. **Single-file mode**: Define the entire page in one `.ink` file.
+   - `<script def>`: Page configuration and metadata.
+   - `<script setup>`: Page logic, data, lifecycle hooks, and methods.
+   - `<page>`: Page template structure.
+   - `<style>`: Page styles.
+
+Choose exactly one mode for each page. Do not mix multi-file page definitions with an `.ink` file for the same route.
 
 ## 2. Single File Component (SFC) `.ink` Specification
 
@@ -226,14 +353,12 @@ For runtime API details, constructor behavior, supported overloads, and current 
 
 - **`<view>`**: The fundamental layout container, similar to `<div>` in HTML.
 - **`<text>`**: Displays text content. Similar to `<span>` in HTML.
-- **`<icon>`**: An icon-like text element currently rendered through the text component implementation.
 - **`<image>`**: Displays local or remote images.
 - **`<button>`**: A standard clickable button component.
 - **`<canvas>`**: A component for custom 2D drawing.
 - **`<scroll-view>`**: A scrollable container for content that exceeds the visible area.
 - **`<chart>`**: A chart component supporting Line, Area, Pie, and Radar charts.
 - **`<lottie-view>`**: Renders Lottie animations from inline JSON, local files, or remote URLs.
-- **`<a2ui>`**: A specialized component for rendering agent-generated UI commands dynamically.
 - **`<error-state>`**: A compact status component that displays an optional icon with a message.
 
 ## 4. Events
@@ -268,7 +393,7 @@ Supported page-level event callbacks:
 | `onKeyUp(event)` | Handles page-level key release events | Triggered when a key is released |
 | `onVoiceWakeup(event)` | Handles page-level voice wakeup events | Triggered when a wake word is detected |
 
-Some page-level events notify the page and then continue the host's built-in default behavior, such as navigating back, scrolling, or activating the focused target. To take over that behavior in the page, call `event.preventDefault()` inside the handler.
+Some page-level events notify the page and then continue the host's built-in default behavior, such as navigating back, scrolling, or activating the focused target. For key events, those default actions are attached to the `onKeyUp(event)` phase, so interception only takes effect when the page prevents the `keyup` event.
 
 ```js
 export default {
@@ -290,14 +415,55 @@ export default {
 Use these rules when handling page-level events:
 
 - If `event.preventDefault()` is not called, the host may continue the event's default behavior after the callback finishes.
-- If `event.preventDefault()` is called, the page takes over the event and the host should not continue its default behavior.
+- `event.preventDefault()` may be called from different handlers, but for key events the host default behavior is defined on `onKeyUp(event)`.
+- For that reason, preventing a key event only takes effect when `event.preventDefault()` is applied to `onKeyUp(event)`.
 - Interception only matters for events that actually have host-level default behavior.
 
-### 4.2 Key Events
+### 4.2 Default Behaviors
+
+Some events in AIUI are not purely notifications. After the page-level callback runs, the host may still perform a built-in action unless the page explicitly intercepts it.
+
+Common default behaviors include:
+
+- Navigating back when the user presses `Backspace`
+- Scrolling the current root container when the user presses `ArrowUp` or `ArrowDown`
+- Activating the currently focused target or entering navigation mode when the user presses `Enter`
+- Triggering host-defined behavior for device-specific keys when supported by the current runtime
+
+For key events, use `event.preventDefault()` on `onKeyUp(event)` when the page needs to replace the host action with custom logic. This is appropriate when:
+
+- The page manages its own back stack, dialog dismissal, or overlay closing behavior
+- The page uses hardware keys for custom focus movement or shortcut handling
+- The page wants to block host navigation until validation or confirmation is complete
+
+Do not call `event.preventDefault()` unless the page will provide a clear replacement behavior. If you intercept a default action without updating UI state or performing an alternative action, the page may appear unresponsive.
+
+```js
+export default {
+  data: {
+    dialogVisible: true,
+    status: 'idle'
+  },
+
+  onKeyUp(event) {
+    if (event.code === 'Backspace' && this.data.dialogVisible) {
+      event.preventDefault();
+      this.setData({
+        dialogVisible: false,
+        status: 'dialog closed instead of navigating back'
+      });
+    }
+  }
+}
+```
+
+### 4.3 Key Events
 
 `onKeyDown(event)` is useful for immediate feedback when a hardware key is pressed, such as moving focus or reacting to directional input.
 
-`onKeyUp(event)` is useful when the page needs to react after a key is released. In AIUI hosts such as Rokid Glasses, `event.code` commonly includes:
+`onKeyDown(event)` is useful for transient feedback, but preventing it does not stop the host's key default behavior because those actions are processed on key release.
+
+`onKeyUp(event)` is useful when the page needs to react after a key is released. It is also the effective interception point for key default behavior, because the host evaluates actions such as back, scroll, and activation on key release. In AIUI hosts such as Rokid Glasses, `event.code` commonly includes:
 
 - `Backspace`: usually navigates back or requests app close unless intercepted
 - `ArrowUp`: usually scrolls the root view upward unless intercepted
@@ -341,7 +507,7 @@ export default {
 }
 ```
 
-### 4.3 Voice Wakeup Events
+### 4.4 Voice Wakeup Events
 
 `onVoiceWakeup(event)` runs when the host reports a voice wakeup event. Read the matched wake word from `event.keyword`. Some hosts may also provide default handling for voice wakeup; whether interception is supported depends on the host implementation.
 

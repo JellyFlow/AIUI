@@ -9,7 +9,6 @@ This reference is aligned with the current registered component list in `ink/pac
 - Layout, size, spacing, borders, colors, and flex behavior are primarily controlled through WXSS rather than many component-specific props.
 - Some tags are currently aliases of other components:
   - `swiper`, `swiper-item`, and `fragment` are currently backed by the `view` implementation.
-  - `icon` is currently backed by the `text` implementation.
 - The internal `#text` registration is runtime-only and is not meant to be authored directly in page templates.
 
 ## Component Reference
@@ -161,35 +160,6 @@ No text-specific props are parsed by the component itself.
 
 ```xml
 <text class="headline">{{ greeting }}</text>
-```
-
-### `<icon>`
-
-**Purpose**
-
-Text-backed icon placeholder component.
-
-**Supported Attributes**
-
-The current implementation inherits the `text` renderer behavior.
-
-- No icon-specific props are parsed
-- Use inline text content as the icon glyph source
-- Use `class` / `style` to control color, size, and font family
-
-**Content Model**
-
-- Inline text glyph content, for example icon-font names or characters
-
-**Notes**
-
-- This is currently an alias of `text`
-- There is no built-in icon pack API at the component layer
-
-**Example**
-
-```xml
-<icon class="material-icons">home</icon>
 ```
 
 ### `<image>`
@@ -418,93 +388,6 @@ Renders `line`, `area`, `pie`, and `radar` charts.
   width="350"
   height="120"
 ></chart>
-```
-
-### `<input>`
-
-**Purpose**
-
-Single-line text input field.
-
-**Supported Attributes**
-
-| Attribute | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `value` | String | `''` | Current text value. |
-| `placeholder` | String | `''` | Hint text shown when the value is empty and unfocused. |
-| `disabled` | Boolean | `false` | Prevents editing when `true`. |
-| `maxLength` | Number | — | Maximum number of accepted characters. |
-
-**Events**
-
-| Event | Description |
-| :--- | :--- |
-| `bindinput` | Fired on every keystroke. `event.detail.value` contains the updated string. |
-
-**Content Model**
-
-- Self-contained input control
-- Normally authored as an empty tag
-
-**Notes**
-
-- Focused input shows a blinking renderer-level cursor
-- Click or tap can reposition the cursor
-
-**Example**
-
-```xml
-<input value="{{query}}" placeholder="Search..." bindinput="onSearch" maxLength="100" />
-```
-
-```javascript
-onSearch(e) {
-  this.setData({ query: e.detail.value });
-}
-```
-
-### `<textarea>`
-
-**Purpose**
-
-Multi-line text input field.
-
-**Supported Attributes**
-
-| Attribute | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `value` | String | `''` | Current text value, including line breaks. |
-| `placeholder` | String | `''` | Hint text shown when the value is empty and unfocused. |
-| `disabled` | Boolean | `false` | Prevents editing when `true`. |
-| `maxLength` | Number | — | Maximum number of accepted characters. |
-
-**Events**
-
-| Event | Description |
-| :--- | :--- |
-| `bindinput` | Fired on every keystroke. `event.detail.value` contains the updated multiline string. |
-
-**Content Model**
-
-- Self-contained input control
-- Normally authored as an empty tag
-
-**Notes**
-
-- Supports newline insertion with the Enter key
-- Internally renders text with `white-space: pre-wrap`
-- Focused textarea shows a blinking renderer-level cursor
-
-**Example**
-
-```xml
-<textarea value="{{body}}" placeholder="Write something..." bindinput="onBodyChange" />
-```
-
-```javascript
-onBodyChange(e) {
-  this.setData({ body: e.detail.value });
-}
 ```
 
 ### `<switch>`
