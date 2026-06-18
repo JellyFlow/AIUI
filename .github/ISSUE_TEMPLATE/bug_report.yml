@@ -1,0 +1,57 @@
+name: Bug Report
+description: Report a reproducible problem in AIUI
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Please provide the information below so we can reproduce and diagnose it.
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Which version, platform, or runtime are you using?
+      placeholder: e.g. macOS 15, Node.js 22, AIUI sample app
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: List the minimal steps needed to reproduce the issue.
+      placeholder: |
+        1. Go to ...
+        2. Run ...
+        3. Observe ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen?
+      placeholder: Describe the expected result.
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What actually happened?
+      placeholder: Describe the actual result or error.
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Paste logs, stack traces, or screenshots if available.
+      render: shell
+      placeholder: Paste logs, stack traces, or links to screenshots here.

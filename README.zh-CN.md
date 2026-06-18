@@ -49,7 +49,14 @@ npx skills add https://github.com/jsar-project/AIUI/tree/main/skills/aiui-dev
 
 - **`aiui-dev` Skill**：位于 [`skills/aiui-dev/SKILL.md`](./skills/aiui-dev/SKILL.md)，该文档包含完整的 API 参考、项目结构指引以及 `.ink` SFC 规范。你可以将该文件提供给 AI 助手，使其具备开发 AIUI 应用的“技能”。
 
-## 📂 仓库结构
+## 反馈
+
+如果你想提交功能建议或报告缺陷，请使用 GitHub issue 模板：
+
+- [Feature Request](https://github.com/jsar-project/AIUI/issues/new?template=feature_request.yml)
+- [Bug Report](https://github.com/jsar-project/AIUI/issues/new?template=bug_report.yml)
+
+## 仓库结构
 
 ```text
 .

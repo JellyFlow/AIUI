@@ -49,7 +49,14 @@ npx skills add https://github.com/jsar-project/AIUI/tree/main/skills/aiui-dev
 
 - **`aiui-dev` Skill**: Located in [`skills/aiui-dev/SKILL.md`](./skills/aiui-dev/SKILL.md), this document contains comprehensive API references, project structure guidelines, and `.ink` SFC specifications. You can feed this file to your AI assistant to grant it the "skill" of developing AIUI applications.
 
-## 📂 Repository Structure
+## Feedback
+
+If you'd like to request a feature or report a bug, please use the GitHub issue templates:
+
+- [Feature Request](https://github.com/jsar-project/AIUI/issues/new?template=feature_request.yml)
+- [Bug Report](https://github.com/jsar-project/AIUI/issues/new?template=bug_report.yml)
+
+## Repository Structure
 
 ```text
 .
