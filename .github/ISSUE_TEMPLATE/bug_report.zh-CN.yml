@@ -1,0 +1,57 @@
+name: 缺陷反馈
+description: 报告 AIUI 中可复现的问题
+title: "[缺陷反馈]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢你提交缺陷反馈。请尽量提供下面的信息，方便我们复现和定位问题。
+
+  - type: input
+    id: environment
+    attributes:
+      label: 环境信息
+      description: 你使用的版本、平台或运行环境是什么？
+      placeholder: 例如：macOS 15、Node.js 22、AIUI sample app
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      description: 请列出最小可复现步骤。
+      placeholder: |
+        1. 打开 ...
+        2. 运行 ...
+        3. 观察 ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期行为
+      description: 你原本期望发生什么？
+      placeholder: 请描述预期结果。
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际行为
+      description: 实际发生了什么？
+      placeholder: 请描述实际结果或报错信息。
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志或截图
+      description: 如果有日志、堆栈信息或截图，请贴在这里。
+      render: shell
+      placeholder: 请粘贴日志、堆栈信息，或提供截图链接。

@@ -53,8 +53,8 @@ npx skills add https://github.com/jsar-project/AIUI/tree/main/skills/aiui-dev
 
 如果你想提交功能建议或报告缺陷，请使用 GitHub issue 模板：
 
-- [Feature Request](https://github.com/jsar-project/AIUI/issues/new?template=feature_request.yml)
-- [Bug Report](https://github.com/jsar-project/AIUI/issues/new?template=bug_report.yml)
+- [功能建议](https://github.com/jsar-project/AIUI/issues/new?template=feature_request.zh-CN.yml)
+- [缺陷反馈](https://github.com/jsar-project/AIUI/issues/new?template=bug_report.zh-CN.yml)
 
 ## 仓库结构
 
