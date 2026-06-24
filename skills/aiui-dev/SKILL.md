@@ -531,6 +531,8 @@ export default {
 
 WXSS is a style language used to describe the visual presentation of components. It is highly compatible with standard CSS and is used within the `<style>` block of an `.ink` file (or a standalone `.wxss` file).
 
+For the current confirmed selector support, layout properties, styling properties, and explicitly unsupported authoring assumptions, see [wxss.md](./wxss.md).
+
 ### 5.1 Features
 
 WXSS extends standard CSS with features tailored for mobile and wearable devices:
