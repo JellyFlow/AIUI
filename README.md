@@ -47,6 +47,12 @@ You can easily install the AIUI developer skill into your project using the `npx
 npx skills add https://github.com/jsar-project/AIUI/tree/main/skills/aiui-dev
 ```
 
+If you want to install a specific released version of the skill instead of the latest `main` branch, replace `main` with the desired tag name:
+
+```bash
+npx skills add https://github.com/jsar-project/AIUI/tree/v0.1.0/skills/aiui-dev
+```
+
 - **`aiui-dev` Skill**: Located in [`skills/aiui-dev/SKILL.md`](./skills/aiui-dev/SKILL.md), this document contains comprehensive API references, project structure guidelines, and `.ink` SFC specifications. You can feed this file to your AI assistant to grant it the "skill" of developing AIUI applications.
 
 ## Feedback

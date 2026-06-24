@@ -47,6 +47,12 @@ npm create @yodaos-pkg/aiui-agent my-agent
 npx skills add https://github.com/jsar-project/AIUI/tree/main/skills/aiui-dev
 ```
 
+如果你希望安装某个已发布版本的 skill，而不是最新的 `main` 分支，可以将 `main` 替换为对应的 tag 名称：
+
+```bash
+npx skills add https://github.com/jsar-project/AIUI/tree/v0.1.0/skills/aiui-dev
+```
+
 - **`aiui-dev` Skill**：位于 [`skills/aiui-dev/SKILL.md`](./skills/aiui-dev/SKILL.md)，该文档包含完整的 API 参考、项目结构指引以及 `.ink` SFC 规范。你可以将该文件提供给 AI 助手，使其具备开发 AIUI 应用的“技能”。
 
 ## 反馈
