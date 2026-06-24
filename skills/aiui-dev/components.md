@@ -301,50 +301,6 @@ Renders `line`, `area`, `pie`, and `radar` charts.
 ></chart>
 ```
 
-### `<switch>`
-
-**Purpose**
-
-Boolean toggle control.
-
-**Supported Attributes**
-
-| Attribute | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `checked` | Boolean | `false` | Current on/off state. Accepts `true` / `1` as checked. |
-| `disabled` | Boolean | `false` | Disables interaction and reduces opacity. |
-| `type` | String | `switch` | Use `checkbox` to render checkbox-style visuals instead of the pill switch. |
-| `color` | String | `#04C160` | Active color when checked. Supports CSS-like color strings. |
-
-**Events**
-
-| Event | Description |
-| :--- | :--- |
-| `bindchange` | Fired after the value toggles. `event.detail.value` is the updated boolean state. |
-
-**Content Model**
-
-- Self-contained control
-- Normally authored as an empty tag
-
-**Notes**
-
-- Pointer release toggles the value unless disabled
-- The component updates its own `checked` attribute before invoking `bindchange`
-- `type="checkbox"` changes both the size defaults and the visual model
-
-**Example**
-
-```xml
-<switch checked="{{enabled}}" bindchange="onSwitchChange" color="#40FF5E" />
-```
-
-```javascript
-onSwitchChange(e) {
-  this.setData({ enabled: e.detail.value });
-}
-```
-
 ### `<lottie-view>`
 
 **Purpose**
@@ -379,39 +335,6 @@ Displays a Lottie animation loaded from inline JSON, a local file, or a remote U
 
 ```xml
 <lottie-view src="/assets/loading.json" auto-play="true" loop="true" class="loading"></lottie-view>
-```
-
-### `<streamdown>`
-
-**Purpose**
-
-Renders Markdown-style streaming text content.
-
-**Supported Attributes**
-
-| Attribute | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `content` | String | `''` | Markdown-like content to render. |
-| `streaming` | Boolean | `false` | When `true`, shows a streaming caret animation after the rendered output. |
-
-**Events**
-
-- No public component-specific events
-
-**Content Model**
-
-- Self-contained renderer
-- Normally authored as an empty tag
-
-**Notes**
-
-- Designed for incremental AI-style response rendering
-- The caret is visual only and is driven by an internal animation
-
-**Example**
-
-```xml
-<streamdown content="{{ replyText }}" streaming="{{ isStreaming }}" class="reply"></streamdown>
 ```
 
 ### `<a2ui>`
