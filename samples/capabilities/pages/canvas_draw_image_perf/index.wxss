@@ -1,0 +1,70 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-lg, 20px);
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.page-subtitle {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-sm, 8px);
+  margin-bottom: var(--spacing-md, 16px);
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.metric-cell {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 12px;
+  border: var(--border-width-thin, 1px) solid var(--border-color-default, #ccc);
+  background-color: var(--color-surface-highlight);
+}
+
+.metric-label {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.metric-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-top: 4px;
+}
+
+.control-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.control-button {
+  height: 44px;
+  padding: 0 8px;
+  font-size: 13px;
+}
+
+.canvas-shell {
+  border: var(--border-width-thin, 1px) solid var(--border-color-default, #ccc);
+  background-color: var(--color-surface);
+}
+
+.perf-canvas {
+  width: 100%;
+  height: 520px;
+  background-color: #0b1020;
+}

@@ -25,7 +25,6 @@
               "component": "Column",
               "props": {
                 "width": "100%",
-                "height": "100%",
                 "padding": 0,
                 "gap": 16,
                 "boxSizing": "border-box"
@@ -858,7 +857,7 @@
     <a2ui
       id="row-column-demo"
       commands="{{ a2uiData }}"
-      style="display: flex; flex-direction: column; width: 100%; height: 100%;"
+      style="display: flex; flex-direction: column; width: 100%;"
     />
   </view>
 </page>

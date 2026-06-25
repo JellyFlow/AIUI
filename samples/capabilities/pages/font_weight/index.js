@@ -3,7 +3,11 @@ import wx from 'wx';
 export default {
   onLoad() {
     const ctx = wx.createCanvasContext('myCanvas');
-    ctx.setFillStyle('#111111');
+    if (!ctx) {
+      return;
+    }
+
+    ctx.fillStyle = '#111111';
 
     ctx.font = '700 22px sans-serif';
     ctx.fillText('Quarterly Report', 12, 34);
@@ -19,7 +23,5 @@ export default {
 
     ctx.font = '400 13px sans-serif';
     ctx.fillText('Review the drops in conversion and reply volume.', 12, 150);
-
-    ctx.draw();
   },
 };

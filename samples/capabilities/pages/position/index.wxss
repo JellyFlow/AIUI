@@ -63,3 +63,30 @@
   justify-content: center;
   align-items: center;
 }
+
+.fixed-demo {
+  flex-direction: column;
+}
+
+.fixed-description {
+  margin-bottom: 12px;
+}
+
+.scroll-spacer {
+  height: 120px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fixed-badge {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  padding: 8px 12px;
+  background-color: rgba(255, 255, 255, 0.92);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  z-index: 10;
+}

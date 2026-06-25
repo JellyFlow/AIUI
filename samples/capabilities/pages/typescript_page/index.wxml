@@ -1,0 +1,28 @@
+<view class="container">
+  <view class="page-title">{{title}}</view>
+  <text class="page-subtitle">
+    This page intentionally ships only an index.ts script so the page entrypoint fallback exercises SWC TypeScript erasure.
+  </text>
+
+  <view class="card">
+    <view class="section-title">Compile Checks</view>
+    <view class="check-list">
+      <view class="check-item" ink:for="{{checks}}" ink:key="label">
+        <button class="check-button" bindtap="selectCheck" data-label="{{item.label}}">
+          <view class="check-copy">
+            <text class="check-label">{{item.label}}</text>
+            <text class="check-detail">{{item.detail}}</text>
+          </view>
+          <text class="status-chip status-{{item.tone}}">{{item.tone}}</text>
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <view class="card result-card">
+    <view class="section-title">Runtime Result</view>
+    <text class="result-line">Selected: {{selectedLabel}}</text>
+    <text class="result-line">Taps: {{tapCount}}</text>
+    <text class="result-line">{{summary}}</text>
+  </view>
+</view>

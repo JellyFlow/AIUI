@@ -1,0 +1,36 @@
+<view class="container">
+  <view class="page-title">Canvas drawImage Perf</view>
+  <view class="page-subtitle">
+    Stress test for repeated ImageBitmap drawImage calls on a single canvas frame.
+  </view>
+
+  <view class="metric-grid">
+    <view class="metric-cell">
+      <text class="metric-label">Status</text>
+      <text class="metric-value">{{statusText}}</text>
+    </view>
+    <view class="metric-cell">
+      <text class="metric-label">Draws</text>
+      <text class="metric-value">{{drawCount}}</text>
+    </view>
+    <view class="metric-cell">
+      <text class="metric-label">Frame</text>
+      <text class="metric-value">{{lastFrameMs}}ms</text>
+    </view>
+    <view class="metric-cell">
+      <text class="metric-label">FPS</text>
+      <text class="metric-value">{{fps}}</text>
+    </view>
+  </view>
+
+  <view class="control-row">
+    <button class="control-button" bindtap="runLowLoad">400</button>
+    <button class="control-button" bindtap="runMediumLoad">900</button>
+    <button class="control-button" bindtap="runHighLoad">1600</button>
+    <button class="control-button" bindtap="toggleRunning">{{toggleLabel}}</button>
+  </view>
+
+  <view class="canvas-shell">
+    <canvas id="perfCanvas" width="400" height="520" class="perf-canvas"></canvas>
+  </view>
+</view>

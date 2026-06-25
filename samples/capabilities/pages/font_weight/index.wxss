@@ -118,9 +118,9 @@
 }
 
 .canvas {
-  width: 100%;
+  width: 360px;
   height: 180px;
-  border: var(--border-width-thin, 1px) solid var(--border-color-contrast, #000);
+  border: 2px solid green;
   border-radius: var(--radius-md, 10px);
   margin-top: var(--spacing-sm, 8px);
 }

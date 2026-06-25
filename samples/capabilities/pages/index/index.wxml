@@ -12,6 +12,7 @@
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../position/index" tabindex="3">Position</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../grid/index" tabindex="4">Grid</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../list/index" tabindex="5">List</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../conditional_rendering/index" tabindex="49">Conditional Rendering</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../input_textarea/index" tabindex="45">Input &amp; Textarea</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../switch/switch" tabindex="46">Switch</button></view>
       </view>
@@ -37,13 +38,17 @@
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../transform/index" tabindex="8">Transform</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../filter/index" tabindex="9">Filter</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../box_shadow/index" tabindex="10">Box Shadow</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../clip_path/index" tabindex="56">Clip Path</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../background_image/index" tabindex="51">Background Image</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../opacity/index" tabindex="11">Opacity</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../outline/index" tabindex="12">Outline</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../transition_animation/index" tabindex="13">Transition and Animation</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../css_vars/index" tabindex="14">CSS Variables</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../colors/index" tabindex="50">Colors</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../media_query/index" tabindex="15">Media Query</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../canvas/index" tabindex="16">Canvas</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../canvas_api/index" tabindex="17">Canvas API</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../canvas_draw_image_perf/index" tabindex="52">Canvas drawImage Perf</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../chart/index" tabindex="18">Chart</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../lottie/index" tabindex="19">Lottie</button></view>
       </view>
@@ -73,6 +78,9 @@
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../close/index" tabindex="38">Close</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../storage/index" tabindex="40">Storage</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../esm/index" tabindex="43">ESM Import</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../typescript_page/index" tabindex="53">TypeScript Page</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../typescript_sfc/index" tabindex="54">TypeScript SFC</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../typescript_modules/index" tabindex="55">TypeScript Modules</button></view>
       </view>
     </card>
 

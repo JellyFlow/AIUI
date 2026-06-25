@@ -45,7 +45,7 @@
             "id": "root",
             "type": "view",
             "props": {
-              "style": "display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; background-color: var(--a2ui-page-background, var(--color-background));"
+              "style": "display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; background-color: var(--a2ui-page-background, var(--color-background));"
             },
             "children": ["card"]
           },
@@ -339,7 +339,7 @@
       <a2ui
         id="my-a2ui"
         commands="{{ a2uiData }}"
-        style="display: flex; flex-direction: column; width: 100%; height: 100%"
+        style="display: flex; flex-direction: column; width: 100%;"
       />
     </view>
     <card class="action-card">
@@ -385,8 +385,8 @@
   }
 
   .a2ui-container {
-    flex: 1;
     width: 100%;
+    min-height: 320px;
     border: var(--border-width-thin, 1px) solid var(--border-color-default, #e5e5e5);
     border-radius: var(--radius-sm, 8px);
     box-sizing: border-box;

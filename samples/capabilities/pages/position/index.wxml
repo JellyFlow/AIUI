@@ -22,4 +22,21 @@
       <view class="absolute-inset">Absolute Inset 20px</view>
     </view>
   </view>
+
+  <view class="card section">
+    <view class="title">Position: Fixed</view>
+    <view class="fixed-demo">
+      <text class="fixed-description">
+        向下滚动页面，左上角的 Fixed 标签应保持在视口中不动。
+      </text>
+      <view class="scroll-spacer">Scroll Content 1</view>
+      <view class="scroll-spacer">Scroll Content 2</view>
+      <view class="scroll-spacer">Scroll Content 3</view>
+      <view class="scroll-spacer">Scroll Content 4</view>
+      <view class="scroll-spacer">Scroll Content 5</view>
+      <view class="scroll-spacer">Scroll Content 6</view>
+    </view>
+  </view>
+
+  <view class="fixed-badge">Fixed Top 16 Left 16</view>
 </view>

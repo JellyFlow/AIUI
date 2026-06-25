@@ -67,6 +67,28 @@
   </view>
 
   <view class="card section">
+    <view class="title">Flex Shorthand</view>
+    <view class="shorthand-track">
+      <view class="shorthand-item shorthand-grow-1">
+        <text class="shorthand-code">flex: 1</text>
+        <text class="shorthand-note">grow 1 / shrink 1 / basis 0%</text>
+      </view>
+      <view class="shorthand-item shorthand-grow-2">
+        <text class="shorthand-code">flex: 2</text>
+        <text class="shorthand-note">grow 2 / shrink 1 / basis 0%</text>
+      </view>
+      <view class="shorthand-item shorthand-basis">
+        <text class="shorthand-code">flex: 1 0 64px</text>
+        <text class="shorthand-note">grow 1 / shrink 0 / basis 64px</text>
+      </view>
+    </view>
+    <view class="shorthand-description">
+      <text class="shorthand-caption">On the same row, `flex: 2` takes more of the remaining space than `flex: 1`.</text>
+      <text class="shorthand-caption">`flex: 1 0 64px` keeps a 64px basis first and disables shrink, making the shorthand expansion easier to observe.</text>
+    </view>
+  </view>
+
+  <view class="card section">
     <view class="title">Deep Inheritance (3+ levels)</view>
     <view style="text-align: right; padding: var(--spacing-md, 12px); border-radius: var(--radius-sm, 8px);">
       <view>
