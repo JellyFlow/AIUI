@@ -35,6 +35,19 @@ npm create @yodaos-pkg/aiui-agent my-agent
 - `canvas`、`canvas_api`、`chart`、`lottie`：绘制与视觉内容示例
 - `media_query`、`css_vars`、`filter`、`transform`：样式与响应式行为示例
 
+## 🎨 设计系统
+
+[`design/`](./design/) 目录存放 AIUI 的视觉设计语言规范，按**显示类型**分目录组织：
+
+- [`design/monochrome/`](./design/monochrome/) ——**单色显示**硬件的规范。当前激活的 [`green`](./design/monochrome/design-system-green.md) 变体面向 RokidGlasses1 / RokidGlasses2，硬件只能在纯黑之上再现单一的绿色通道。涵盖颜色（同一种绿色在纯黑之上分四个透明度层级）、排版、间距、圆角、描边宽度、组件外观以及“应做与不应做”清单。
+  - [`design-system-green.md`](./design/monochrome/design-system-green.md) ——完整的 token 规范。
+  - [`preview-green.html`](./design/monochrome/preview-green.html) ——自包含、可直接在浏览器打开的可视化预览，无需构建。
+- `design/fullcolor/` ——**预留**，面向全彩显示硬件，尚未编写。
+
+> 本设计系统**目前仅适用于单绿色单色显示设备**。`design/` 目录的结构在保持当前 green 规范稳定的同时，为规划中的全彩版本预留了位置。
+
+同一份单绿规范也会随下方的 `aiui-dev` 技能一同打包分发，因此 AI 编码助手在生成 AIUI 代码时会自动对齐这些 token。
+
 ## 🤖 AI Agent 技能
 
 我们提供了内置说明文档和上下文文件，帮助 LLM（大语言模型）或 AI 编码助手更高效地编写 AIUI 代码。
@@ -66,6 +79,13 @@ npx skills add https://github.com/jsar-project/AIUI/tree/v0.1.0/skills/aiui-dev
 
 ```text
 .
+├── design/
+│   ├── README.md                       # 设计语言索引（按显示类型）
+│   ├── monochrome/                     # 单色显示规范
+│   │   ├── README.md                   # 单色变体说明（目前为 green）
+│   │   ├── design-system-green.md      # AIUI 单绿色 token 规范
+│   │   └── preview-green.html          # 单绿系统的可视化预览
+│   └── fullcolor/                      # 预留 —— 全彩显示规范
 ├── packages/
 │   └── create-aiui-agent/    # 用于创建 AIUI Agent 项目的 npm CLI
 ├── samples/

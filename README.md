@@ -35,6 +35,19 @@ Representative demos inside `samples/simple/pages/` include:
 - `canvas`, `canvas_api`, `chart`, `lottie`: Rendering and visual content examples.
 - `media_query`, `css_vars`, `filter`, `transform`: Styling and responsive behavior examples.
 
+## 🎨 Design System
+
+The [`design/`](./design/) directory holds AIUI's visual design language specs, organized by **display type**:
+
+- [`design/monochrome/`](./design/monochrome/) — specs for **single-color display** hardware. The active [`green`](./design/monochrome/design-system-green.md) variant targets RokidGlasses1 / RokidGlasses2, whose hardware can only reproduce one luminous green channel over pure black. Covers colors (one green across four opacity tiers), typography, spacing, radii, border widths, component chrome, and Do's & Don'ts.
+  - [`design-system-green.md`](./design/monochrome/design-system-green.md) — full token spec.
+  - [`preview-green.html`](./design/monochrome/preview-green.html) — self-contained, browsable visual showcase (no build step).
+- `design/fullcolor/` — **planned**, for full-RGB display hardware. Not yet authored.
+
+> The design system **currently applies only to single-green monochrome display devices**. The `design/` layout keeps the current green spec stable and leaves room for the planned full-color variant.
+
+The same monochrome-green spec is also bundled inside the `aiui-dev` skill (see below), so AI agents generating AIUI code align with these tokens automatically.
+
 ## 🤖 AI Agent Skills
 
 We provide built-in instructions and context files to help LLMs (Large Language Models) or AI coding assistants write AIUI code effectively.
@@ -66,6 +79,13 @@ If you'd like to request a feature or report a bug, please use the GitHub issue 
 
 ```text
 .
+├── design/
+│   ├── README.md                       # design language index (by display type)
+│   ├── monochrome/                     # single-color display specs
+│   │   ├── README.md                   # monochrome variants (currently green)
+│   │   ├── design-system-green.md      # AIUI monochrome-green token spec
+│   │   └── preview-green.html          # browsable visual showcase (green)
+│   └── fullcolor/                      # planned — full-RGB display specs
 ├── packages/
 │   └── create-aiui-agent/    # npm CLI for scaffolding AIUI agent projects
 ├── samples/
