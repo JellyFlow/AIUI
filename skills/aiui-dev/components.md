@@ -219,6 +219,50 @@ Scrollable container for overflowing content.
 </scroll-view>
 ```
 
+### `<card>`
+
+**Purpose**
+
+Structured container with optional cover, title, body, and footer areas.
+
+**Supported Attributes**
+
+| Attribute | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `cover` | String | — | Optional image URL rendered above the content area. |
+| `title` | String | — | Optional title text rendered before the body content. |
+| `footer` | String | — | Optional footer text rendered after the body content. |
+| `role` | String | `navigation` | Accessibility and interaction role. An explicit value such as `group` overrides the default navigation semantics. |
+
+**Events**
+
+- No public component-specific events
+
+**Content Model**
+
+- Can contain arbitrary child nodes
+- Child content is rendered as the card body between the optional title and footer
+
+**Notes**
+
+- When no explicit `role` is provided, the component is treated as `role="navigation"`
+- Interactive mode treats a visible navigation card as an enterable navigation target
+- Navigation matching is scoped to a single active layer, and nested navigation containers are ignored while their parent card remains eligible
+- Within an active card, focus order follows actionable descendants with non-negative `tabindex`
+- Built-in themes apply a hover outline to `card:hover` using outline properties rather than border changes, so layout size does not shift
+- Theme hosts can customize the hover effect with `--card-hover-outline-width`, `--card-hover-outline-color`, and `--card-hover-outline-offset`
+
+**Example**
+
+```xml
+<card
+  title="Now Playing"
+  footer="Swipe for more"
+>
+  <text>Artist recommendations and queue summary.</text>
+</card>
+```
+
 ### `<chart>`
 
 **Purpose**
