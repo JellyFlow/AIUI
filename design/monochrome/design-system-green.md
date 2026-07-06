@@ -97,14 +97,14 @@ border-width:
 components:
   app-canvas:
     description: "The floating-panel / card-based agent surface. Width is fixed to the device form factor; height scrolls once the max is exceeded."
-    width: 480px
+    width: 448px
     height-min: 120px
-    height-max: 380px
+    height-max: 352px
     backgroundColor: "{colors.background}"
   # Canvas dimension aliases — referenced as {components.app-width}, {components.height-min}, {components.height-max} elsewhere in this spec.
-  app-width: 480px
+  app-width: 448px
   height-min: 120px
-  height-max: 380px
+  height-max: 352px
   card:
     description: "Base content container — the foundational surface of every AIUI interface."
     backgroundColor: "{colors.surface}"
@@ -265,13 +265,13 @@ Rokid AIUI is rendered as a **heads-up display over the real world**, locked to 
 
 The system runs on a **monochrome value ladder rather than a hue range**. A single color — `{colors.primary}` Rokid Green — is the entire chromatic vocabulary. It is deployed at four opacity steps to build the whole hierarchy: full strength (`{colors.primary}`) for titles, key data, and high-priority interaction outlines; 60% (`{colors.primary-60}`) for secondary text, default borders, and mid-emphasis layers; 40% (`{colors.primary-40}`) for light fills, surface highlights, and muted dividers; and 8% (`{colors.primary-08}`) for the faintest input/error fills. There is no second hue. Hierarchy, emphasis, and even error states are expressed entirely through **green opacity + border weight + surface layering**, never through color.
 
-Structure comes from **outlines, not shadows**. The documentation is explicit: this token set favors *light fills, clear outlines, and stable whitespace*, which suits a transparent AR display better than relying on shadows. A card is a `{colors.surface}` black rectangle with a `{border-width.default}` 2px `{colors.border-default}` green-60% outline and `{rounded.md}` 12px corners; emphasis is achieved by stepping the surface to `{colors.surface-highlight}` (green-40% fill) and the border to `{colors.border-accent}` (full green), or thickening the outline to `{border-width.strong}` 4px. The whole thing floats as a `{components.app-canvas}` panel capped at `{spacing.lg}`-aware dimensions — `{components.app-width}` 480px wide, between 120px and 380px tall, scrolling past that rather than expanding unbounded.
+Structure comes from **outlines, not shadows**. The documentation is explicit: this token set favors *light fills, clear outlines, and stable whitespace*, which suits a transparent AR display better than relying on shadows. A card is a `{colors.surface}` black rectangle with a `{border-width.default}` 2px `{colors.border-default}` green-60% outline and `{rounded.md}` 12px corners; emphasis is achieved by stepping the surface to `{colors.surface-highlight}` (green-40% fill) and the border to `{colors.border-accent}` (full green), or thickening the outline to `{border-width.strong}` 4px. The whole thing floats as a `{components.app-canvas}` panel capped at `{spacing.lg}`-aware dimensions — `{components.app-width}` 448px wide, between 120px and 352px tall, scrolling past that rather than expanding unbounded.
 
 The system is **token-driven and host-injected**. AIUI's visual design is not a static color convention but a reusable infrastructure organized around **Design Tokens** (CSS custom properties). The host environment injects the theme first as the default token layer; the application can override variables in `app.wxss`, page styles, and component-local styles. The recommended built-in Ink theme is `yodaos-sprite-greenonly`, which encodes every value below into a single CSS file so that switching themes never requires markup changes.
 
 **Key Characteristics:**
 - **Single-green monochrome** — the entire palette is one hue (`{colors.primary}` #40ff5e) at four opacity tiers (100% / 60% / 40% / 8%), on a `{colors.background}` pure-black floor. No secondary hue exists.
-- **Card-based floating panels** — every agent interface is a `{components.app-canvas}` 480px-wide panel of stacked `{components.card}` surfaces, height-capped at 380px before it scrolls.
+- **Card-based floating panels** — every agent interface is a `{components.app-canvas}` 448px-wide panel of stacked `{components.card}` surfaces, height-capped at 352px before it scrolls.
 - **Outlines over shadows** — depth is conveyed by border weight and green opacity, never by blurred drop shadows; this is mandated for transparent AR display legibility.
 - **Token-first theming** — all visuals are expressed as CSS custom properties (`--color-*`, `--border-*`, `--radius-*`, `--spacing-*`) injected by the host, overridable by the app.
 - **`yodaos-sprite-greenonly` baseline** — black background + green foreground, tuned for contrast and comfort on single-green-display hardware.
@@ -312,7 +312,7 @@ AIUI renders through a **Skia-powered native runtime** and follows Web/WXSS CSS 
 
 ### Hierarchy
 
-> The `typography.*` tokens above are the recommended baseline scale for this HUD aesthetic, calibrated to the 480px-wide card context and AR-glasses readability. They are host/application-overridable — the theme layer and WXSS may replace them without changing markup.
+> The `typography.*` tokens above are the recommended baseline scale for this HUD aesthetic, calibrated to the 448px-wide card context and AR-glasses readability. They are host/application-overridable — the theme layer and WXSS may replace them without changing markup.
 
 | Token | Font | Size | Weight | Line Height | Letter Spacing | Use |
 |---|---|---|---|---|---|---|
@@ -341,7 +341,7 @@ No specific typeface is required. The spec intentionally uses generic CSS famili
 - `{spacing.sm}` (8px) is the compact rhythm — icon gaps and small padding. `{spacing.md}` (12px) is the standard component padding (and the default `{components.card}` interior). `{spacing.lg}` (18px) is page padding and section spacing. The layout favors **stable, moderate whitespace** — enough to keep structure clear on a cluttered real-world backdrop, never so much that the card sprawls.
 
 ### Grid & Container
-- **Fixed-width canvas**: the app surface is `{components.app-width}` 480px wide, between `{components.height-min}` 120px and `{components.height-max}` 380px tall. This is the default size reference for floating panels and card-based agent interfaces. Beyond the max height, content **scrolls** rather than expanding unbounded — a `{components.scroll-view}` takes over.
+- **Fixed-width canvas**: the app surface is `{components.app-width}` 448px wide, between `{components.height-min}` 120px and `{components.height-max}` 352px tall. This is the default size reference for floating panels and card-based agent interfaces. Beyond the max height, content **scrolls** rather than expanding unbounded — a `{components.scroll-view}` takes over.
 - **Card-based composition**: the body is a vertical stack of `{components.card}` panels inside the canvas. There is no multi-column desktop grid — the wearable form factor enforces a single, scrollable column.
 - **Flexbox layout**: containers use Flexbox (via the `view` component) for arrangement; `scroll-view` provides horizontal/vertical scrolling when content overflows.
 
@@ -353,7 +353,7 @@ Whitespace is **structural clarity over a transparent backdrop**. Because the ca
 #### Breakpoints
 | Name | Width | Key Changes |
 |---|---|---|
-| Wearable canvas | 480px fixed | The native, sole target — a floating panel sized to the glasses' display form factor |
+| Wearable canvas | 448px fixed | The native, sole target — a floating panel sized to the glasses' display form factor |
 | Host-resized | varies | The host controls the canvas; the app does not reflow independently |
 
 This is a **fixed-canvas, form-factor-locked** design. It is authored for the single-green AR glasses (RokidGlasses1 / RokidGlasses2) display and does not fluidly reflow. The host theme (`--app-width`, `--app-height-min/max`) defines the geometry; the application fills it. Content that exceeds `{components.height-max}` enters a `{components.scroll-view}` scroll layout rather than resizing.
@@ -401,7 +401,7 @@ Cards are rectangles at the `{components.app-canvas}` width with `{rounded.md}` 
 ### Layout & Containers
 
 **`app-canvas`** — Floating agent surface
-- The fixed-width card-based panel: `{components.app-width}` 480px wide, between `{components.height-min}` 120px and `{components.height-max}` 380px tall, on a `{colors.background}` black floor. Once height exceeds the max, a scroll layout takes over.
+- The fixed-width card-based panel: `{components.app-width}` 448px wide, between `{components.height-min}` 120px and `{components.height-max}` 352px tall, on a `{colors.background}` black floor. Once height exceeds the max, a scroll layout takes over.
 
 **`card`** — Base content container
 - The foundational surface. `{colors.surface}` black fill, `{border-width.default}` 2px `{colors.border-default}` (green-60%) outline, `{rounded.md}` 12px corners, `{spacing.md}` 12px interior padding. Nearly every interface is a stack of these.
@@ -483,7 +483,7 @@ AIUI ships these components rendered natively through Skia: `view` (flex contain
 ### Do
 - Build every surface as an **outlined card**: a `{colors.surface}` black body with a green outline (`{colors.border-default}` at minimum). Outlines, not shadows, define structure on a transparent AR display.
 - Express hierarchy through the **green opacity ladder** — `{colors.primary}` for emphasis, `{colors.primary-60}` for secondary text/borders, `{colors.primary-40}` for fills/dividers, `{colors.primary-08}` for recessed fields. One hue, four steps.
-- Keep within the **fixed canvas** (`{components.app-width}` 480px, height ≤ 380px) and switch to a `{components.scroll-view}` when content overflows — don't let the card sprawl past the user's comfortable FOV.
+- Keep within the **fixed canvas** (`{components.app-width}` 448px, height ≤ 352px) and switch to a `{components.scroll-view}` when content overflows — don't let the card sprawl past the user's comfortable FOV.
 - **Tokenize first**: define visuals from `--color-*`, `--border-*`, `--radius-*`, `--spacing-*` tokens instead of hardcoding, so the host theme and app overrides stay consistent.
 - Default to `{rounded.md}` (12px) corners — the `yodaos-sprite-greenonly` theme uses one generous radius across inputs and cards for clean, legible wearable surfaces.
 - Reuse the `card`, `input`, and `error-state` token groups when designing new components to keep the system unified.
@@ -495,7 +495,7 @@ AIUI ships these components rendered natively through Skia: `view` (flex contain
 - Don't use **blurred drop shadows** for elevation. The spec is explicit — light fills, clear outlines, and stable whitespace suit transparent AR display better than shadows.
 - Don't use **red for error states** — error hints use `{colors.primary-08}` fill + `{colors.border-muted}` border and stay green (red cannot render on the single-green hardware).
 - Don't hardcode colors or spacing directly in pages; bypassing the token layer breaks host-driven theming and theme switching.
-- Don't expand the canvas beyond `{components.height-max}` (380px) without switching to a scroll layout — unbounded growth pushes content out of the user's comfortable field of view on the glasses.
+- Don't expand the canvas beyond `{components.height-max}` (352px) without switching to a scroll layout — unbounded growth pushes content out of the user's comfortable field of view on the glasses.
 - Don't rely on fine mouse hover states; the primary interaction is voice + gaze + temple tap, so emphasize gaze-readable contrast and tap feedback over hover affordances.
 - Don't flatten type hierarchy into a single size — since color can't differentiate emphasis, size and weight (plus the mono/proportional split) must carry the structure.
 - Don't rely on red/blue hue cues in images or data visualizations — on a single-green display those channels are lost; encode meaning via luminance, position, and labels instead.

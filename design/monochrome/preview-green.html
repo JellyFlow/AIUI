@@ -152,7 +152,7 @@
 <section>
   <span class="section-eyebrow">04 — Components</span>
   <h2 class="section-heading">Cards &amp; Surfaces</h2>
-  <p class="section-desc">The foundational surface. Nearly every interface is a vertical stack of outlined cards inside the 480px canvas. Depth comes from outline weight and green opacity — never shadow.</p>
+  <p class="section-desc">The foundational surface. Nearly every interface is a vertical stack of outlined cards inside the 448px canvas. Depth comes from outline weight and green opacity — never shadow.</p>
   <div class="card-grid">
     <div class="feature-card"><h4>card · default</h4><p>Black fill + 2px green-60% outline, 12px corners, 12px padding. The base container every agent interface is built from.</p></div>
     <div class="feature-card" style="background:rgba(64,255,94,0.4);border-color:var(--g);"><h4>card-highlight</h4><p>Green-40% fill + full-green accent border — the "raised" surface, used in lieu of shadow for emphasized cards and demo blocks.</p></div>
@@ -216,20 +216,20 @@
 <section>
   <span class="section-eyebrow">09 — Device constraint</span>
   <h2 class="section-heading">Single-Green Display (RokidGlasses1 / 2)</h2>
-  <p class="section-desc">A fixed-canvas, form-factor-locked design authored for single-green AR glasses. The host theme defines the geometry; the app fills it. Content that exceeds the max height enters a scroll-view rather than resizing. Only the green channel renders, so meaning must never rely on red/blue hue cues.</p>
+  <p class="section-desc">A fixed 448 x 352 canvas, form-factor-locked design authored for single-green AR glasses. The host theme defines the geometry; the app fills it. Content that exceeds the max height enters a scroll-view rather than resizing. Only the green channel renders, so meaning must never rely on red/blue hue cues.</p>
   <table class="responsive-table">
     <thead><tr><th>Token</th><th>Value</th><th>Role</th></tr></thead>
     <tbody>
-      <tr><td>--app-width</td><td class="muted">480px</td><td>Recommended app width — floating panels &amp; card interfaces</td></tr>
+      <tr><td>--app-width</td><td class="muted">448px</td><td>Recommended app width — floating panels &amp; card interfaces</td></tr>
       <tr><td>--app-height-min</td><td class="muted">120px</td><td>Minimum height — compact surfaces, short info cards</td></tr>
-      <tr><td>--app-height-max</td><td class="muted">380px</td><td>Maximum height — switch to scroll-view beyond this</td></tr>
+      <tr><td>--app-height-max</td><td class="muted">352px</td><td>Maximum height — switch to scroll-view beyond this</td></tr>
     </tbody>
   </table>
   <div class="device-ladder">
     <div class="glasses-mock" style="width:120px;height:200px;"><span class="px">120px</span><span>height-min</span></div>
     <div class="glasses-mock" style="width:120px;height:300px;"><span class="px">↓ scroll</span><span>content grows</span></div>
-    <div class="glasses-mock" style="width:120px;height:420px;"><span class="px">380px</span><span>height-max</span></div>
-    <div class="glasses-mock" style="width:300px;height:420px;"><span class="px">480px</span><span>app-width</span></div>
+    <div class="glasses-mock" style="width:120px;height:392px;"><span class="px">352px</span><span>height-max</span></div>
+    <div class="glasses-mock" style="width:280px;height:392px;"><span class="px">448px</span><span>app-width</span></div>
   </div>
   <p style="color:var(--text);margin-top:28px;font-size:14px;line-height:1.55;"><strong style="color:var(--g);">Interaction:</strong> non-touch by default — voice input (core mode), temple slide/tap, and head tracking. <strong style="color:var(--g);">Imagery:</strong> reproduced only in the green channel, so prefer high-luminance green-friendly assets and encode meaning via luminance, position, and labels instead of hue.</p>
 </section>
