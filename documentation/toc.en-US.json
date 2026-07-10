@@ -4,7 +4,7 @@
     "label": "Guide",
     "children": [
       {
-        "id": "quickstart/index",
+        "id": "quickstart",
         "label": "Quick Start",
         "expanded": true,
         "children": [
@@ -24,12 +24,14 @@
             "id": "ai-dev",
             "label": "Build with AI"
           }
-        ]
+        ],
+        "hasIndex": true
       },
       {
-        "id": "open-agent-format/index",
+        "id": "open-agent-format",
         "label": "Open Agent Format",
-        "children": []
+        "children": [],
+        "hasIndex": true
       },
       {
         "id": "structure",
@@ -37,7 +39,7 @@
         "children": []
       },
       {
-        "id": "framework/index",
+        "id": "framework",
         "label": "Agent Framework",
         "expanded": false,
         "children": [
@@ -57,10 +59,11 @@
             "id": "ui",
             "label": "User Interface (UI) Development"
           }
-        ]
+        ],
+        "hasIndex": true
       },
       {
-        "id": "runtime/index",
+        "id": "runtime",
         "label": "Agent Runtime",
         "expanded": false,
         "children": [
@@ -76,7 +79,8 @@
             "id": "mechanism",
             "label": "Runtime Mechanism"
           }
-        ]
+        ],
+        "hasIndex": true
       },
       {
         "id": "custom-components",
@@ -85,7 +89,7 @@
         "children": []
       },
       {
-        "id": "basic/index",
+        "id": "basic",
         "label": "Core Capabilities",
         "expanded": false,
         "children": [
@@ -155,10 +159,11 @@
             "label": "Data Prefetch",
             "status": "unsupported"
           }
-        ]
+        ],
+        "hasIndex": true
       },
       {
-        "id": "debug/index",
+        "id": "debug",
         "label": "Debugging",
         "expanded": false,
         "children": [
@@ -171,10 +176,11 @@
             "label": "Source Map",
             "status": "unsupported"
           }
-        ]
+        ],
+        "hasIndex": true
       },
       {
-        "id": "bundle/index",
+        "id": "bundle",
         "label": "Packaging & Distribution",
         "expanded": false,
         "children": [
@@ -190,10 +196,11 @@
             "id": "publish",
             "label": "Publish to the Agent Store"
           }
-        ]
+        ],
+        "hasIndex": true
       },
       {
-        "id": "performance/index",
+        "id": "performance",
         "label": "Performance & Experience",
         "expanded": false,
         "children": [
@@ -217,7 +224,8 @@
             "id": "network",
             "label": "Poor Network Experience"
           }
-        ]
+        ],
+        "hasIndex": true
       }
     ],
     "slug": "guide"
@@ -271,7 +279,7 @@
         ]
       },
       {
-        "id": "wxml/index",
+        "id": "wxml",
         "label": "WXML Reference",
         "expanded": false,
         "children": [
@@ -296,10 +304,11 @@
             "label": "Template",
             "status": "unsupported"
           }
-        ]
+        ],
+        "hasIndex": true
       },
       {
-        "id": "wxss/index",
+        "id": "wxss",
         "label": "WXSS Reference",
         "expanded": false,
         "children": [
@@ -338,7 +347,8 @@
             "label": "At-rules",
             "status": "partial"
           }
-        ]
+        ],
+        "hasIndex": true
       }
     ],
     "slug": "framework"
@@ -613,9 +623,10 @@
         ]
       },
       {
-        "id": "canvas/index",
+        "id": "canvas",
         "label": "Canvas",
-        "children": []
+        "children": [],
+        "hasIndex": true
       },
       {
         "id": "encoding",

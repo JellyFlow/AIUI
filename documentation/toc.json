@@ -4,8 +4,7 @@
     "label": "指南",
     "children": [
       {
-        "id": "quickstart/index",
-        "slug": "quickstart",
+        "id": "quickstart",
         "label": "快速开始",
         "expanded": true,
         "children": [
@@ -25,12 +24,14 @@
             "id": "ai-dev",
             "label": "使用 AI 开发"
           }
-        ]
+        ],
+        "hasIndex": true
       },
       {
-        "id": "open-agent-format/index",
+        "id": "open-agent-format",
         "label": "Open Agent Format",
-        "children": []
+        "children": [],
+        "hasIndex": true
       },
       {
         "id": "structure",
@@ -38,7 +39,7 @@
         "children": []
       },
       {
-        "id": "framework/index",
+        "id": "framework",
         "label": "智能体框架",
         "expanded": false,
         "children": [
@@ -58,10 +59,11 @@
             "id": "ui",
             "label": "用户界面（UI）开发"
           }
-        ]
+        ],
+        "hasIndex": true
       },
       {
-        "id": "runtime/index",
+        "id": "runtime",
         "label": "智能体运行时",
         "expanded": false,
         "children": [
@@ -77,7 +79,8 @@
             "id": "mechanism",
             "label": "运行机制"
           }
-        ]
+        ],
+        "hasIndex": true
       },
       {
         "id": "custom-components",
@@ -86,7 +89,7 @@
         "children": []
       },
       {
-        "id": "basic/index",
+        "id": "basic",
         "label": "基础能力",
         "expanded": false,
         "children": [
@@ -156,10 +159,11 @@
             "label": "数据预拉取",
             "status": "unsupported"
           }
-        ]
+        ],
+        "hasIndex": true
       },
       {
-        "id": "debug/index",
+        "id": "debug",
         "label": "调试",
         "expanded": false,
         "children": [
@@ -172,10 +176,11 @@
             "label": "Source map",
             "status": "unsupported"
           }
-        ]
+        ],
+        "hasIndex": true
       },
       {
-        "id": "bundle/index",
+        "id": "bundle",
         "label": "打包与分发",
         "expanded": false,
         "children": [
@@ -191,10 +196,11 @@
             "id": "publish",
             "label": "发布到智能体商店"
           }
-        ]
+        ],
+        "hasIndex": true
       },
       {
-        "id": "performance/index",
+        "id": "performance",
         "label": "性能与体验",
         "expanded": false,
         "children": [
@@ -218,7 +224,8 @@
             "id": "network",
             "label": "弱网体验"
           }
-        ]
+        ],
+        "hasIndex": true
       }
     ],
     "slug": "guide"
@@ -272,7 +279,7 @@
         ]
       },
       {
-        "id": "wxml/index",
+        "id": "wxml",
         "label": "WXML 参考",
         "expanded": false,
         "children": [
@@ -297,10 +304,11 @@
             "label": "模版",
             "status": "unsupported"
           }
-        ]
+        ],
+        "hasIndex": true
       },
       {
-        "id": "wxss/index",
+        "id": "wxss",
         "label": "WXSS 参考",
         "expanded": false,
         "children": [
@@ -339,7 +347,8 @@
             "label": "@规则",
             "status": "partial"
           }
-        ]
+        ],
+        "hasIndex": true
       }
     ],
     "slug": "framework"
@@ -614,9 +623,10 @@
         ]
       },
       {
-        "id": "canvas/index",
+        "id": "canvas",
         "label": "画布",
-        "children": []
+        "children": [],
+        "hasIndex": true
       },
       {
         "id": "encoding",
