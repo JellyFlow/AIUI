@@ -35,6 +35,18 @@ npm create @yodaos-pkg/aiui-agent my-agent
 - `canvas`、`canvas_api`、`chart`、`lottie`：绘制与视觉内容示例
 - `media_query`、`css_vars`、`filter`、`transform`：样式与响应式行为示例
 
+## 📚 文档
+
+[`documentation/`](./documentation/) 目录包含 AIUI 官方文档，提供中英文两套内容，覆盖快速上手、框架概念、内置组件、运行时与类 Web API、设计规范、开发工具以及版本变更说明。
+
+- `0-guide/`：快速开始、运行时基础、配置、调试、性能以及 AIUI 应用结构说明
+- `1-framework/`：框架基础，包括项目结构、配置、WXML 和 WXSS
+- `2-components/`：内置组件参考，如 `view`、`text`、`image`、`input`、`swiper`、`canvas` 等
+- `3-api/`：框架、AI、媒体、设备、网络、存储以及 Web/微信兼容 API 参考
+- `4-design/`：交互与视觉设计规范
+- `5-tools/`：CLI、Craft 与调试工具文档
+- `6-changelog/`：最新版本说明与变更历史
+
 ## 🎨 设计系统
 
 [`design/`](./design/) 目录存放 AIUI 的视觉设计语言规范，按**显示类型**分目录组织：
@@ -79,6 +91,7 @@ npx skills add https://github.com/jsar-project/AIUI/tree/v0.1.0/skills/aiui-dev
 
 ```text
 .
+├── documentation/                  # AIUI 官方文档（中文 / 英文）
 ├── design/
 │   ├── README.md                       # 设计语言索引（按显示类型）
 │   ├── monochrome/                     # 单色显示规范

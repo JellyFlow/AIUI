@@ -35,6 +35,18 @@ Representative demos inside `samples/simple/pages/` include:
 - `canvas`, `canvas_api`, `chart`, `lottie`: Rendering and visual content examples.
 - `media_query`, `css_vars`, `filter`, `transform`: Styling and responsive behavior examples.
 
+## 📚 Documentation
+
+The [`documentation/`](./documentation/) directory contains the official AIUI docs in both Chinese and English. It covers onboarding, framework concepts, built-in components, runtime and Web-style APIs, design guidance, developer tools, and release notes.
+
+- `0-guide/`: Getting started, runtime basics, configuration, debugging, performance, and AIUI app structure.
+- `1-framework/`: Framework fundamentals including project structure, config, WXML, and WXSS.
+- `2-components/`: Built-in component references such as `view`, `text`, `image`, `input`, `swiper`, `canvas`, and more.
+- `3-api/`: API references for framework, AI, media, device, network, storage, and compatible Web/Weixin APIs.
+- `4-design/`: Interaction and visual design guidance.
+- `5-tools/`: CLI, Craft, and debugging tool documentation.
+- `6-changelog/`: Latest release notes and change history.
+
 ## 🎨 Design System
 
 The [`design/`](./design/) directory holds AIUI's visual design language specs, organized by **display type**:
@@ -79,6 +91,7 @@ If you'd like to request a feature or report a bug, please use the GitHub issue 
 
 ```text
 .
+├── documentation/                  # official AIUI documentation (zh-CN / en-US)
 ├── design/
 │   ├── README.md                       # design language index (by display type)
 │   ├── monochrome/                     # single-color display specs
