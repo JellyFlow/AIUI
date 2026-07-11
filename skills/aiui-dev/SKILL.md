@@ -471,6 +471,9 @@ export default {
 - `Enter`: usually enters navigation mode or activates the current target unless intercepted
 - `GlobalHook`: a device-specific Rokid Glasses key code for hardware-side touch or shortcut input
 
+> Note:
+> Use `GlobalHook` only when you need the fastest possible key response, such as game-style interactions. Its tradeoff is that it is invoked before other key handlers. If you need more consistent key behavior and can tolerate a little latency, it is not recommended.
+
 ```js
 export default {
   data: {
