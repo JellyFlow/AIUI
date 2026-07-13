@@ -20,9 +20,62 @@
     'END:VCALENDAR',
   ].join('\n');
 
+  const chineseHolidayCalendar = [
+    'BEGIN:VCALENDAR',
+    'BEGIN:VEVENT',
+    'DTSTART;VALUE=DATE:20260501',
+    'SUMMARY:劳动节呀',
+    'CATEGORIES:holiday,public-holiday',
+    'END:VEVENT',
+    'BEGIN:VEVENT',
+    'DTSTART;VALUE=DATE:20260502',
+    'SUMMARY:劳动节假期',
+    'CATEGORIES:holiday',
+    'END:VEVENT',
+    'BEGIN:VEVENT',
+    'DTSTART;VALUE=DATE:20260503',
+    'SUMMARY:劳动节假期',
+    'CATEGORIES:holiday',
+    'END:VEVENT',
+    'BEGIN:VEVENT',
+    'DTSTART;VALUE=DATE:20260510',
+    'SUMMARY:调休上班',
+    'CATEGORIES:adjusted-workday',
+    'END:VEVENT',
+    'BEGIN:VEVENT',
+    'DTSTART;VALUE=DATE:20260511',
+    'SUMMARY:母亲节',
+    'END:VEVENT',
+    'END:VCALENDAR',
+  ].join('\n');
+
+  const dragonBoatCalendar = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//A2UI//CN',
+    'BEGIN:VEVENT',
+    'DTSTART;VALUE=DATE:20260619',
+    'SUMMARY:端午节',
+    'CATEGORIES:holiday,public-holiday',
+    'END:VEVENT',
+    'BEGIN:VEVENT',
+    'DTSTART;VALUE=DATE:20260620',
+    'SUMMARY: ',
+    'CATEGORIES:holiday',
+    'END:VEVENT',
+    'BEGIN:VEVENT',
+    'DTSTART;VALUE=DATE:20260621',
+    'SUMMARY: ',
+    'CATEGORIES:holiday',
+    'END:VEVENT',
+    'END:VCALENDAR',
+  ].join('\n');
+
   export default {
     data: {
       holidayCalendar,
+      chineseHolidayCalendar,
+      dragonBoatCalendar,
     },
     onLoad() {
       console.log('Calendar component test page loaded');
@@ -74,7 +127,7 @@
       <text class="section-copy">
         `eventSource` accepts raw iCalendar text. This sample includes a multi-day shutdown,
         Christmas Day, and a yearly recurring Lunar New Year entry. Month cells surface a primary
-        label when space allows.
+        label with single-line fade when it exceeds the configured width.
       </text>
       <calendar
         class="demo-calendar"
@@ -88,25 +141,63 @@
       </text>
       <text class="note">
         V1 keeps the component display-only: no date tap event, no paging gesture, and no built-in
-        remote fetch. In UI, month mode shows a compact primary label and week mode collapses the
-        same resolved data into a presence marker.
+        remote fetch. In UI, month mode shows a primary label and week mode collapses the same
+        resolved data into a presence marker.
       </text>
     </card>
 
-    <card class="section-card" title="Chinese Locale">
+    <card class="section-card" title="Chinese Holiday / Workday Badges">
       <text class="section-copy">
-        `locale` switches weekday labels, month titles, and fallback event copy. Week range titles
-        remain numeric across locales.
+        Chinese locale renders holiday and adjusted-workday corner badges. This case selects the
+        holiday date itself, while long festival labels stay single-line and fade on the right edge.
       </text>
       <calendar
         class="demo-calendar"
-        displayDate="2026-12-01"
-        value="2026-12-25"
+        displayDate="2026-05-01"
+        value="2026-05-01"
         locale="zh-CN"
-        eventSource="{{holidayCalendar}}"
+        weekStart="sunday"
+        eventSource="{{chineseHolidayCalendar}}"
       />
       <text class="caption">
-        Props: displayDate=2026-12-01, value=2026-12-25, locale=zh-CN, eventSource=ICS
+        Props: displayDate=2026-05-01, value=2026-05-01, locale=zh-CN, weekStart=sunday
+      </text>
+    </card>
+
+    <card class="section-card" title="Dragon Boat Blank Summary">
+      <text class="section-copy">
+        This ICS keeps the official Dragon Boat label on the first holiday and leaves the following
+        holiday summaries blank, so those days should show badges without hard-coded fallback text.
+      </text>
+      <calendar
+        class="demo-calendar"
+        displayDate="2026-06-01"
+        value="2026-06-19"
+        locale="zh-CN"
+        weekStart="monday"
+        eventSource="{{dragonBoatCalendar}}"
+      />
+      <text class="caption">
+        Props: displayDate=2026-06-01, value=2026-06-19, locale=zh-CN, eventSource=Dragon Boat ICS
+      </text>
+    </card>
+
+    <card class="section-card" title="Chinese Week Markers">
+      <text class="section-copy">
+        Week mode keeps the same holiday / workday data but uses compact markers below the date.
+        Corner badges remain available for the resolved holiday and adjusted-workday days.
+      </text>
+      <calendar
+        class="demo-calendar"
+        mode="week"
+        displayDate="2026-05-01"
+        value="2026-05-07"
+        locale="zh-CN"
+        weekStart="sunday"
+        eventSource="{{chineseHolidayCalendar}}"
+      />
+      <text class="caption">
+        Props: mode=week, displayDate=2026-05-01, locale=zh-CN, weekStart=sunday
       </text>
     </card>
   </view>

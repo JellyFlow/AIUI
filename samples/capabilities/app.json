@@ -2,6 +2,9 @@
   "pages": [
     "pages/index/index"
   ],
+  "permissions": [
+    "GEOLOCATION"
+  ],
   "fonts": [
     {
       "family": "Bundled Serif",

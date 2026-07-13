@@ -9,13 +9,20 @@
 <script setup>
 import wx from 'wx';
 
-const CANVAS_API_FRAME_INTERVAL_MS = 22;
 const CANVAS_API_MOTION_STEP_MS = 90;
+const MAX_FRAME_DELTA_MS = 50;
 
 export default {
+  onLoad() {
+    this.rafId = null;
+    this.lastFrameTimeMs = 0;
+    this.elapsedMs = 0;
+    this.renderLoopActive = false;
+  },
+
   onShow() {
     try {
-      this.startAnimation();
+      this.startRenderLoop();
     } catch (err) {
       console.error('failed to draw', err.message || err);
       console.error(err.stack);
@@ -23,28 +30,50 @@ export default {
   },
 
   onHide() {
-    this.stopAnimation();
+    this.stopRenderLoop();
   },
 
   onUnload() {
-    this.stopAnimation();
+    this.stopRenderLoop();
   },
 
-  startAnimation() {
-    this.stopAnimation();
+  startRenderLoop() {
+    this.stopRenderLoop();
     this.elapsedMs = 0;
-    this.drawFrame();
-    this.timer = setInterval(() => {
-      this.elapsedMs += CANVAS_API_FRAME_INTERVAL_MS;
-      this.drawFrame();
-    }, CANVAS_API_FRAME_INTERVAL_MS);
+    this.lastFrameTimeMs = 0;
+    this.renderLoopActive = true;
+    this.scheduleRenderFrame();
   },
 
-  stopAnimation() {
-    if (this.timer) {
-      clearInterval(this.timer);
-      this.timer = null;
+  stopRenderLoop() {
+    this.renderLoopActive = false;
+    if (this.rafId !== null) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
     }
+  },
+
+  scheduleRenderFrame() {
+    if (!this.renderLoopActive || this.rafId !== null) {
+      return;
+    }
+    this.rafId = requestAnimationFrame((timestamp) => {
+      this.rafId = null;
+      this.renderFrame(timestamp);
+      this.scheduleRenderFrame();
+    });
+  },
+
+  renderFrame(timestamp) {
+    if (!this.renderLoopActive) {
+      return;
+    }
+    if (this.lastFrameTimeMs) {
+      const deltaMs = Math.max(0, Math.min(MAX_FRAME_DELTA_MS, timestamp - this.lastFrameTimeMs));
+      this.elapsedMs += deltaMs;
+    }
+    this.lastFrameTimeMs = timestamp;
+    this.drawFrame();
   },
 
   drawFrame() {

@@ -1,14 +1,14 @@
 import wx from 'wx';
 
-const CANVAS_FRAME_INTERVAL_MS = 22;
 const CANVAS_MOTION_STEP_MS = 80;
+const MAX_FRAME_DELTA_MS = 50;
 
 export default {
   data: {},
 
   onShow() {
     try {
-      this.startAnimation();
+      this.startRenderLoop();
     } catch (err) {
       console.error('failed to draw', err.message || err);
       console.error(err.stack);
@@ -16,32 +16,58 @@ export default {
   },
 
   onLoad(query) {
+    this.rafId = null;
+    this.lastFrameTimeMs = 0;
+    this.elapsedMs = 0;
+    this.renderLoopActive = false;
     console.info('load page', query);
   },
 
   onHide() {
-    this.stopAnimation();
+    this.stopRenderLoop();
   },
 
   onUnload() {
-    this.stopAnimation();
+    this.stopRenderLoop();
   },
 
-  startAnimation() {
-    this.stopAnimation();
+  startRenderLoop() {
+    this.stopRenderLoop();
     this.elapsedMs = 0;
-    this.drawDashboardFrame();
-    this.timer = setInterval(() => {
-      this.elapsedMs += CANVAS_FRAME_INTERVAL_MS;
-      this.drawDashboardFrame();
-    }, CANVAS_FRAME_INTERVAL_MS);
+    this.lastFrameTimeMs = 0;
+    this.renderLoopActive = true;
+    this.scheduleRenderFrame();
   },
 
-  stopAnimation() {
-    if (this.timer) {
-      clearInterval(this.timer);
-      this.timer = null;
+  stopRenderLoop() {
+    this.renderLoopActive = false;
+    if (this.rafId !== null) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
     }
+  },
+
+  scheduleRenderFrame() {
+    if (!this.renderLoopActive || this.rafId !== null) {
+      return;
+    }
+    this.rafId = requestAnimationFrame((timestamp) => {
+      this.rafId = null;
+      this.renderFrame(timestamp);
+      this.scheduleRenderFrame();
+    });
+  },
+
+  renderFrame(timestamp) {
+    if (!this.renderLoopActive) {
+      return;
+    }
+    if (this.lastFrameTimeMs) {
+      const deltaMs = Math.max(0, Math.min(MAX_FRAME_DELTA_MS, timestamp - this.lastFrameTimeMs));
+      this.elapsedMs += deltaMs;
+    }
+    this.lastFrameTimeMs = timestamp;
+    this.drawDashboardFrame();
   },
 
   drawDashboardFrame() {

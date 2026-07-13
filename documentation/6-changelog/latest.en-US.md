@@ -1,3 +1,21 @@
+# v0.14.0
+
+## Layout and Styling
+- **Text and Flex Layout Improvements**: Expanded layout support with full `line-height` handling for both `px` values and unitless numbers, and added support for the `flex` property.
+- **Background and Clipping Enhancements**: Added support for CSS `background` images and gradients, along with `clip-path`, `mask-image`, and `mask-mode`.
+
+## Tooling and Runtime
+- **TypeScript Workflow Support**: Improved TypeScript support across single-file components, pages, and module-based projects.
+- **Locale and Region Awareness**: `navigator` now exposes `region` (Overseas or Mainland China) and `language` for runtime localization and regional adaptation.
+- **Frame Scheduling Support**: Added `requestAnimationFrame` to take advantage of the highest available frame rate on the device.
+
+## Media and Performance
+- **Controllable Photo Preview**: `takePhoto` now allows disabling the system preview with `enableSystemPreview=false`.
+- **Rendering and Audio Optimizations**: Improved performance for `canvas drawImage` and `Sound` playback to reduce overhead in graphics and audio scenarios.
+
+## Stability Fixes
+- **Storage Persistence Fix**: Fixed the issue where `localStorage` could still be used after a package version update.
+
 # v0.1.1
 
 ## Runtime APIs

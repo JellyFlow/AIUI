@@ -1,3 +1,21 @@
+# v0.14.0
+
+## 布局与样式
+- **文本与弹性布局增强**：补齐 `line-height` 能力，支持 `px` 和纯数字写法，并新增 `flex` 属性支持。
+- **背景与裁剪能力扩展**：支持 CSS `background` 图片与渐变，同时补充 `clip-path`、`mask-image` 和 `mask-mode` 等样式能力。
+
+## 开发与运行时
+- **TypeScript 工程支持**：完善 TypeScript 使用体验，覆盖单文件组件、页面与模块等典型场景。
+- **设备环境信息补充**：支持通过 `navigator` 获取 `region`（海外或中国大陆）与 `language`，便于按地域和语言做运行时适配。
+- **帧调度能力接入**：支持 `requestAnimationFrame`，以获得设备可提供的最高可用帧率。
+
+## 多媒体与性能
+- **拍照预览可控**：`takePhoto` 新增 `enableSystemPreview=false` 配置，可按需关闭系统预览。
+- **渲染与音频性能优化**：优化 `canvas drawImage` 与 `Sound` 播放表现，提升图像绘制和音频播放效率。
+
+## 稳定性修复
+- **存储行为修正**：修复更新包版本后 `localStorage` 仍可延续使用的问题。
+
 # v0.1.1
 
 ## 运行时 API

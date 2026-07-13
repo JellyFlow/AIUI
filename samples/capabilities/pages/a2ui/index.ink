@@ -309,8 +309,9 @@
       }
     ]`;
 
-      // Simulate network chunks (e.g. 100 bytes per chunk)
+      // Simulate network chunks.
       const chunkSize = 50;
+      const chunkDelayMs = 120;
       let offset = 0;
 
       const sendNextChunk = () => {
@@ -319,8 +320,8 @@
           const chunk = fullJson.slice(offset, offset + chunkSize);
           stream.writeChunk(chunk);
           offset += chunkSize;
-          // Schedule next chunk with a slight delay to visualize streaming
-          sendNextChunk();
+          // Schedule next chunk with a slight delay to visualize streaming.
+          setTimeout(sendNextChunk, chunkDelayMs);
         } else {
           console.log('Stream finished.');
           stream.close();

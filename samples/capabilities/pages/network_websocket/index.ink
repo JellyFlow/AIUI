@@ -8,9 +8,9 @@
 import wx from 'wx';
 
 const SOCKET_URL = 'wss://echo.websocket.org/.ws';
-const WS_CANVAS_FRAME_INTERVAL_MS = 22;
 const WS_CANVAS_MOTION_STEP_MS = 90;
 const PREVIEW_LIMIT = 120;
+const MAX_FRAME_DELTA_MS = 50;
 
 function clipText(value, limit = PREVIEW_LIMIT) {
   const text = typeof value === 'string' ? value : String(value);
@@ -42,39 +42,64 @@ export default {
   },
 
   onShow() {
-    this.startAnimation();
+    this.startRenderLoop();
   },
 
   onLoad() {
     this.socketTask = null;
+    this.rafId = null;
+    this.lastFrameTimeMs = 0;
     this.elapsedMs = 0;
+    this.renderLoopActive = false;
     this.lastHeartbeatPulseMs = -1000;
     this.lastReceivePulseMs = -1000;
   },
 
   onUnload() {
-    this.stopAnimation();
+    this.stopRenderLoop();
     this.closeSocket(true);
   },
 
   onHide() {
-    this.stopAnimation();
+    this.stopRenderLoop();
   },
 
-  startAnimation() {
-    this.stopAnimation();
-    this.drawStatusFrame();
-    this.timer = setInterval(() => {
-      this.elapsedMs += WS_CANVAS_FRAME_INTERVAL_MS;
-      this.drawStatusFrame();
-    }, WS_CANVAS_FRAME_INTERVAL_MS);
+  startRenderLoop() {
+    this.stopRenderLoop();
+    this.lastFrameTimeMs = 0;
+    this.renderLoopActive = true;
+    this.scheduleRenderFrame();
   },
 
-  stopAnimation() {
-    if (this.timer) {
-      clearInterval(this.timer);
-      this.timer = null;
+  stopRenderLoop() {
+    this.renderLoopActive = false;
+    if (this.rafId !== null) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
     }
+  },
+
+  scheduleRenderFrame() {
+    if (!this.renderLoopActive || this.rafId !== null) {
+      return;
+    }
+    this.rafId = requestAnimationFrame((timestamp) => {
+      this.rafId = null;
+      this.renderFrame(timestamp);
+      this.scheduleRenderFrame();
+    });
+  },
+
+  renderFrame(timestamp) {
+    if (!this.renderLoopActive) {
+      return;
+    }
+    if (this.lastFrameTimeMs) {
+      const deltaMs = Math.max(0, Math.min(MAX_FRAME_DELTA_MS, timestamp - this.lastFrameTimeMs));
+      this.elapsedMs += deltaMs;
+    }
+    this.lastFrameTimeMs = timestamp;
+    this.drawStatusFrame();
   },
 
   drawStatusFrame() {

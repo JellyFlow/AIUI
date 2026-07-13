@@ -40,6 +40,7 @@
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../box_shadow/index" tabindex="10">Box Shadow</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../clip_path/index" tabindex="56">Clip Path</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../background_image/index" tabindex="51">Background Image</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../mask/index" tabindex="57">Mask Image</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../opacity/index" tabindex="11">Opacity</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../outline/index" tabindex="12">Outline</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../transition_animation/index" tabindex="13">Transition and Animation</button></view>
@@ -50,6 +51,7 @@
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../canvas_api/index" tabindex="17">Canvas API</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../canvas_draw_image_perf/index" tabindex="52">Canvas drawImage Perf</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../chart/index" tabindex="18">Chart</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../map/index" tabindex="58">Map</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../lottie/index" tabindex="19">Lottie</button></view>
       </view>
     </card>
@@ -100,6 +102,7 @@
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../magnetometer/index" tabindex="33">Magnetometer</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../absolute-orientation-sensor/index" tabindex="34">AbsoluteOrientationSensor</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../compass/index" tabindex="35">Compass</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../geolocation/index" tabindex="59">Geolocation</button></view>
       </view>
     </card>
   </view>

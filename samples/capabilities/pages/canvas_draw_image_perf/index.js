@@ -3,11 +3,11 @@ import elephantAsset, { mimeType as elephantMimeType } from '../../assets/elepha
 
 const CANVAS_WIDTH = 400;
 const CANVAS_HEIGHT = 520;
-const FRAME_INTERVAL_MS = 16;
 const DEFAULT_DRAW_COUNT = 900;
 const SPRITE_SIZE = 28;
 const SPRITE_SOURCE_SIZE = 96;
 const STATUS_SAMPLE_SIZE = 20;
+const MAX_FRAME_DELTA_MS = 50;
 
 function nowMs() {
   return Date.now();
@@ -81,19 +81,29 @@ export default {
 
   onLoad() {
     this.bitmap = null;
+    this.rafId = null;
+    this.lastFrameTimeMs = 0;
+    this.elapsedMs = 0;
     this.frameIndex = 0;
-    this.running = true;
+    this.renderLoopActive = false;
+    this.renderLoopEnabled = true;
     this.frameTimes = [];
     this.drawCount = DEFAULT_DRAW_COUNT;
     this.loadBitmap();
   },
 
+  onShow() {
+    if (this.renderLoopEnabled && this.bitmap) {
+      this.startRenderLoop();
+    }
+  },
+
   onHide() {
-    this.stopLoop();
+    this.stopRenderLoop();
   },
 
   onUnload() {
-    this.stopLoop();
+    this.stopRenderLoop();
     if (this.bitmap && typeof this.bitmap.close === 'function') {
       this.bitmap.close();
     }
@@ -109,7 +119,11 @@ export default {
         drawCount: this.drawCount,
         toggleLabel: 'Stop',
       });
-      this.startLoop();
+      if (this.renderLoopEnabled) {
+        this.startRenderLoop();
+      } else {
+        this.drawPerfFrame();
+      }
     } catch (error) {
       this.setData({
         statusText: `Load failed: ${error && error.message ? error.message : String(error)}`,
@@ -119,36 +133,59 @@ export default {
     }
   },
 
-  startLoop() {
-    this.stopLoop();
+  startRenderLoop() {
+    this.stopRenderLoop();
     if (!this.bitmap) {
       return;
     }
 
-    this.running = true;
+    this.renderLoopEnabled = true;
+    this.renderLoopActive = true;
+    this.lastFrameTimeMs = 0;
     this.setData({ statusText: 'Running', toggleLabel: 'Stop' });
-    this.timer = setInterval(() => {
-      this.drawPerfFrame();
-    }, FRAME_INTERVAL_MS);
+    this.scheduleRenderFrame();
+  },
+
+  stopRenderLoop() {
+    this.renderLoopActive = false;
+    if (this.rafId !== null) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
+    }
+  },
+
+  scheduleRenderFrame() {
+    if (!this.renderLoopActive || this.rafId !== null) {
+      return;
+    }
+    this.rafId = requestAnimationFrame((timestamp) => {
+      this.rafId = null;
+      this.renderFrame(timestamp);
+      this.scheduleRenderFrame();
+    });
+  },
+
+  renderFrame(timestamp) {
+    if (!this.renderLoopActive) {
+      return;
+    }
+    if (this.lastFrameTimeMs) {
+      const deltaMs = Math.max(0, Math.min(MAX_FRAME_DELTA_MS, timestamp - this.lastFrameTimeMs));
+      this.elapsedMs += deltaMs;
+    }
+    this.lastFrameTimeMs = timestamp;
     this.drawPerfFrame();
   },
 
-  stopLoop() {
-    if (this.timer) {
-      clearInterval(this.timer);
-      this.timer = null;
-    }
-    this.running = false;
-    this.setData({ toggleLabel: 'Start' });
-  },
-
   toggleRunning() {
-    if (this.running) {
-      this.stopLoop();
+    if (this.renderLoopActive) {
+      this.renderLoopEnabled = false;
+      this.stopRenderLoop();
       this.setData({ statusText: 'Paused' });
+      this.setData({ toggleLabel: 'Start' });
       return;
     }
-    this.startLoop();
+    this.startRenderLoop();
   },
 
   runLowLoad() {
@@ -171,7 +208,7 @@ export default {
       lastFrameMs: '0.0',
       fps: '0.0',
     });
-    if (!this.running && this.bitmap) {
+    if (!this.renderLoopActive && this.bitmap) {
       this.drawPerfFrame();
     }
   },
