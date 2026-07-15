@@ -7,12 +7,32 @@
 <script setup>
 export default {
   data: {
-    greeting: 'Hello JSUI!'
+    focused: false,
+    greeting: 'Hello AIUI!'
   },
   handleTap() {
     this.setData({
       greeting: '你好，世界！'
     });
+    setTimeout(() => {
+      this.setData({
+        greeting: 'Hello AIUI!',
+      });
+    }, 1000);
+  },
+  onKeyUp(event) {
+    if (!this.data.focused && (event.code === 'Enter' || event.code === 'GlobalHook')) {
+      this.setData({
+        focused: true,
+      });
+      return;
+    }
+    if (this.data.focused && event.code === 'Enter') {
+      this.handleTap();
+      this.setData({
+        focused: false,
+      });
+    }
   }
 }
 </script>
@@ -20,7 +40,7 @@ export default {
 <page>
   <view class="container">
     <text class="title">{{ greeting }}</text>
-    <button bindtap="handleTap">点击我</button>
+    <button class="{{ focused ? 'focused' : '' }}" bindtap="handleTap">点击我</button>
   </view>
 </page>
 
@@ -31,6 +51,11 @@ export default {
   align-items: center;
   justify-content: center;
   height: 100vh;
+}
+
+card {
+  width: 80%;
+  margin-top: 
 }
 
 .title {
@@ -44,7 +69,7 @@ export default {
 
 button {
   color: #40FF5E;
-  border: 2px solid #40FF5E;
+  border: 1px solid #40ff5d42;
   border-radius: 12px;
   box-sizing: border-box;
   padding: 5px;
@@ -52,4 +77,9 @@ button {
   line-height: 24px;
   text-align: center;
 }
+
+button.focused {
+  border: 2px solid #40FF5E;
+}
+
 </style>
