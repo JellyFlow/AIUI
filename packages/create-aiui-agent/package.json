@@ -1,6 +1,6 @@
 {
   "name": "@yodaos-pkg/create-aiui-agent",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "bin": {
     "create-aiui-agent": "./index.js"
   },
