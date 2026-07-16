@@ -35,6 +35,110 @@ export default {
 
 If you use TypeScript, `.ts` modules can also be imported directly. When the extension is omitted, resolution tries `.js` first and then `.ts`.
 
+## Using TypeScript
+
+AIUI removes TypeScript type syntax before runtime evaluation, so `.ts` files can be authored and imported directly. However, type checking, editor completion, and global API hints still need a local TypeScript setup in your project.
+
+First install TypeScript and the AIUI type package:
+
+```bash
+npm install -D typescript @yodaos-pkg/ink-env
+```
+
+Then create a minimal `tsconfig.json` in the project root:
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "noEmit": true,
+    "types": ["@yodaos-pkg/ink-env"]
+  },
+  "include": ["**/*.ts"]
+}
+```
+
+The `types` field explicitly pulls in the base declarations from `@yodaos-pkg/ink-env`, so your editor and `tsc` can recognize runtime APIs such as `PageInstance`, `ComponentInstance`, and `wx`.
+
+```typescript
+// helpers.ts
+export function formatCount(count: number): string {
+  return `Count: ${count}`;
+}
+```
+
+```typescript
+// pages/index/index.ts
+import { formatCount } from './helpers';
+
+const page: PageInstance = {
+  data: {
+    title: formatCount(1)
+  },
+  onLoad() {
+    wx.showToast({ title: this.data.title });
+  }
+};
+
+export default page;
+```
+
+If you only want these declarations for one project, you can keep `@yodaos-pkg/ink-env` in that project's own `tsconfig` rather than exposing it through a broader editor-wide setup.
+
+## Using WebAssembly
+
+`.wasm` files are treated as asset modules, so the default export is a `Blob`. In practice, you compile source code to `.wasm` with Rust or another standard WebAssembly toolchain, then import it the same way as other assets in AIUI modules.
+
+Here is a minimal Rust example. Start by creating a library crate and adding the WebAssembly target:
+
+```bash
+cargo new --lib math-wasm
+rustup target add wasm32-unknown-unknown
+```
+
+Then change `src/lib.rs` to:
+
+```rust
+#[unsafe(no_mangle)]
+pub extern "C" fn add(left: i32, right: i32) -> i32 {
+    left + right
+}
+```
+
+Compile the `.wasm` file with Rust:
+
+```bash
+cargo build --target wasm32-unknown-unknown --release
+```
+
+Once the build finishes, copy the artifact into your project assets, for example:
+
+```bash
+cp target/wasm32-unknown-unknown/release/math_wasm.wasm ../aiui-app/assets/math.wasm
+```
+
+Then import and instantiate it in an AIUI module:
+
+```javascript
+import wasmBlob, { mimeType, path } from '../assets/math.wasm';
+
+export default {
+  async onLoad() {
+    const buffer = await wasmBlob.arrayBuffer();
+    const { instance } = await WebAssembly.instantiate(buffer);
+
+    console.log(mimeType); // application/wasm
+    console.log(path);
+    console.log(instance.exports.add(1, 2)); // 3
+  }
+};
+```
+
+The same import flow works for larger Rust crates too, as long as the final artifact is a standard `.wasm` file.
+
 ## Asset Modules
 
 AIUI also supports importing images, audio files, and WebAssembly assets through ESM. By default, these assets are exported as `Blob`.
