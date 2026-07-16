@@ -745,7 +745,14 @@
       {
         "id": "visual",
         "label": "Visual Design",
-        "children": []
+        "children": [
+          {
+            "id": "monochrome",
+            "label": "Monochrome",
+            "children": []
+          }
+        ],
+        "hasIndex": true
       },
       {
         "id": "interaction",

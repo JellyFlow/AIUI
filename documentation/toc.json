@@ -745,7 +745,14 @@
       {
         "id": "visual",
         "label": "视觉设计",
-        "children": []
+        "children": [
+          {
+            "id": "monochrome",
+            "label": "Monochrome",
+            "children": []
+          }
+        ],
+        "hasIndex": true
       },
       {
         "id": "interaction",
