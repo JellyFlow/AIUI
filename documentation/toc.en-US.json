@@ -505,11 +505,6 @@
     "label": "API",
     "children": [
       {
-        "id": "basic",
-        "label": "Basics",
-        "children": []
-      },
-      {
         "id": "framework",
         "label": "Framework",
         "expanded": true,
@@ -525,9 +520,16 @@
             "docId": "framework-page"
           },
           {
-            "id": "global",
-            "label": "Global",
-            "docId": "framework-global"
+            "id": "component",
+            "label": "Component",
+            "docId": "framework-component",
+            "docPath": "3-api/framework/component.en-US.md"
+          },
+          {
+            "id": "entity",
+            "label": "Entity",
+            "docId": "framework-entity",
+            "docPath": "3-api/framework/entity.en-US.md"
           }
         ]
       },
@@ -573,8 +575,16 @@
         "expanded": false,
         "children": [
           {
-            "id": "https-sse",
-            "label": "HTTPS / SSE"
+            "id": "https",
+            "label": "HTTPS",
+            "docId": "network-https",
+            "docPath": "3-api/network/https.en-US.md"
+          },
+          {
+            "id": "event-source",
+            "label": "Event Source",
+            "docId": "network-event-source",
+            "docPath": "3-api/network/event-source.en-US.md"
           },
           {
             "id": "websocket",

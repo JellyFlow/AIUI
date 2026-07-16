@@ -505,11 +505,6 @@
     "label": "API",
     "children": [
       {
-        "id": "basic",
-        "label": "基础",
-        "children": []
-      },
-      {
         "id": "framework",
         "label": "框架",
         "expanded": true,
@@ -525,9 +520,16 @@
             "docId": "framework-page"
           },
           {
-            "id": "global",
-            "label": "全局",
-            "docId": "framework-global"
+            "id": "component",
+            "label": "Component",
+            "docId": "framework-component",
+            "docPath": "3-api/framework/component.md"
+          },
+          {
+            "id": "entity",
+            "label": "Entity",
+            "docId": "framework-entity",
+            "docPath": "3-api/framework/entity.md"
           }
         ]
       },
@@ -549,15 +551,15 @@
         "children": [
           {
             "id": "sound",
-            "label": "音效"
+            "label": "Sound"
           },
           {
             "id": "audio-player",
-            "label": "音频播放器"
+            "label": "Audio Player"
           },
           {
             "id": "camera",
-            "label": "相机",
+            "label": "Camera",
             "docId": "media-camera"
           },
           {
@@ -573,8 +575,16 @@
         "expanded": false,
         "children": [
           {
-            "id": "https-sse",
-            "label": "HTTPS / SSE"
+            "id": "https",
+            "label": "HTTPS",
+            "docId": "network-https",
+            "docPath": "3-api/network/https.md"
+          },
+          {
+            "id": "event-source",
+            "label": "Event Source",
+            "docId": "network-event-source",
+            "docPath": "3-api/network/event-source.md"
           },
           {
             "id": "websocket",

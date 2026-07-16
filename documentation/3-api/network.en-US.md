@@ -26,8 +26,8 @@ const response = await fetch('/api/agent/chat', {
 
 ## Continue Reading
 
-- **[HTTPS / SSE](/AIUI/api/network-https-sse)**: Learn which scenarios are best suited to regular requests and server push, and how to use them in AIUI.
+- **[HTTPS](/AIUI/api/network-https)**: Learn how ordinary request-response scenarios work in AIUI.
+- **[Event Source](/AIUI/api/network-event-source)**: Learn which business scenarios fit one-way streaming pushes from the server.
 - **[WebSocket](/AIUI/api/network-websocket)**: Learn the typical usage patterns for bidirectional real-time connections, plus connection management and reconnection recommendations.
 - **[Device](/AIUI/api/device)**: See Bluetooth connectivity and device sensor capabilities, including accelerometer, orientation, and gyroscope APIs.
-- **[Global](/AIUI/api/framework-global)**: See entry points for `fetch`, timers, and global objects.
 - **[Networking](/AIUI/api/weixin-compatible-apis-networking)**: See compatible API details for `wx.request`, `WebSocket`, `EventSource`, and more.

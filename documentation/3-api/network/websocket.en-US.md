@@ -52,9 +52,10 @@ socket.addEventListener('close', () => {
 - When only requesting one complete result
 - When only needing one-way incremental pushes from the server
 
-For these scenarios, [HTTPS / SSE](/AIUI/api/network-https-sse) is usually simpler and easier to maintain.
+For these scenarios, [HTTPS](/AIUI/api/network-https) or [Event Source](/AIUI/api/network-event-source) is usually simpler and easier to maintain.
 
 ## Read Next
 
-- **[HTTPS / SSE](/AIUI/api/network-https-sse)**: Learn what kinds of business scenarios are better suited to request-response and one-way streaming pushes from the server.
+- **[HTTPS](/AIUI/api/network-https)**: Learn which business scenarios are better suited to request-response.
+- **[Event Source](/AIUI/api/network-event-source)**: Learn which business scenarios are better suited to one-way streaming pushes from the server.
 - **[Networking](/AIUI/api/weixin-compatible-apis-networking)**: Learn details of compatible APIs such as `wx.connectSocket`.

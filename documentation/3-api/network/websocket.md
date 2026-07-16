@@ -52,9 +52,10 @@ socket.addEventListener('close', () => {
 - 只是请求一次完整结果时
 - 只是需要服务端单向推送增量时
 
-这些场景通常用 [HTTPS / SSE](/AIUI/api/network-https-sse) 更简单，也更容易维护。
+这些场景通常用 [HTTPS](/AIUI/api/network-https) 或 [Event Source](/AIUI/api/network-event-source) 更简单，也更容易维护。
 
 ## 继续阅读
 
-- **[HTTPS / SSE](/AIUI/api/network-https-sse)**：查看请求响应和服务端单向流式推送更适合怎样的业务。
+- **[HTTPS](/AIUI/api/network-https)**：查看普通请求响应更适合怎样的业务。
+- **[Event Source](/AIUI/api/network-event-source)**：查看服务端单向流式推送更适合怎样的业务。
 - **[网络请求 (networking)](/AIUI/api/weixin-compatible-apis-networking)**：查看 `wx.connectSocket` 等兼容接口细节。

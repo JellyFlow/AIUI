@@ -26,8 +26,8 @@ const response = await fetch('/api/agent/chat', {
 
 ## 继续阅读
 
-- **[HTTPS / SSE](/AIUI/api/network-https-sse)**：了解普通请求与服务端推送分别适合什么场景，以及在 AIUI 中该如何使用。
+- **[HTTPS](/AIUI/api/network-https)**：了解普通请求响应场景在 AIUI 中该如何使用。
+- **[Event Source](/AIUI/api/network-event-source)**：了解服务端单向流式推送适合怎样的业务场景。
 - **[WebSocket](/AIUI/api/network-websocket)**：了解双向实时连接的典型使用方式、连接管理和重连建议。
 - **[设备](/AIUI/api/device)**：查看蓝牙连接和设备传感器能力，包括加速度、姿态和陀螺仪等接口。
-- **[全局](/AIUI/api/framework-global)**：查看 `fetch`、定时器与全局对象相关能力入口。
 - **[网络请求 (networking)](/AIUI/api/weixin-compatible-apis-networking)**：查看 `wx.request`、`WebSocket`、`EventSource` 等兼容接口细节。
