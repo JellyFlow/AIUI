@@ -57,6 +57,8 @@ Therefore, one of the key extensions AIUI makes to OAF is to expand an agent tha
 - [Page Definition](/AIUI/guide/open-agent-format-page-definition): View the `Page` object, parameter table, example code, and instance methods
 - [Lifecycle](/AIUI/guide/open-agent-format-page-lifecycle): View the lifecycle order, callback table, and interactive demo
 - [Events](/AIUI/guide/open-agent-format-page-events): View page-level event callbacks, voice wakeup details, and example code
+- [Focus System](/AIUI/framework/open-agent-format-page-focus): View the two-layer focus model, focus styling, focus callbacks, and Navigation interaction mode
+- [Target](/AIUI/framework/open-agent-format-page-target): View target semantics, target-based styling, and target change callbacks
 
 ## Recommended Reading
 

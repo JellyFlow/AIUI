@@ -57,6 +57,8 @@
 - [页面定义](/AIUI/guide/open-agent-format-page-definition)：查看 `Page` 对象、参数表、示例代码和实例方法
 - [生命周期](/AIUI/guide/open-agent-format-page-lifecycle)：查看生命周期顺序、回调表格和交互式演示
 - [事件](/AIUI/guide/open-agent-format-page-events)：查看页面级事件回调、语音唤醒说明和示例代码
+- [焦点系统](/AIUI/framework/open-agent-format-page-focus)：查看两层焦点、焦点样式、焦点事件和 Navigation 交互模式
+- [Target](/AIUI/framework/open-agent-format-page-target)：查看不同 target 的语义、样式分支和 target 变化事件
 
 ## 推荐阅读
 

@@ -267,6 +267,18 @@
                 "id": "events",
                 "label": "Events",
                 "docId": "open-agent-format-page-events"
+              },
+              {
+                "id": "focus",
+                "label": "Focus System",
+                "docId": "open-agent-format-page-focus",
+                "docPath": "1-framework/open-agent-format/focus.en-US.md"
+              },
+              {
+                "id": "target",
+                "label": "Target",
+                "docId": "open-agent-format-page-target",
+                "docPath": "1-framework/open-agent-format/target.en-US.md"
               }
             ]
           },

@@ -267,6 +267,18 @@
                 "id": "events",
                 "label": "事件",
                 "docId": "open-agent-format-page-events"
+              },
+              {
+                "id": "focus",
+                "label": "焦点系统",
+                "docId": "open-agent-format-page-focus",
+                "docPath": "1-framework/open-agent-format/focus.md"
+              },
+              {
+                "id": "target",
+                "label": "Target",
+                "docId": "open-agent-format-page-target",
+                "docPath": "1-framework/open-agent-format/target.md"
               }
             ]
           },
