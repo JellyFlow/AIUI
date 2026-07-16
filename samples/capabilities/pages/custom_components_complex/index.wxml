@@ -1,0 +1,70 @@
+<view class="page">
+  <text class="title">Complex Custom Component Fixture</text>
+  <text class="subtitle">Uses a list of parent components, nested child events, and remount toggles.</text>
+
+  <view class="section">
+    <text class="section-title">Current State</text>
+    <text class="line">variant: {{variant}}</text>
+    <text class="line">detail mode: {{detailMode}}</text>
+    <text class="line">rendered panels: {{panelCount}}</text>
+    <text class="line">show archived: {{showArchived}}</text>
+    <text class="line">component region visible: {{showPanels}}</text>
+    <text class="line">last mutation: {{lastMutation}}</text>
+    <text class="line">last event: {{lastEvent}}</text>
+    <text class="line">selected path: {{selectedPath}}</text>
+  </view>
+
+  <view class="section">
+    <text class="section-title">Controls</text>
+    <view class="button-row">
+      <button class="action" bindtap="toggleVariant">Toggle Variant</button>
+      <button class="action action-secondary" bindtap="resetScenario">Reset Scenario</button>
+    </view>
+    <view class="switch-row">
+      <text class="switch-label">Expanded detail</text>
+      <switch checked="{{detailExpanded}}" bindchange="onDetailModeChange" />
+    </view>
+    <view class="switch-row">
+      <text class="switch-label">Show archived list item</text>
+      <switch checked="{{showArchived}}" bindchange="onShowArchivedChange" />
+    </view>
+    <view class="switch-row">
+      <text class="switch-label">Show component region</text>
+      <switch checked="{{showPanels}}" bindchange="onShowPanelsChange" />
+    </view>
+  </view>
+
+  <view class="section">
+    <text class="section-title">List Snapshot</text>
+    <view class="snapshot-row" ink:for="{{panels}}" ink:key="panelId">
+      <text class="snapshot-text">{{item.panelId}} · {{item.itemLabel}} · {{item.owner}}</text>
+    </view>
+  </view>
+
+  <view class="section">
+    <text class="section-title">Component Region</text>
+    <view class="panel-list" wx:if="{{showPanels}}">
+      <view class="panel-item" ink:for="{{panels}}" ink:key="panelId">
+        <workflow-panel
+          panelId="{{item.panelId}}"
+          title="{{item.title}}"
+          subtitle="{{item.subtitle}}"
+          owner="{{item.owner}}"
+          statusLabel="{{item.statusLabel}}"
+          detailMode="{{detailMode}}"
+          itemId="{{item.itemId}}"
+          itemLabel="{{item.itemLabel}}"
+          itemOwner="{{item.itemOwner}}"
+          itemPriority="{{item.itemPriority}}"
+          itemState="{{item.itemState}}"
+          itemNote="{{item.itemNote}}"
+          bindselect="onPanelSelect"
+          bindpromote="onPanelPromote"
+        />
+      </view>
+    </view>
+    <view class="placeholder" wx:else>
+      <text class="placeholder-text">Component region is hidden. Re-enable it to verify remount with the latest props.</text>
+    </view>
+  </view>
+</view>

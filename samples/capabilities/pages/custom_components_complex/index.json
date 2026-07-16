@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "Complex Custom Components",
+  "usingComponents": {
+    "workflow-panel": "components/workflow-panel"
+  }
+}

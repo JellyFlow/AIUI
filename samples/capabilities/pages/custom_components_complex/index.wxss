@@ -1,0 +1,64 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.subtitle,
+.line,
+.switch-label,
+.snapshot-text,
+.placeholder-text {
+  font-size: 13px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border-width: 1px;
+  border-radius: 14px;
+}
+
+.section-title {
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.button-row {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.action {
+  flex: 1;
+}
+
+.action-secondary {
+  width: 100%;
+}
+
+.switch-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.snapshot-row,
+.panel-list,
+.panel-item,
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

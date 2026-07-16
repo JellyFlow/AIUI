@@ -4,7 +4,7 @@
   </view>
   <view class="nav-list">
     <card class="nav-card">
-      <view class="category-title">Layout &amp; Navigation</view>
+      <view class="category-title">Layout &amp; Page Structure</view>
       <view class="nav-group">
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../layout/index" tabindex="0">Layout</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../row_column/index" tabindex="1">Row / Column</button></view>
@@ -13,27 +13,33 @@
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../grid/index" tabindex="4">Grid</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../list/index" tabindex="5">List</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../conditional_rendering/index" tabindex="49">Conditional Rendering</button></view>
-        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../input_textarea/index" tabindex="45">Input &amp; Textarea</button></view>
-        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../switch/switch" tabindex="46">Switch</button></view>
       </view>
     </card>
 
     <card class="nav-card">
-      <view class="category-title">Content &amp; Presentation</view>
+      <view class="category-title">Components &amp; Interactive Input</view>
+      <view class="nav-group">
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../input_textarea/index" tabindex="45">Input &amp; Textarea</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../switch/switch" tabindex="46">Switch</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../calendar/index" tabindex="37">Calendar</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../error_state/index" tabindex="39">Error State</button></view>
+      </view>
+    </card>
+
+    <card class="nav-card">
+      <view class="category-title">Text &amp; Content Presentation</view>
       <view class="nav-group">
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../bundled_fonts/index">Bundled Fonts</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../font_styling/index" tabindex="6">Font Styling</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../font_weight/index" tabindex="7">Font Weight</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../image/index" tabindex="44">Image</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../image_clip_progress/index" tabindex="47">Image Clip &amp; Progress</button></view>
-        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../calendar/index" tabindex="37">Calendar</button></view>
-        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../error_state/index" tabindex="39">Error State</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../streamdown/index" tabindex="41">Streamdown</button></view>
       </view>
     </card>
 
     <card class="nav-card">
-      <view class="category-title">Visual &amp; Motion</view>
+      <view class="category-title">Graphics &amp; Visual Effects</view>
       <view class="nav-group">
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../transform/index" tabindex="8">Transform</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../filter/index" tabindex="9">Filter</button></view>
@@ -71,11 +77,12 @@
     </card>
 
     <card class="nav-card">
-      <view class="category-title">Network &amp; Integration</view>
+      <view class="category-title">Network &amp; Platform Capabilities</view>
       <view class="nav-group">
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../network_https/index" tabindex="22">HTTPS</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../network_sse/index" tabindex="23">SSE</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../network_websocket/index" tabindex="24">WebSocket</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../host_packages/index" tabindex="63">Host Packages</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../open/index" tabindex="42">Open</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../close/index" tabindex="38">Close</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../storage/index" tabindex="40">Storage</button></view>
@@ -83,19 +90,22 @@
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../typescript_page/index" tabindex="53">TypeScript Page</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../typescript_sfc/index" tabindex="54">TypeScript SFC</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../typescript_modules/index" tabindex="55">TypeScript Modules</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../wasm/index" tabindex="60">WebAssembly</button></view>
       </view>
     </card>
 
     <card class="nav-card">
-      <view class="category-title">AI &amp; Agents</view>
+      <view class="category-title">AI &amp; Advanced Components</view>
       <view class="nav-group">
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../chat/index" tabindex="30">Chat</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../a2ui/index" tabindex="36">A2UI</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../custom_components/index" tabindex="61">Custom Components</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../custom_components_complex/index" tabindex="62">Custom Components Complex</button></view>
       </view>
     </card>
 
     <card class="nav-card">
-      <view class="category-title">Sensors &amp; Orientation</view>
+      <view class="category-title">Sensors &amp; Location</view>
       <view class="nav-group nav-group-list">
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../accelerometer/index" tabindex="31">Accelerometer</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../gyroscope/index" tabindex="32">Gyroscope</button></view>

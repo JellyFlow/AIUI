@@ -5,6 +5,10 @@
   "permissions": [
     "GEOLOCATION"
   ],
+  "usingComponents": {
+    "workflow-panel": "components/workflow-panel",
+    "workflow-node": "components/workflow-node"
+  },
   "fonts": [
     {
       "family": "Bundled Serif",

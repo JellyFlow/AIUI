@@ -14,6 +14,26 @@ export default {
     </text>
 
     <card class="section-card" role="group">
+      <text class="section-title">Host Fonts</text>
+      <text class="host-note">
+        This block uses host-managed fonts from hostFontsDir with explicit fallback stacks.
+      </text>
+      <text class="host-serif-label">Host Serif</text>
+      <text class="host-serif-title">Noto Serif keeps long-form UI copy calm and readable.</text>
+      <text class="host-serif-copy">
+        If the host serif is unavailable, the stack falls back to Georgia, Times New Roman, and then
+        generic serif rendering.
+      </text>
+      <text class="host-emoji-label">Host Emoji</text>
+      <text class="host-emoji-copy">
+        Emoji fallback stays usable across hosts: 🙂 🚀 🎧 🌤️ 🧭
+      </text>
+      <text class="host-emoji-note">
+        Stack: Noto Emoji, Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, sans-serif.
+      </text>
+    </card>
+
+    <card class="section-card" role="group">
       <text class="section-title">Editorial Intro</text>
       <text class="eyebrow">Weekly Brief</text>
       <text class="editorial-title">A calmer reading rhythm starts with better text styling.</text>
@@ -88,6 +108,44 @@ export default {
     flex-direction: column;
     margin-bottom: var(--spacing-lg, 20px);
     gap: var(--spacing-sm, 8px);
+  }
+
+  .host-note,
+  .host-serif-copy,
+  .host-emoji-note {
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--color-text-secondary);
+  }
+
+  .host-serif-label,
+  .host-emoji-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    font-variant: small-caps;
+    letter-spacing: 0.6px;
+    margin-top: var(--spacing-sm, 6px);
+  }
+
+  .host-serif-title {
+    font-family: 'Noto Serif', Georgia, 'Times New Roman', serif;
+    font-size: 22px;
+    line-height: 30px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+  }
+
+  .host-serif-copy {
+    font-family: 'Noto Serif', Georgia, 'Times New Roman', serif;
+    color: var(--color-text-primary);
+  }
+
+  .host-emoji-copy {
+    font-family: 'Noto Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
+    font-size: 24px;
+    line-height: 32px;
+    color: var(--color-text-primary);
   }
 
   .section-title {
