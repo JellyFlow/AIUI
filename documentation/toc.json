@@ -83,12 +83,6 @@
         "hasIndex": true
       },
       {
-        "id": "custom-components",
-        "label": "自定义组件",
-        "status": "unsupported",
-        "children": []
-      },
-      {
         "id": "basic",
         "label": "基础能力",
         "expanded": false,
@@ -275,6 +269,24 @@
                 "docId": "open-agent-format-page-events"
               }
             ]
+          },
+          {
+            "id": "custom-components",
+            "label": "组件",
+            "docId": "open-agent-format-custom-components",
+            "docPath": "1-framework/open-agent-format/custom-components.md"
+          },
+          {
+            "id": "module",
+            "label": "模块",
+            "docId": "open-agent-format-module",
+            "docPath": "1-framework/open-agent-format/module.md"
+          },
+          {
+            "id": "packages",
+            "label": "Package",
+            "docId": "open-agent-format-packages",
+            "docPath": "1-framework/open-agent-format/package.md"
           }
         ]
       },

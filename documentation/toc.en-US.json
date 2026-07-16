@@ -83,12 +83,6 @@
         "hasIndex": true
       },
       {
-        "id": "custom-components",
-        "label": "Custom Components",
-        "status": "unsupported",
-        "children": []
-      },
-      {
         "id": "basic",
         "label": "Core Capabilities",
         "expanded": false,
@@ -275,6 +269,24 @@
                 "docId": "open-agent-format-page-events"
               }
             ]
+          },
+          {
+            "id": "custom-components",
+            "label": "Components",
+            "docId": "open-agent-format-custom-components",
+            "docPath": "1-framework/open-agent-format/custom-components.en-US.md"
+          },
+          {
+            "id": "module",
+            "label": "Modules",
+            "docId": "open-agent-format-module",
+            "docPath": "1-framework/open-agent-format/module.en-US.md"
+          },
+          {
+            "id": "packages",
+            "label": "Packages",
+            "docId": "open-agent-format-packages",
+            "docPath": "1-framework/open-agent-format/package.en-US.md"
           }
         ]
       },
