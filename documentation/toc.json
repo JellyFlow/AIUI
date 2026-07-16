@@ -736,6 +736,11 @@
         "children": []
       },
       {
+        "id": "skills",
+        "label": "Skills",
+        "children": []
+      },
+      {
         "id": "debug",
         "label": "真机调试",
         "children": []
