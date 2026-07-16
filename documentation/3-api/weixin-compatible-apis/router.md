@@ -4,47 +4,11 @@
 
 ## 方法概览
 
-- `wx.switchTab(Object object)`: 跳转到 tabBar 页面，并关闭其他所有非 tabBar 页面。
-- `wx.reLaunch(Object object)`: 关闭所有页面，打开到应用内的某个页面。
 - `wx.redirectTo(Object object)`: 关闭当前页面，跳转到应用内的某个页面，但是不允许跳转到 tabBar 页面。
 - `wx.navigateTo(Object object)`: 保留当前页面，跳转到应用内的某个页面，但是不能跳到 tabBar 页面。
 - `wx.navigateBack(Object object)`: 关闭当前页面，返回上一页面或多级页面。
 
 ## 方法详解
-
-### `wx.switchTab(Object object)`
-
-跳转到 tabBar 页面。调用后，当前非 tabBar 页面栈会被清理，只保留目标 tabBar 页面对应的展示状态。
-
-- **适用场景**：从业务页返回首页、切换到底部导航的其他主页面。
-- **参数**：传入对象参数，用于指定要切换到的 tabBar 页面。
-- **页面栈行为**：会关闭其他非 tabBar 页面，因此不适合用于保留中间流程页。
-- **注意事项**：只能跳转到 tabBar 页面，不能用于普通内容页。
-
-示例：
-
-```javascript
-wx.switchTab({
-  url: '/pages/home/index'
-});
-```
-
-### `wx.reLaunch(Object object)`
-
-关闭当前所有页面，然后打开一个新的页面。它适合用来重置当前导航状态，重新建立页面入口。
-
-- **适用场景**：登录完成后进入首页、异常恢复后回到主页面、需要清空历史页面栈的流程切换。
-- **参数**：传入对象参数，用于指定重新打开的目标页面。
-- **页面栈行为**：会清空已有页面栈，再打开目标页。
-- **注意事项**：由于历史页面会被移除，调用后通常不能再通过返回操作回到之前的页面。
-
-示例：
-
-```javascript
-wx.reLaunch({
-  url: '/pages/home/index'
-});
-```
 
 ### `wx.redirectTo(Object object)`
 
@@ -104,5 +68,3 @@ wx.navigateBack({
 - 进入下一级普通页面，用 `wx.navigateTo`。
 - 用新页面替换当前页面，用 `wx.redirectTo`。
 - 返回上一个页面或多级页面，用 `wx.navigateBack`。
-- 切换到底部 tabBar 页面，用 `wx.switchTab`。
-- 清空历史页面并重新打开入口页面，用 `wx.reLaunch`。
