@@ -133,7 +133,7 @@ This system favors light fills, clear outlines, and stable whitespace, which fit
 
 ## Preview And Source
 
-- Design source: `design/monochrome/design-system-green.md`
-- Visual preview: `design/monochrome/preview-green.html`
+- Design source: [design-system-green.md](https://github.com/jsar-project/AIUI/blob/main/design/monochrome/design-system-green.md)
+- Visual preview: [preview-green.html](https://github.com/jsar-project/AIUI/blob/main/design/monochrome/preview-green.html)
 
 If the monochrome line expands later, new color variants should be added under `Monochrome` instead of changing the semantic boundary of the current `Green` spec.

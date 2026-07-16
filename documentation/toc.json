@@ -748,8 +748,7 @@
         "children": [
           {
             "id": "monochrome",
-            "label": "Monochrome",
-            "children": []
+            "label": "单色显示"
           }
         ],
         "hasIndex": true

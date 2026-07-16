@@ -133,7 +133,7 @@
 
 ## 预览与来源
 
-- 设计源文件：`design/monochrome/design-system-green.md`
-- 视觉预览：`design/monochrome/preview-green.html`
+- 设计源文件：[design-system-green.md](https://github.com/jsar-project/AIUI/blob/main/design/monochrome/design-system-green.md)
+- 视觉预览：[preview-green.html](https://github.com/jsar-project/AIUI/blob/main/design/monochrome/preview-green.html)
 
 如果需要继续扩展单色显示分支，推荐在 `Monochrome` 下新增新的颜色变体，而不是直接修改现有 `Green` 规范的语义边界。
