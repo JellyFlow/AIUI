@@ -1,6 +1,6 @@
 # Publish to the Hi Rokid Agent Store
 
-After you complete agent development and packaging (generating the `.aix` file), you can publish it to the Agent Store through the Rokid Rizon platform so that users worldwide can download and use it.
+After you complete agent development and packaging (generating the `.aix` file), you can publish it to the Hi Rokid Agent Store through the Rokid AIUI Studio Global so that users worldwide can download and use it.
 
 ## 1. Log in to the Rokid AIUI Studio Global
 
