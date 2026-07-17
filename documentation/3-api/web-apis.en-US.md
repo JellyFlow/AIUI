@@ -18,7 +18,7 @@ To help developers find documentation faster by usage scenario, Web-standard cap
 - **[Media](/AIUI/api/media)**: See the `Web Audio API` entry point in AIUI.
 - **[AI](/AIUI/api/ai)**: See the relationship between Web Speech capabilities and AI speech capabilities.
 - **[Device](/AIUI/api/device)**: See perception-related capabilities such as `BarcodeDetector`.
-- **[Network](/AIUI/api/network)**: See common Web networking and global capabilities such as `window`, `fetch`, and `URL`.
+- **[Network](/AIUI/api/network)**: See common Web networking capabilities such as `fetch` and `URL`.
 - **[Encoding](/AIUI/api/encoding)**: See text encoding and decoding capabilities such as `TextEncoder` and `TextDecoder`.
 - **[Crypto](/AIUI/api/crypto)**: See Web Crypto capabilities such as `crypto` and `SubtleCrypto`.
 - **[Storage](/AIUI/api/storage)**: See local persistence capabilities such as `localStorage` and `sessionStorage`.
@@ -27,7 +27,6 @@ To help developers find documentation faster by usage scenario, Web-standard cap
 
 ## Recommended Reading
 
-- **[Global](/AIUI/api/framework-global)**: Basic global objects and the `fetch` entry point.
 - **[URL](/AIUI/api/network-url)**: URL construction, parsing, and query parameter handling.
 - **[Encoding](/AIUI/api/encoding)**: Text encoding and decoding.
 - **[Crypto](/AIUI/api/crypto)**: Web Crypto capabilities.

@@ -18,7 +18,7 @@ AIUI 积极拥护并主要支持 **WinterCG (Web-interoperable Runtimes Communit
 - **[多媒体](/AIUI/api/media)**：查看 `Web Audio API` 在 AIUI 中的音频能力入口。
 - **[AI](/AIUI/api/ai)**：查看 Web Speech 相关能力与 AI 语音能力的关系。
 - **[设备](/AIUI/api/device)**：查看 `BarcodeDetector` 等感知类能力。
-- **[网络](/AIUI/api/network)**：查看 `window`、`fetch`、`URL` 等通用 Web 网络与全局能力。
+- **[网络](/AIUI/api/network)**：查看 `fetch`、`URL` 等通用 Web 网络能力。
 - **[编码](/AIUI/api/encoding)**：查看 `TextEncoder`、`TextDecoder` 等文本编码与解码能力。
 - **[加密](/AIUI/api/crypto)**：查看 `crypto`、`SubtleCrypto` 等 Web Crypto 能力。
 - **[数据存储](/AIUI/api/storage)**：查看 `localStorage`、`sessionStorage` 等本地持久化能力。
@@ -27,7 +27,6 @@ AIUI 积极拥护并主要支持 **WinterCG (Web-interoperable Runtimes Communit
 
 ## 推荐阅读
 
-- **[全局](/AIUI/api/framework-global)**：基础全局对象与 `fetch` 入口。
 - **[URL](/AIUI/api/network-url)**：URL 构造、解析与查询参数处理。
 - **[Encoding](/AIUI/api/encoding)**：文本编码与解码。
 - **[Crypto](/AIUI/api/crypto)**：Web Crypto 能力。
