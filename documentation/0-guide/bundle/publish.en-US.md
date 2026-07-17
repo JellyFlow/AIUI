@@ -1,10 +1,10 @@
-# Publish to the Agent Store
+# Publish to the Hi Rokid Agent Store
 
 After you complete agent development and packaging (generating the `.aix` file), you can publish it to the Agent Store through the Rokid Rizon platform so that users worldwide can download and use it.
 
-## 1. Log in to the Rizon Platform
+## 1. Log in to the Rokid AIUI Studio Global
 
-Visit [Rokid Rizon Platform](https://rizon.rokid.com/space/home) and sign in with your developer account. If you do not have an account yet, complete registration and developer verification first.
+Visit [Rokid AIUI Studio Global](https://aiui-global.rokid.com/space) and sign in with your developer account. If you do not have an account yet, complete registration and developer verification first.
 
 ## 2. Create an Agent Application
 
@@ -31,5 +31,5 @@ Visit [Rokid Rizon Platform](https://rizon.rokid.com/space/home) and sign in wit
 
 If you need to release new features or fix bugs:
 1. Modify the code locally and run `aix pack` again.
-2. Upload the new `.aix` file to the Rizon platform.
+2. Upload the new `.aix` file to the [Rokid AIUI Studio Global](https://aiui-global.rokid.com/space).
 3. Submit the new version for review. After approval, user devices automatically trigger a hot update based on `VERSION`.
