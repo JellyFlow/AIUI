@@ -1,6 +1,6 @@
 # v0.15.0
 
-## Routing & Networking
+## Routing & Network
 - **Duplicate navigation prevention**: Fixed an issue where `wx.navigateTo` would navigate to the same page again if the target URL matched the current page URL.
 - **Corrected request defaults**: Fixed the default values for `wx.request`. `responseType` now defaults to `text`, and `dataType` defaults to `json`.
 
