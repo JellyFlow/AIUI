@@ -1,3 +1,16 @@
+# v0.15.0
+
+## Routing & Network
+- **Duplicate navigation protection**: Fixed an issue where `wx.navigateTo` would still trigger repeated navigation when the target URL was the same as the current page.
+- **Request default values fixed**: Fixed the default parameter behavior of `wx.request`: the default value of `responseType` is `text`, and the default value of `dataType` is `json`.
+
+## Components & Ecosystem
+- **Custom component support**: Added support for developing and using custom components, improving component encapsulation and reusability.
+- **Third-party package integration**: Added support for importing third-party packages, enhancing project extensibility and ecosystem compatibility.
+
+## Device & Sensors
+- **Absolute orientation sensor**: Added support for the absolute orientation sensor, which can be used to obtain the device’s orientation in real-world space.
+
 # v0.14.0
 
 ## Layout and Styling
