@@ -28,6 +28,16 @@
         "hasIndex": true
       },
       {
+        "id": "overview",
+        "label": "Overview",
+        "children": []
+      },
+      {
+        "id": "concepts",
+        "label": "Concept Introduction",
+        "children": []
+      },
+      {
         "id": "structure",
         "label": "Project Structure",
         "children": []

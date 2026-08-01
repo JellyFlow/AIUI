@@ -1,10 +1,10 @@
 # Logic Development
 
-The logic layer of AIUI agents adopts a modular development model similar to modern frontend frameworks. You can register an agent application or page by exporting a configuration object with `export default`.
+In AIUI, the logic layer is the part that turns user intent into executable behavior. It adopts a modular development model similar to modern frontend frameworks: you register an agent or page by exporting a configuration object with `export default`, and organize lifecycle, state, and event handlers around how intent should be processed.
 
 ## Register an Agent (App)
 
-Every agent project must have an `app.js` or `app.ink` in the root directory (in SFC mode). In a `.js` file, the application instance is registered by exporting it with `export default`. In a `.ink` file, as the SFC entry, module export is not supported directly. Instead, application logic must be defined inside script blocks and other ESM modules can be imported as needed. The application instance is used to handle global lifecycle hooks and store global shared data.
+Every agent project must have an `app.js` or `app.ink` in the root directory (in SFC mode). In a `.js` file, the agent instance is registered by exporting it with `export default`. In a `.ink` file, as the SFC entry, module export is not supported directly. Instead, agent logic must be defined inside script blocks and other ESM modules can be imported as needed. The agent instance is used to handle global lifecycle hooks, coordinate agent-level intent flow, and store global shared data.
 
 ### Example Code
 
@@ -41,7 +41,7 @@ export default {
 
 ## Register a Page (Page)
 
-Each page is defined by a page configuration object in its logic file (`.js` or `.ink`). In a `.js` file, the page is registered through `export default`; in a `.ink` file, the logic is defined directly inside `<script setup>` and required modules are imported there. This object defines the page's initial data, lifecycle callbacks, event handlers, and more.
+Each page is defined by a page configuration object in its logic file (`.js` or `.ink`). In a `.js` file, the page is registered through `export default`; in a `.ink` file, the logic is defined directly inside `<script setup>` and required modules are imported there. This object defines the page's initial data, lifecycle callbacks, event handlers, and more. In practice, page logic is where user intent is translated into state transitions and UI updates.
 
 ### Example Code
 
@@ -94,9 +94,8 @@ export default {
 
 ## Page Instance Methods
 
-In page logic, you can access the page instance via `this` and call the following common methods:
+In page logic, you can access the page instance via `this` and call the following common methods. These APIs are the basic tools for turning intent changes into visible interface updates:
 
 - **`this.setData(Object data, Function callback)`**: Sends data from the logic layer to the view layer asynchronously, while also updating the corresponding values in `this.data`.
 - **`this.data`**: Gets the current page data.
 - **`this.route`**: Not supported yet.
-

@@ -1,10 +1,10 @@
 # User Interface (UI) Development
 
-The AIUI view layer is mainly composed of WXML (WeiXin Markup Language) and WXSS (WeiXin Style Sheets). Together with base components and the event system, they build high-performance interactive interfaces for intelligent agents.
+In AIUI, the view layer is the surface where intent is made visible and interactive. It is mainly composed of WXML (WeiXin Markup Language) and WXSS (WeiXin Style Sheets). Together with base components and the event system, they build high-performance interfaces that present intent, collect user actions, and return feedback for intelligent agents.
 
 ## WXML (Page Structure)
 
-WXML is a markup language similar to HTML and is used to describe page structure. It supports data binding, conditional rendering, list rendering, and template references.
+WXML is a markup language similar to HTML and is used to describe page structure. In an intent-driven framework, it is responsible for exposing current state and available actions in a structured way. It supports data binding, conditional rendering, list rendering, and template references.
 
 ### Core Features
 
@@ -33,7 +33,7 @@ WXML is a markup language similar to HTML and is used to describe page structure
 
 ## WXSS (Page Styles)
 
-WXSS is a style language used to describe component styles in WXML. It extends CSS features to better fit agent development scenarios.
+WXSS is a style language used to describe component styles in WXML. It extends CSS features to better fit agent development scenarios and helps turn intent and state into clear visual feedback.
 
 ### Core Features
 
@@ -74,6 +74,5 @@ WXSS is a style language used to describe component styles in WXML. It extends C
 
 ## Rendering Flow
 
-1. **Data-driven updates**: When the logic layer calls `this.setData`, the view layer performs incremental updates based on the new data.
+1. **Data-driven updates**: When the logic layer calls `this.setData`, the view layer performs incremental updates based on the new data, so intent changes can be reflected quickly.
 2. **High-performance rendering**: The AIUI view layer runs on the JSAR rendering engine, which delivers a smooth 2D/3D hybrid rendering experience and is especially suitable for AI + AR devices.
-

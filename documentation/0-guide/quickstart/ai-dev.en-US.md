@@ -13,7 +13,7 @@ npx skills add https://github.com/jsar-project/AIUI/tree/main/skills/aiui-dev
 
 ## Features and Usage
 
-`aiui-dev` is a professional Skill for AIUI application development. It provides a complete AIUI development context for coding agents, so the AI does not just generate generic frontend code, but can assist according to AIUI project structure, page conventions, component systems, and design constraints.
+`aiui-dev` is a professional Skill for AIUI agent development. It provides a complete AIUI development context for coding agents, so the AI does not just generate generic frontend code, but can assist according to AIUI project structure, page conventions, component systems, and design constraints.
 
 ### Core Capabilities
 - **Understand AIUI project structure**: Recognizes core directories and configuration files such as `AGENTS.md`, `app.json`, `app.js`, `pages/`, and `assets/`, helping you scaffold or organize AIUI projects.
@@ -31,4 +31,3 @@ You can install this Skill into the coding agent you are using through the `skil
 - If you want to learn about supported agents, installation methods, parameter options, and more usage details for `skills`, refer to [skills - npm](https://www.npmjs.com/package/skills).
 
 After installation, the AI assistant can help you with page generation, API integration, style authoring, troubleshooting, and design alignment based on AIUI-specific context.
-

@@ -16,7 +16,7 @@ The following example uses a weather scenario to demonstrate what in-chat intera
 
 ### Immersive Interface Interaction
 
-Immersive interface interaction means that the UI is no longer attached to chat messages. Instead, a standalone interface carries the complete interaction flow. This interface can be a task panel, an application window, a game interface, or any other more complete operating space, while the user can still interact with it through voice or other input methods. For example, in a Landlord game interface, the table, hand cards, buttons, and status area are all presented by the UI, while the user can still play cards, confirm actions, or collaborate with the agent through voice.
+Immersive interface interaction means that the UI is no longer attached to chat messages. Instead, a standalone interface carries the complete interaction flow. This interface can be a task panel, an agent window, a game interface, or another more complete operation space. Users can still interact with it through voice or other input methods. For example, in a Landlord game interface, the table, cards, buttons, and status area are all presented by the UI, while the user can still play cards, confirm actions, or collaborate with the Agent through voice.
 
 The following example uses a Landlord scenario to demonstrate what immersive interface interaction typically looks like: the main interaction happens inside a complete interface, and the AI does more than reply with a sentence. It continuously collaborates with the user around that interface.
 
@@ -184,7 +184,7 @@ Many real products do not rely on just one approach. Instead, they combine them:
 AIUI is deeply compatible with the development conventions of **WeChat Mini Programs** (WXML/WXSS/API). This is not accidental, but based on the following core considerations:
 
 1. **A mature ecosystem**: WeChat Mini Programs have tens of millions of developers and an extremely rich set of components and tooling libraries. Compatibility means developers can make use of existing skills and resources with almost no barrier.
-2. **One agent, multi-platform deployment**: This is AIUI's ultimate goal. With this standard, the intelligent agent applications you build can run not only on **AR glasses**, but also adapt seamlessly to **phones, desktop environments**, and more emerging intelligent hardware, achieving "write once, deploy intelligence everywhere."
+2. **One agent, multi-platform deployment**: This is AIUI's ultimate goal. With this standard, the intelligent agents you build can run not only on **AR glasses**, but also adapt seamlessly to **phones, desktop environments**, and more emerging intelligent hardware, achieving "write once, deploy intelligence everywhere."
 3. **Native Web API support**: While remaining compatible with Mini Programs, we also provide native support for common Web APIs, allowing web developers to create in the way they are most familiar with.
 
 ## What Makes AIUI Different?
@@ -195,4 +195,3 @@ It is not just a rendering engine, but a "window" for collaborative expression b
 - **Perfect for AR glasses (low power consumption)**: It is heavily optimized for wearable devices such as AR glasses, ensuring that the collaborative result between AI and developers can still be presented smoothly on devices with extremely strict power constraints.
 
 In short, **AIUI is the bridge connecting AI, developers, and users**, bringing the power of large models into the real world in a way that best understands users.
-

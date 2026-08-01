@@ -7,7 +7,7 @@ A standard AIUI agent can use either a traditional **multi-file structure** or a
 In this mode, an agent usually consists of the following files:
 
 ### Global Configuration
-- `app.js`: Application logic that defines global lifecycle functions.
+- `app.js`: Agent logic that defines global lifecycle functions.
 - `app.json`: Global configuration file that defines page paths, window appearance, and more.
 - `app.wxss`: Global stylesheet that defines shared UI styles.
 - `AGENTS.md`: Agent description file that defines the agent's capabilities, system instructions, and metadata.
