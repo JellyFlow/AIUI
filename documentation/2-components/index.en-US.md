@@ -6,7 +6,6 @@ Ink provides a set of UI components powered by native capabilities for building 
 
 - [View](/components/view): A basic container component for organizing page structure and layout.
 - [ScrollView](/components/scroll-view): A view container that supports horizontal or vertical scrolling.
-- [Swiper](/components/swiper): A sliding container for switching between multiple screens of content.
 
 ## Basic Content
 
@@ -18,8 +17,6 @@ Ink provides a set of UI components powered by native capabilities for building 
 ## Form Components
 
 - [Button](/components/button): A clickable button component.
-- [Input](/components/input): A single-line text input component.
-- [Textarea](/components/textarea): A multi-line text input component.
 
 ## Date Components
 

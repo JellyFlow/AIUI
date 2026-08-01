@@ -98,6 +98,6 @@ This is also where AIUI goes beyond a purely descriptive Agent Format: it not on
 
 ## Recommended Reading
 
-- [AGENTS.md](/AIUI/guide/config-agents)
-- [Page Overview](/AIUI/guide/open-agent-format-page)
-- [Page Definition](/AIUI/guide/open-agent-format-page-definition)
+- [AGENTS.md](/AIUI/framework/config-agents)
+- [Page Overview](/AIUI/framework/open-agent-format-page)
+- [Page Definition](/AIUI/framework/open-agent-format-page-definition)

@@ -233,6 +233,6 @@ export default {
 
 ## 推荐阅读
 
-- [页面概览](/AIUI/guide/open-agent-format-page)
-- [页面定义](/AIUI/guide/open-agent-format-page-definition)
-- [生命周期](/AIUI/guide/open-agent-format-page-lifecycle)
+- [页面概览](/AIUI/framework/open-agent-format-page)
+- [页面定义](/AIUI/framework/open-agent-format-page-definition)
+- [生命周期](/AIUI/framework/open-agent-format-page-lifecycle)

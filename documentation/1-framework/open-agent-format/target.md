@@ -91,6 +91,6 @@ export default {
 
 ## 推荐阅读
 
-- [页面概览](/AIUI/guide/open-agent-format-page)
-- [事件](/AIUI/guide/open-agent-format-page-events)
+- [页面概览](/AIUI/framework/open-agent-format-page)
+- [事件](/AIUI/framework/open-agent-format-page-events)
 - [焦点系统](/AIUI/framework/open-agent-format-page-focus)

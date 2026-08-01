@@ -128,7 +128,7 @@ export default {
 
 In addition to lifecycle callbacks, pages also support page-level event handlers such as `onKeyDown`, `onKeyUp`, and `onVoiceWakeup`.
 
-For event triggers, parameter descriptions, and example code, see: [Events](/AIUI/guide/open-agent-format-page-events)
+For event triggers, parameter descriptions, and example code, see: [Events](/AIUI/framework/open-agent-format-page-events)
 
 ## Instance Methods
 
@@ -156,6 +156,6 @@ The rendering layer can bind to the data through WXML or the `.ink` page structu
 
 ## Recommended Reading
 
-- [Page Overview](/AIUI/guide/open-agent-format-page)
-- [Lifecycle](/AIUI/guide/open-agent-format-page-lifecycle)
-- [Events](/AIUI/guide/open-agent-format-page-events)
+- [Page Overview](/AIUI/framework/open-agent-format-page)
+- [Lifecycle](/AIUI/framework/open-agent-format-page-lifecycle)
+- [Events](/AIUI/framework/open-agent-format-page-events)

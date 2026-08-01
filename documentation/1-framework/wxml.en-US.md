@@ -1,3 +1,0 @@
-# WXML Reference
-
-Documentation is under construction...

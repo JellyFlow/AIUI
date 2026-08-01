@@ -128,7 +128,7 @@ export default {
 
 页面除了生命周期回调外，还支持页面级事件处理函数，例如 `onKeyDown`、`onKeyUp` 和 `onVoiceWakeup`。
 
-事件触发方式、参数说明和示例代码请参考：[事件](/AIUI/guide/open-agent-format-page-events)
+事件触发方式、参数说明和示例代码请参考：[事件](/AIUI/framework/open-agent-format-page-events)
 
 ## 实例方法
 
@@ -156,6 +156,6 @@ export default {
 
 ## 推荐阅读
 
-- [页面概览](/AIUI/guide/open-agent-format-page)
-- [生命周期](/AIUI/guide/open-agent-format-page-lifecycle)
-- [事件](/AIUI/guide/open-agent-format-page-events)
+- [页面概览](/AIUI/framework/open-agent-format-page)
+- [生命周期](/AIUI/framework/open-agent-format-page-lifecycle)
+- [事件](/AIUI/framework/open-agent-format-page-events)

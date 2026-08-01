@@ -98,6 +98,6 @@ export default {
 
 ## 推荐阅读
 
-- [AGENTS.md](/AIUI/guide/config-agents)
-- [页面概览](/AIUI/guide/open-agent-format-page)
-- [页面定义](/AIUI/guide/open-agent-format-page-definition)
+- [AGENTS.md](/AIUI/framework/config-agents)
+- [页面概览](/AIUI/framework/open-agent-format-page)
+- [页面定义](/AIUI/framework/open-agent-format-page-definition)

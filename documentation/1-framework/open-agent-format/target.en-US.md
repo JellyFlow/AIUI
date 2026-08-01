@@ -93,6 +93,6 @@ A better separation is:
 
 ## Recommended Reading
 
-- [Page Overview](/AIUI/guide/open-agent-format-page)
-- [Events](/AIUI/guide/open-agent-format-page-events)
+- [Page Overview](/AIUI/framework/open-agent-format-page)
+- [Events](/AIUI/framework/open-agent-format-page-events)
 - [Focus System](/AIUI/framework/open-agent-format-page-focus)

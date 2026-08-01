@@ -6,7 +6,6 @@ Ink 提供了一组由原生能力驱动的 UI 组件，用于构建应用界面
 
 - [View](/components/view): 基础容器组件，用于组织页面结构和布局。
 - [ScrollView](/components/scroll-view): 支持横向或纵向滚动的视图容器。
-- [Swiper](/components/swiper): 用于承载多屏内容切换的滑动容器。
 
 ## Basic Content
 
@@ -18,8 +17,6 @@ Ink 提供了一组由原生能力驱动的 UI 组件，用于构建应用界面
 ## Form Components
 
 - [Button](/components/button): 可点击的按钮组件。
-- [Input](/components/input): 单行文本输入组件。
-- [Textarea](/components/textarea): 多行文本输入组件。
 
 ## Date Components
 

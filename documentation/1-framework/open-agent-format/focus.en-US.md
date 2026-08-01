@@ -116,7 +116,7 @@ You can understand this mode in the following way:
 - `ArrowUp` / `ArrowDown`: Move within the current navigation path, or scroll the root view when the page does not take over
 - `Backspace`: Exit the current level, go back to the previous level, or request the page to close
 
-If the page needs to take over these behaviors, call `event.preventDefault()` in the corresponding event callback, and then manage focus movement, scrolling, and activation on your own. For the built-in key behaviors, continue reading [Events](/AIUI/guide/open-agent-format-page-events).
+If the page needs to take over these behaviors, call `event.preventDefault()` in the corresponding event callback, and then manage focus movement, scrolling, and activation on your own. For the built-in key behaviors, continue reading [Events](/AIUI/framework/open-agent-format-page-events).
 
 ## What Is Limited When The Page Is Not Focused
 
@@ -136,6 +136,6 @@ The exact boundary still depends on the host implementation, so it is best to tr
 
 ## Recommended Reading
 
-- [Page Overview](/AIUI/guide/open-agent-format-page)
-- [Events](/AIUI/guide/open-agent-format-page-events)
+- [Page Overview](/AIUI/framework/open-agent-format-page)
+- [Events](/AIUI/framework/open-agent-format-page-events)
 - [Target](/AIUI/framework/open-agent-format-page-target)

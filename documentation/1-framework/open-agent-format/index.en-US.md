@@ -86,9 +86,9 @@ This matters even more in AIUI, because AIUI is not built for agents that only a
 
 ## Continue Reading
 
-- [AGENTS.md](/AIUI/guide/config-agents): learn how the agent description file defines identity, description, and instructions
-- [app.json](/AIUI/guide/open-agent-format-app-json): learn how application entry, page lists, and global configuration work
-- [Pages](/AIUI/guide/open-agent-format-page): learn how pages carry concrete UI, lifecycle, and interaction
+- [AGENTS.md](/AIUI/framework/config-agents): learn how the agent description file defines identity, description, and instructions
+- [app.json](/AIUI/framework/open-agent-format-app-json): learn how application entry, page lists, and global configuration work
+- [Pages](/AIUI/framework/open-agent-format-page): learn how pages carry concrete UI, lifecycle, and interaction
 - [Components](./custom-components): learn how reusable UI units are registered, composed, and connected
 - [Modules](./module): learn how logic, assets, and WebAssembly are organized through modules
 - [Packages](./package): learn how modules and components are packaged into distributable capabilities

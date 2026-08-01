@@ -86,9 +86,9 @@ Open Agent Format 的价值，不在于引入新的术语，而在于让智能�
 
 ## 继续阅读
 
-- [AGENTS.md](/AIUI/guide/config-agents)：了解智能体描述文件如何定义身份、说明和指令
-- [app.json](/AIUI/guide/open-agent-format-app-json)：了解应用入口、页面集合和全局配置
-- [页面](/AIUI/guide/open-agent-format-page)：了解页面如何承载具体 UI、生命周期和交互
+- [AGENTS.md](/AIUI/framework/config-agents)：了解智能体描述文件如何定义身份、说明和指令
+- [app.json](/AIUI/framework/open-agent-format-app-json)：了解应用入口、页面集合和全局配置
+- [页面](/AIUI/framework/open-agent-format-page)：了解页面如何承载具体 UI、生命周期和交互
 - [组件](./custom-components)：了解可复用 UI 单元如何注册、组合和通信
 - [模块](./module)：了解逻辑、资源和 WebAssembly 如何通过模块组织
 - [Package](./package)：了解如何把模块与组件封装成可分发能力

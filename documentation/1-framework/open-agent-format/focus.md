@@ -116,7 +116,7 @@ export default {
 - `ArrowUp` / `ArrowDown`：在当前导航路径内移动，或在没有页面接管时触发根视图滚动
 - `Backspace`：退出当前层级、返回上一级，或请求关闭页面
 
-如果页面需要自己接管这些行为，可以在对应事件里调用 `event.preventDefault()`，然后自己维护焦点迁移、滚动和激活逻辑。相关默认按键行为可继续参考 [事件](/AIUI/guide/open-agent-format-page-events)。
+如果页面需要自己接管这些行为，可以在对应事件里调用 `event.preventDefault()`，然后自己维护焦点迁移、滚动和激活逻辑。相关默认按键行为可继续参考 [事件](/AIUI/framework/open-agent-format-page-events)。
 
 ## 非焦点下哪些能力会受限
 
@@ -136,6 +136,6 @@ export default {
 
 ## 推荐阅读
 
-- [页面概览](/AIUI/guide/open-agent-format-page)
-- [事件](/AIUI/guide/open-agent-format-page-events)
+- [页面概览](/AIUI/framework/open-agent-format-page)
+- [事件](/AIUI/framework/open-agent-format-page-events)
 - [Target](/AIUI/framework/open-agent-format-page-target)

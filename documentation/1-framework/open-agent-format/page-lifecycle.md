@@ -40,6 +40,6 @@ AIUI 页面的生命周期遵循固定的调用顺序。首次打开页面时，
 
 ## 推荐阅读
 
-- [页面概览](/AIUI/guide/open-agent-format-page)
-- [页面定义](/AIUI/guide/open-agent-format-page-definition)
-- [事件](/AIUI/guide/open-agent-format-page-events)
+- [页面概览](/AIUI/framework/open-agent-format-page)
+- [页面定义](/AIUI/framework/open-agent-format-page-definition)
+- [事件](/AIUI/framework/open-agent-format-page-events)

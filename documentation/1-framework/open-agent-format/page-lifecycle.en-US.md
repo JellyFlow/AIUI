@@ -40,6 +40,6 @@ Triggered when the page is unloaded, for example when navigating to another page
 
 ## Recommended Reading
 
-- [Page Overview](/AIUI/guide/open-agent-format-page)
-- [Page Definition](/AIUI/guide/open-agent-format-page-definition)
-- [Events](/AIUI/guide/open-agent-format-page-events)
+- [Page Overview](/AIUI/framework/open-agent-format-page)
+- [Page Definition](/AIUI/framework/open-agent-format-page-definition)
+- [Events](/AIUI/framework/open-agent-format-page-events)

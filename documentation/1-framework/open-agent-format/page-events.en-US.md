@@ -233,6 +233,6 @@ export default {
 
 ## Recommended Reading
 
-- [Page Overview](/AIUI/guide/open-agent-format-page)
-- [Page Definition](/AIUI/guide/open-agent-format-page-definition)
-- [Lifecycle](/AIUI/guide/open-agent-format-page-lifecycle)
+- [Page Overview](/AIUI/framework/open-agent-format-page)
+- [Page Definition](/AIUI/framework/open-agent-format-page-definition)
+- [Lifecycle](/AIUI/framework/open-agent-format-page-lifecycle)
