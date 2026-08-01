@@ -22,7 +22,7 @@ import { Sound } from 'audio';
 new Sound(src)
 ```
 
-- `src`: The local path to the sound effect file. It must be a non-empty string.
+- `src`: The local path to the sound effect file. It must be a non-empty string. It supports both relative paths and project-root absolute paths such as `/assets/click.wav`.
 - Only local files are supported. Remote URLs such as `http://` or `https://` are not supported.
 - The audio source is bound during construction so it can be replayed quickly afterward.
 
@@ -47,6 +47,7 @@ new Sound(src)
 ## Behavior Notes
 
 - `Sound` is only used for local sound effect files.
+- Local sound effect paths support both relative paths and project-root absolute paths.
 - `Sound` does not support changing `src`, seeking to a playback position, streaming appended data, or event listeners.
 - Calling instance methods again after `destroy()` throws an error.
 
@@ -55,7 +56,7 @@ new Sound(src)
 ```javascript
 import { Sound } from 'audio';
 
-const click = new Sound('../../assets/click.wav');
+const click = new Sound('/assets/click.wav');
 click.volume = 0.8;
 click.play();
 ```

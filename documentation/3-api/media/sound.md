@@ -22,7 +22,7 @@ import { Sound } from 'audio';
 new Sound(src)
 ```
 
-- `src`：音效文件的本地路径，必须是非空字符串。
+- `src`：音效文件的本地路径，必须是非空字符串。既支持相对路径，也支持相对于项目根目录解析的绝对路径，例如 `/assets/click.wav`。
 - 仅支持本地文件，不支持 `http://` 或 `https://` 这类远程 URL。
 - 音源会在构造时绑定，便于后续快速重播。
 
@@ -47,6 +47,7 @@ new Sound(src)
 ## 行为说明
 
 - `Sound` 仅用于本地音效文件。
+- 本地音效路径支持相对路径和相对于项目根目录解析的绝对路径。
 - `Sound` 不支持修改 `src`、跳转播放位置、流式追加数据或事件监听。
 - 调用 `destroy()` 后，再次调用实例方法会抛出错误。
 
@@ -55,7 +56,7 @@ new Sound(src)
 ```javascript
 import { Sound } from 'audio';
 
-const click = new Sound('../../assets/click.wav');
+const click = new Sound('/assets/click.wav');
 click.volume = 0.8;
 click.play();
 ```

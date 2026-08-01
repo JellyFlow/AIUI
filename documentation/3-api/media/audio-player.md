@@ -37,6 +37,7 @@ new AudioPlayer(options)
 如果你要播放一个完整的音频文件，优先使用文件播放模式。这种方式更适合背景音乐、完整语音内容或已经落盘的本地音频资源。
 
 - 使用 `src` 设置本地路径或网络 URL。
+- 本地路径既可以是相对路径，也可以是相对于项目根目录解析的绝对路径，例如 `/assets/intro.ogg`。
 - 如果是本地 `.ogg` 文件，可直接设置到 `src`。
 - 如果你已经拿到了完整的二进制数据，也可以通过 `setBuffer(data, hint)` 一次性设置，其中本地 `.ogg` 数据可传入 `hint = "ogg"`。
 
@@ -45,7 +46,7 @@ new AudioPlayer(options)
 ```javascript
 const player = new AudioPlayer();
 
-player.src = 'assets/intro.ogg';
+player.src = '/assets/intro.ogg';
 player.autoplay = false;
 player.onCanplay(() => {
   player.play();
@@ -112,8 +113,8 @@ player.finish();
 
 ### `src`
 - **类型**: `String`
-- **说明**: 音频资源的 URL 或路径。支持本地路径和网络 URL；文档中额外明确支持本地 `.ogg` 资源路径。
-- **示例**: `player.src = "assets/music.mp3";`
+- **说明**: 音频资源的 URL 或路径。支持本地路径和网络 URL；本地路径既支持相对路径，也支持相对于项目根目录解析的绝对路径，例如 `/assets/music.mp3`。文档中额外明确支持本地 `.ogg` 资源路径。
+- **示例**: `player.src = "/assets/music.mp3";`
 
 ### `startTime`
 - **类型**: `Number`

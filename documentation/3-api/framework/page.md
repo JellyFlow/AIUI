@@ -27,7 +27,7 @@ export default {
   handleComplete() {
     // 完成当前页面任务
     this.finish();
-  }
+  },
 }
 ```
 
@@ -40,6 +40,43 @@ export default {
 - **参数**:
     - `data`: 包含需要更新的数据键值对。支持以数据路径的形式给出（例如 `'a.b.c': 1`）。
     - `callback`: 可选。数据更新完成后的回调函数。
+
+## 环境感知
+
+`World Awareness` 是页面级的环境感知能力，用来让当前页面直接接入空间朝向、稳定性变化和头部手势等环境感知信息。
+
+启用后，运行时会把感知能力限制在当前页面内部。这意味着：
+
+- 页面可以拥有私有的 `orientationSensor`
+- 页面可以接收 `headgesture` 事件
+- 页面可以接收 `orientationstabilitychange` 事件
+- 页面卸载时，运行时会自动关闭这一组能力
+
+当前运行时行为：
+
+- `enableWorldAwareness()` 会创建或复用页面私有的 `orientationSensor`
+- 原生页面逻辑会启动页面级 `AbsoluteOrientationSensor`
+- `disableWorldAwareness()` 会停止当前页面级传感器会话并关闭相关回调
+- 运行时会在 `onUnload()` 完成前自动调用 `disableWorldAwareness()`
+
+如果你需要页面感知空间姿态或环境变化，通常应先启用 world awareness，再通过页面回调或 `this.orientationSensor` 读取相关信息。
+
+### `this.enableWorldAwareness()`
+将当前页面切换到页面级环境感知模式，用于启用环境感知相关能力。
+- 当前运行时会创建或复用页面私有的 `orientationSensor`。
+- 运行时会从原生页面逻辑中启动页面级 `AbsoluteOrientationSensor`。
+- 启用后，页面可接收 `headgesture` 和 `orientationstabilitychange` 的回调投递。
+- 传感器实例保持为当前页面私有，而不是挂载到 `navigator` 上。
+
+### `this.disableWorldAwareness()`
+停止当前页面级传感器会话，并关闭相关页面回调。
+- 运行时会在 `onUnload()` 完成前自动调用它，因此页面通常不需要在卸载清理里手动关闭 world awareness。
+
+### `this.orientationSensor`
+当 world awareness 启用后，页面实例会通过 `this.orientationSensor` 暴露当前页面私有的 `AbsoluteOrientationSensor` 实例。
+- 在 `enableWorldAwareness()` 执行前，它的值是 `undefined`。
+- 可用于读取 `quaternion`、`timestamp`、`stable` 和 `stabilityThreshold`。
+- 页面通常通过 `onOrientationStabilityChange(event)` 接收稳定性变化；如果需要，也可以直接给该传感器实例注册事件监听器。
 
 ### `this.finish()`
 通知系统当前页面任务已完成。
@@ -54,4 +91,6 @@ export default {
 | `onShow` | 监听页面显示 | 页面显示/切入前台时触发 |
 | `onReady` | 监听页面初次渲染完成 | 页面初次渲染完成时触发（全局只触发一次） |
 | `onHide` | 监听页面隐藏 | 页面隐藏/切入后台时触发 |
-| `onUnload` | 监听页面卸载 | 页面卸载时触发 |
+| `onUnload` | 监听页面卸载 | 页面卸载时触发。运行时会在该阶段结束前自动关闭 world awareness。 |
+| `onHeadGesture` | 监听页面级头部手势 | 启用 `enableWorldAwareness()` 后，在页面收到 `headgesture` 时触发 |
+| `onOrientationStabilityChange` | 监听页面级方向稳定性变化 | 启用 `enableWorldAwareness()` 后，在页面收到 `orientationstabilitychange` 时触发 |

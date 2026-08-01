@@ -37,6 +37,7 @@ The current documentation explicitly covers these `AudioPlayer` format and input
 If you need to play a complete audio file, prefer file playback mode. This path is better suited for background music, complete voice clips, or local audio assets that already exist as files.
 
 - Use `src` with a local path or a network URL.
+- A local path can be either a relative path or a project-root absolute path, for example `/assets/intro.ogg`.
 - For a local `.ogg` file, you can assign it directly to `src`.
 - If you already have the full binary payload, you can also call `setBuffer(data, hint)` once. For local `.ogg` data, pass `hint = "ogg"`.
 
@@ -45,7 +46,7 @@ If you need to play a complete audio file, prefer file playback mode. This path 
 ```javascript
 const player = new AudioPlayer();
 
-player.src = 'assets/intro.ogg';
+player.src = '/assets/intro.ogg';
 player.autoplay = false;
 player.onCanplay(() => {
   player.play();
@@ -112,8 +113,8 @@ player.finish();
 
 ### `src`
 - **Type**: `String`
-- **Description**: The URL or path of the audio resource. Supports local paths and network URLs. The current documentation also explicitly covers local `.ogg` resource paths.
-- **Example**: `player.src = "assets/music.mp3";`
+- **Description**: The URL or path of the audio resource. Supports local paths and network URLs. Local paths can be either relative paths or project-root absolute paths such as `/assets/music.mp3`. The current documentation also explicitly covers local `.ogg` resource paths.
+- **Example**: `player.src = "/assets/music.mp3";`
 
 ### `startTime`
 - **Type**: `Number`
