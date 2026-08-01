@@ -34,7 +34,7 @@
       },
       {
         "id": "concepts",
-        "label": "概念介绍",
+        "label": "概念",
         "children": []
       },
       {
@@ -689,7 +689,7 @@
       },
       {
         "id": "open-services",
-        "label": "开放服务",
+        "label": "开放平台",
         "children": []
       },
       {

@@ -2,7 +2,7 @@
 
 The absolute orientation sensor is used to obtain the device's current spatial heading and pose. It is suitable for scenarios such as head direction awareness, pose-driven interaction, and spatial UI alignment.
 
-In AIUI, `AbsoluteOrientationSensor` outputs quaternion-based pose data, which is suitable for further direction calculations in 3D or spatial scenes.
+In AIUI, `AbsoluteOrientationSensor` follows a usage pattern close to the Generic Sensor API, while keeping sensor access behind the host IPC boundary. It outputs quaternion-based pose data, which is suitable for further direction calculations in 3D or spatial scenes.
 
 ## Use Cases
 
@@ -16,6 +16,20 @@ In AIUI, `AbsoluteOrientationSensor` outputs quaternion-based pose data, which i
 ```javascript
 const sensor = new AbsoluteOrientationSensor({ frequency: 60 });
 ```
+
+`AbsoluteOrientationSensor` is registered globally on both `globalThis` and `window`.
+
+## Constructor
+
+```javascript
+new AbsoluteOrientationSensor(options?)
+```
+
+Supported options:
+
+| Parameter | Type | Required | Description |
+| :--- | :--- | :--- | :--- |
+| `frequency` | `number` | No | A preferred sampling frequency hint. The value is forwarded to the host, but the host may clamp, approximate, or ignore the exact cadence without failing construction. |
 
 ## Basic Example
 
@@ -55,13 +69,77 @@ sensor.start();
 - **Type**: `boolean`
 - **Description**: Whether valid pose data has been received.
 
+### `stable`
+- **Type**: `boolean`
+- **Description**: Whether the current pose is considered stable. It can be used together with the `orientationstabilitychange` event to observe stability transitions.
+
+## State Behavior
+
+In the current implementation, `AbsoluteOrientationSensor` behaves as follows:
+
+- A fresh instance starts with `activated === false`
+- A fresh instance starts with `hasReading === false`
+- `quaternion` and `timestamp` remain `null` until the first successful reading arrives
+- The first successful reading flips both `activated` and `hasReading` to `true`
+- `stop()` sets `activated` back to `false` but keeps the last successful reading cached
+
+Quaternion order:
+
+- `quaternion[0] === x`
+- `quaternion[1] === y`
+- `quaternion[2] === z`
+- `quaternion[3] === w`
+
 ## Common Methods
 
 ### `start()`
-- Starts pose sampling.
+- Starts a new pose sampling session. The runtime sends a new absolute-orientation IPC request carrying the instance `target_id`, a fresh `session_id`, and the optional preferred frequency.
 
 ### `stop()`
-- Stops pose sampling.
+- Stops the current sampling session and sends the matching stop request for the active session. If the instance is already idle, `stop()` is a no-op.
+
+## Events
+
+Absolute orientation events are routed through the DOM-style event bridge and targeted by instance `target_id`, so multiple sensor instances on the same page remain isolated from one another.
+
+Supported event names:
+
+- `activate`
+- `reading`
+- `error`
+- `orientationstabilitychange`
+
+Event payload behavior:
+
+- `activate` exposes `sessionId`
+- `reading` exposes `sessionId`, `x`, `y`, `z`, `w`, `quaternion`, and `timestamp`
+- `error` exposes `sessionId`, `error`, and `message`
+- `orientationstabilitychange` exposes `stable`
+
+You can listen for orientation stability changes like this:
+
+```javascript
+sensor.addEventListener('orientationstabilitychange', (event) => {
+  console.log('stable?', event.stable, sensor.stable);
+});
+```
+
+## Platform Scope And Stability
+
+Current first-release stability scope:
+
+- Android provides a real backend based on `SensorManager.TYPE_ROTATION_VECTOR`
+- On Android, hosts must explicitly enable the capability per `InkView`, for example by registering `InkView.AbsoluteOrientationCapability` or calling `inkView.addDefaultAbsoluteOrientationCapability()`
+- Readings, `activate` events, `error` events, and explicit `stop()` cleanup are routed through IPC
+- Unsupported native hosts return a stable error instead of hanging silently
+
+Current limits:
+
+- No standalone `Sensor` base constructor
+- No Permissions API integration
+- No guarantee of exact sampling frequency
+- No background sampling guarantee
+- No browser / WASM direct backend
 
 ## Recommendations
 
