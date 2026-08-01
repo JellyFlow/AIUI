@@ -28,12 +28,6 @@
         "hasIndex": true
       },
       {
-        "id": "open-agent-format",
-        "label": "Open Agent Format",
-        "children": [],
-        "hasIndex": true
-      },
-      {
         "id": "structure",
         "label": "Project Structure",
         "children": []
@@ -300,7 +294,8 @@
             "docId": "open-agent-format-packages",
             "docPath": "1-framework/open-agent-format/package.en-US.md"
           }
-        ]
+        ],
+        "hasIndex": true
       },
       {
         "id": "wxml",

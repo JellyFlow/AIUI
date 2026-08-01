@@ -28,14 +28,8 @@
         "hasIndex": true
       },
       {
-        "id": "open-agent-format",
-        "label": "Open Agent Format",
-        "children": [],
-        "hasIndex": true
-      },
-      {
         "id": "structure",
-        "label": "目录结构",
+        "label": "项目结构",
         "children": []
       },
       {
@@ -300,7 +294,8 @@
             "docId": "open-agent-format-packages",
             "docPath": "1-framework/open-agent-format/package.md"
           }
-        ]
+        ],
+        "hasIndex": true
       },
       {
         "id": "wxml",

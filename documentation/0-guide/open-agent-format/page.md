@@ -62,5 +62,4 @@
 
 ## 推荐阅读
 
-- [Open Agent Format](/AIUI/guide/open-agent-format)
 - [app.json](/AIUI/guide/open-agent-format-app-json)

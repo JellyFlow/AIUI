@@ -62,5 +62,4 @@ Therefore, one of the key extensions AIUI makes to OAF is to expand an agent tha
 
 ## Recommended Reading
 
-- [Open Agent Format](/AIUI/guide/open-agent-format)
 - [app.json](/AIUI/guide/open-agent-format-app-json)
