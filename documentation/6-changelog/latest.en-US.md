@@ -1,3 +1,65 @@
+# v0.16.0
+
+## Framework
+- **Page-Level Environment Awareness**: Introduced page-level environment awareness as the foundation for motion-aware and host-driven experiences. Pages can explicitly opt in with `enableWorldAwareness()` and receive higher-level interaction signals without wiring low-level device state by hand.
+
+  ```js
+  export default {
+    onLoad() {
+      this.enableWorldAwareness();
+    },
+    onHeadGesture(event) {
+      console.log(event.gesture);
+    },
+  };
+  ```
+
+- **Head Gesture Events**: Added head gesture events such as nod and shake to make hands-free confirmation and lightweight navigation flows easier to prototype in agents.
+- **Expanded Motion Sensors**: Expanded support across absolute orientation, accelerometer, gyroscope, and magnetometer scenarios so agents can reason about pose, movement, and stability with a more complete motion stack.
+
+## APIs
+- **End-to-End Streaming Responses**: Added end-to-end streaming response support so agents can start rendering or reacting before a full payload finishes, which is especially useful for remote briefings, progressive text output, and other streaming UX patterns.
+
+  ```js
+  const response = await fetch(streamUrl);
+  const reader = response.body.getReader();
+  ```
+
+- **Response Body Consumption Semantics**: Improved response body consumption behavior around pending reads and body locking, making incremental reads from `response.body` more predictable.
+- **Web API Compatibility Improvements**: Improved compatibility across `fetch`, `Headers`, `ReadableStream`, and `TextDecoder`, reducing the gap between Ink agents and browser-style networking code.
+- **TextDecoder Streaming Mode**: Added `{ stream: true }` support to `TextDecoder` for incremental UTF-8 decoding across chunk boundaries, allowing agents to reconstruct streamed text without garbled intermediate output.
+
+  ```js
+  const decoder = new TextDecoder();
+  const text = decoder.decode(chunk, { stream: true });
+  ```
+
+## Built-in Components and Examples
+- **Audio Asset Path Resolution**: Improved audio asset path resolution, including leading-slash paths such as `/assets/foo.wav`, so packaged media can be referenced more naturally from agent code.
+
+  ```js
+  import { AudioPlayer } from 'audio';
+  
+  const player = new AudioPlayer('/assets/meditation-white-noise.wav');
+  ```
+
+- **Refreshed Audio Example**: Refreshed the built-in audio example to better demonstrate local playback flows, short cues, and looping ambience with packaged assets.
+- **Environment Awareness Sample Pages**: Added dedicated sample pages for head gesture and orientation stability so developers can quickly validate environment awareness flows and see how sensor-driven state is surfaced in UI.
+- **Richer Streaming HTTPS Example**: Added a more complete streaming HTTPS sample page that demonstrates remote content loading, streamed text assembly with `TextDecoder({ stream: true })`, and compatibility checks in one place.
+
+# v0.15.0
+
+## Routing and Networking
+- **Duplicate Navigation Protection**: Fixed the issue where `wx.navigateTo` could still trigger a duplicate navigation when the target URL matched the current page.
+- **Request Default Value Fixes**: Corrected the default parameter behavior of `wx.request`, with `responseType` defaulting to `text` and `dataType` defaulting to `json`.
+
+## Components and Ecosystem
+- **Custom Component Support**: Added support for developing and using custom components, improving component encapsulation and reuse.
+- **Third-Party Package Integration**: Added support for importing third-party packages, improving project extensibility and ecosystem compatibility.
+
+## Device and Perception
+- **Absolute Orientation Sensor**: Added support for the absolute orientation sensor, enabling access to real-world device orientation information.
+
 # v0.14.0
 
 ## Layout and Styling

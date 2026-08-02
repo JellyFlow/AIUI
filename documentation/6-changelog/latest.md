@@ -1,3 +1,52 @@
+# v0.16.0
+
+## 框架
+- **页面级环境感知**：引入页面级环境感知能力，作为运动感知与宿主驱动体验的基础。页面可通过显式调用 `enableWorldAwareness()` 开启能力，并直接接收更高层的交互信号，而无需手动拼装底层设备状态。
+
+  ```js
+  export default {
+    onLoad() {
+      this.enableWorldAwareness();
+    },
+    onHeadGesture(event) {
+      console.log(event.gesture);
+    },
+  };
+  ```
+
+- **头部手势事件**：新增点头、摇头等头部手势事件，便于智能体快速实现免手确认、轻量导航等可穿戴交互流程。
+- **运动传感器扩展**：补充绝对方向、加速度计、陀螺仪和磁力计等传感器支持，帮助智能体更完整地理解姿态、运动与稳定状态。
+
+## API
+- **端到端流式响应**：新增端到端流式响应支持，智能体可在完整载荷返回前提前渲染或响应，适用于远程播报、渐进式文本输出等流式体验。
+
+  ```js
+  const response = await fetch(streamUrl);
+  const reader = response.body.getReader();
+  ```
+
+- **响应体读取语义优化**：改进了挂起读取与 body locking 相关的响应体消费语义，使基于 `response.body` 的增量读取行为更加稳定和可预期。
+- **Web API 兼容性增强**：增强 `fetch`、`Headers`、`ReadableStream` 与 `TextDecoder` 等 Web API 兼容性，进一步缩小 Ink 智能体与浏览器式网络代码之间的差异。
+- **TextDecoder 流式解码**：为 `TextDecoder` 增加 `{ stream: true }` 流式模式，支持跨 chunk 边界的增量 UTF-8 解码，避免流式文本处理中出现中间乱码。
+
+  ```js
+  const decoder = new TextDecoder();
+  const text = decoder.decode(chunk, { stream: true });
+  ```
+
+## 内置组件与示例
+- **音频资源路径解析优化**：改进音频资源路径解析，支持 `/assets/foo.wav` 这类以 `/` 开头的路径，使打包资源在智能体代码中的引用更加自然。
+
+  ```js
+  import { AudioPlayer } from 'audio';
+  
+  const player = new AudioPlayer('/assets/meditation-white-noise.wav');
+  ```
+
+- **音频示例更新**：刷新内置音频示例，更清晰地展示本地播放、短提示音与循环环境音等打包资源播放流程。
+- **环境感知示例页**：新增头部手势与方向稳定性示例页面，帮助开发者快速验证环境感知流程，并观察传感器驱动状态如何映射到 UI。
+- **流式 HTTPS 示例增强**：新增更完整的流式 HTTPS 示例页面，覆盖远程内容加载、结合 `TextDecoder({ stream: true })` 的文本拼接，以及相关兼容性检查。
+
 # v0.15.0
 
 ## 路由与网络
