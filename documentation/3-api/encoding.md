@@ -62,6 +62,19 @@ AIUI 提供了一套遵循 Web 标准的文本编码与解码接口，主要用�
 
 当 `fatal` 为 `false` 时，非法字节通常会被替换为替代字符；当 `fatal` 为 `true` 时，遇到非法字节会抛出异常，适合对输入质量要求更严格的场景。
 
+#### 增量解码
+
+`decode(input, { stream: true })` 支持按块增量解码流式文本。当 UTF-8 字符可能跨越多个数据块时，应使用 `stream: true` 保留解码器的内部状态，并在所有数据读取完成后再额外调用一次 `decode()`，把剩余字节刷新为最终文本。
+
+```javascript
+const decoder = new TextDecoder('utf-8');
+let text = '';
+
+text += decoder.decode(chunk1, { stream: true });
+text += decoder.decode(chunk2, { stream: true });
+text += decoder.decode(); // 结束流式解码并刷新剩余字节
+```
+
 ## 代码示例
 
 ### 1. 把字符串编码为 UTF-8 字节数组
@@ -126,15 +139,22 @@ try {
 ### 6. 分段解码流式文本
 
 ```javascript
+const response = await fetch('https://example.com/stream');
+const reader = response.body.getReader();
 const decoder = new TextDecoder('utf-8');
 
-const chunk1 = new Uint8Array([72, 101, 108]);
-const chunk2 = new Uint8Array([108, 111]);
-
 let text = '';
-text += decoder.decode(chunk1, { stream: true });
-text += decoder.decode(chunk2, { stream: true });
-text += decoder.decode(); // 结束流式解码
+
+while (true) {
+  const { value, done } = await reader.read();
+  if (done) {
+    break;
+  }
+
+  text += decoder.decode(value, { stream: true });
+}
+
+text += decoder.decode(); // 结束流式解码并刷新剩余字节
 
 console.log(text); // "Hello"
 ```

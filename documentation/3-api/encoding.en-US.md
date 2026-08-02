@@ -62,6 +62,19 @@ It is important to note that `TextEncoder` always outputs UTF-8 encoded results.
 
 When `fatal` is `false`, invalid bytes are typically replaced with replacement characters. When `fatal` is `true`, invalid bytes cause an exception, which is more suitable for scenarios with stricter input quality requirements.
 
+#### Incremental Decoding
+
+`decode(input, { stream: true })` supports incremental decoding for streamed text. When UTF-8 characters may cross chunk boundaries, use `stream: true` to preserve the decoder's internal state between chunks, then call `decode()` one final time after all data has been read to flush any remaining bytes.
+
+```javascript
+const decoder = new TextDecoder('utf-8');
+let text = '';
+
+text += decoder.decode(chunk1, { stream: true });
+text += decoder.decode(chunk2, { stream: true });
+text += decoder.decode(); // Finish streaming decode and flush remaining bytes
+```
+
 ## Code Examples
 
 ### 1. Encode a String into a UTF-8 Byte Array
@@ -126,15 +139,22 @@ try {
 ### 6. Decode Streaming Text in Chunks
 
 ```javascript
+const response = await fetch('https://example.com/stream');
+const reader = response.body.getReader();
 const decoder = new TextDecoder('utf-8');
 
-const chunk1 = new Uint8Array([72, 101, 108]);
-const chunk2 = new Uint8Array([108, 111]);
-
 let text = '';
-text += decoder.decode(chunk1, { stream: true });
-text += decoder.decode(chunk2, { stream: true });
-text += decoder.decode(); // 结束流式解码
+
+while (true) {
+  const { value, done } = await reader.read();
+  if (done) {
+    break;
+  }
+
+  text += decoder.decode(value, { stream: true });
+}
+
+text += decoder.decode(); // Finish streaming decode and flush remaining bytes
 
 console.log(text); // "Hello"
 ```
