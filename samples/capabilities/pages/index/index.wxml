@@ -111,6 +111,8 @@
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../gyroscope/index" tabindex="32">Gyroscope</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../magnetometer/index" tabindex="33">Magnetometer</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../absolute-orientation-sensor/index" tabindex="34">AbsoluteOrientationSensor</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../head-gesture/index" tabindex="64">Head Gesture</button></view>
+        <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../orientation-stability-change/index" tabindex="65">Orientation Stability Change</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../compass/index" tabindex="35">Compass</button></view>
         <view class="nav-item"><button class="nav-button" bindtap="navigateToPage" data-path="../geolocation/index" tabindex="59">Geolocation</button></view>
       </view>

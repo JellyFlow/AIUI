@@ -1,5 +1,8 @@
 import wx from 'wx';
 
+const TEST_SSE_URL =
+  'https://js.rokid.com/api/v1/testing/sse/events?count=999&interval=1000&event=update&prefix=ink-network-lib';
+
 export function testRequest() {
   const startTime = performance.now();
   wx.request({
@@ -16,7 +19,7 @@ export function testRequest() {
 
 export function testSSE() {
   const es = wx.createEventSource({
-    url: 'https://sse.dev/test',
+    url: TEST_SSE_URL,
   });
   es.onOpen(() => {
     console.log('SSE Open');

@@ -7,7 +7,8 @@
 <script setup>
 import wx from 'wx';
 
-const SSE_URL = 'https://sse.dev/test';
+const SSE_URL =
+  'https://js.rokid.com/api/v1/testing/sse/events?count=20&interval=500&event=message';
 const PREVIEW_LIMIT = 120;
 const INBOX_LIMIT = 3;
 
