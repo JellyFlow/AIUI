@@ -5,6 +5,7 @@ This file documents the verified device and sensor APIs available to AIUI app co
 - Common scope, entry points, and authoring rules live in [apis.md](./apis.md).
 - Interactive-gate behavior and host capability limits are part of the current implementation surface.
 - Do not assume browser-complete Bluetooth or Generic Sensor semantics beyond what is documented here.
+- Page-scoped environment awareness callbacks such as `onHeadGesture(event)` live on the page object and are summarized in [SKILL.md](./SKILL.md).
 
 ## `navigator.bluetooth`
 

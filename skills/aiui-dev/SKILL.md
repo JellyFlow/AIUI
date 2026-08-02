@@ -528,6 +528,32 @@ export default {
 }
 ```
 
+#### Environment-aware page pattern
+
+When a page needs higher-level motion-aware or host-delivered spatial signals, enable page-scoped world awareness first and then handle the related page callbacks:
+
+```js
+export default {
+  onLoad() {
+    if (typeof this.enableWorldAwareness === 'function') {
+      this.enableWorldAwareness();
+    }
+  },
+
+  onHeadGesture(event) {
+    console.log('gesture:', event.gesture);
+  },
+
+  onOrientationStabilityChange(event) {
+    console.log('stable:', event.stable);
+  },
+}
+```
+
+- `this.enableWorldAwareness()` enables page-level environment awareness so the page can receive higher-level motion and host interaction signals.
+- `onHeadGesture(event)` is called when the page receives a head gesture such as nod or shake.
+- `onOrientationStabilityChange(event)` is called when the page receives an orientation stability change, for example when the current pose becomes stable or unstable.
+
 ## 5. WXSS (WeiXin Style Sheets)
 
 WXSS is a style language used to describe the visual presentation of components. It is highly compatible with standard CSS and is used within the `<style>` block of an `.ink` file (or a standalone `.wxss` file).
@@ -853,7 +879,7 @@ When developing AIUI applications, especially for wearable devices, it is crucia
 
 ## 7. AIUI API Reference
 
-The detailed runtime API index lives in [apis.md](./apis.md). It links to domain-specific reference files for Canvas, `wx`, device, media, and AI APIs.
+The detailed runtime API index lives in [apis.md](./apis.md). It links to domain-specific reference files for Canvas, `wx`, device, media, AI, and browser-style networking / encoding APIs.
 
 When generating code:
 
