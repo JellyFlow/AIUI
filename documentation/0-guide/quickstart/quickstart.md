@@ -43,7 +43,7 @@ ls #列出当前文件夹里的文件和子文件夹
 
 ![image.png](../../image/quickstart/image%206.png)
 
-四、在Craft中使用AIUI Coding Agent进行开发
+## 四、在Craft中使用AIUI Coding Agent进行开发
 
 1.Craft中默认免费提供了LLM（DeepSeek V4 Pro），可以下载Skill进行辅助开发，下载完成记得点击启用
 
