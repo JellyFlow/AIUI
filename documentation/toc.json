@@ -244,12 +244,14 @@
           {
             "id": "agents",
             "label": "AGENTS.md",
-            "docId": "config-agents"
+            "docId": "config-agents",
+            "docPath": "1-framework/open-agent-format/agents.md"
           },
           {
             "id": "app-json",
             "label": "app.json",
-            "docId": "open-agent-format-app-json"
+            "docId": "open-agent-format-app-json",
+            "docPath": "1-framework/open-agent-format/app-json.md"
           },
           {
             "id": "page",
@@ -259,22 +261,26 @@
               {
                 "id": "overview",
                 "label": "概览",
-                "docId": "open-agent-format-page"
+                "docId": "open-agent-format-page",
+                "docPath": "1-framework/open-agent-format/page.md"
               },
               {
                 "id": "definition",
                 "label": "定义",
-                "docId": "open-agent-format-page-definition"
+                "docId": "open-agent-format-page-definition",
+                "docPath": "1-framework/open-agent-format/page-definition.md"
               },
               {
                 "id": "lifecycle",
                 "label": "生命周期",
-                "docId": "open-agent-format-page-lifecycle"
+                "docId": "open-agent-format-page-lifecycle",
+                "docPath": "1-framework/open-agent-format/lifecycle.md"
               },
               {
                 "id": "events",
                 "label": "事件",
-                "docId": "open-agent-format-page-events"
+                "docId": "open-agent-format-page-events",
+                "docPath": "1-framework/open-agent-format/events.md"
               },
               {
                 "id": "focus",
