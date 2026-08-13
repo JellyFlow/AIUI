@@ -244,12 +244,14 @@
           {
             "id": "agents",
             "label": "AGENTS.md",
-            "docId": "config-agents"
+            "docId": "config-agents",
+            "docPath": "1-framework/open-agent-format/agents.en-US.md"
           },
           {
             "id": "app-json",
             "label": "app.json",
-            "docId": "open-agent-format-app-json"
+            "docId": "open-agent-format-app-json",
+            "docPath": "1-framework/open-agent-format/app-json.en-US.md"
           },
           {
             "id": "page",
@@ -259,22 +261,26 @@
               {
                 "id": "overview",
                 "label": "Overview",
-                "docId": "open-agent-format-page"
+                "docId": "open-agent-format-page",
+                "docPath": "1-framework/open-agent-format/page.en-US.md"
               },
               {
                 "id": "definition",
                 "label": "Definition",
-                "docId": "open-agent-format-page-definition"
+                "docId": "open-agent-format-page-definition",
+                "docPath": "1-framework/open-agent-format/page-definition.en-US.md"
               },
               {
                 "id": "lifecycle",
                 "label": "Lifecycle",
-                "docId": "open-agent-format-page-lifecycle"
+                "docId": "open-agent-format-page-lifecycle",
+                "docPath": "1-framework/open-agent-format/page-lifecycle.en-US.md"
               },
               {
                 "id": "events",
                 "label": "Events",
-                "docId": "open-agent-format-page-events"
+                "docId": "open-agent-format-page-events",
+                "docPath": "1-framework/open-agent-format/page-events.en-US.md"
               },
               {
                 "id": "focus",
