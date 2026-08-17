@@ -8,14 +8,13 @@
     onLoad() {
       this.enableWorldAwareness();
     },
-    onHeadGesture(event) {
-      console.log(event.gesture);
+    onOrientationStabilityChange(event) {
+      if (event.stable) {
+        console.log('imu is stable');
+      }
     },
   };
   ```
-
-- **头部手势事件**：新增点头、摇头等头部手势事件，便于智能体快速实现免手确认、轻量导航等可穿戴交互流程。
-- **运动传感器扩展**：补充绝对方向、加速度计、陀螺仪和磁力计等传感器支持，帮助智能体更完整地理解姿态、运动与稳定状态。
 
 ## API
 - **端到端流式响应**：新增端到端流式响应支持，智能体可在完整载荷返回前提前渲染或响应，适用于远程播报、渐进式文本输出等流式体验。
@@ -44,8 +43,8 @@
   ```
 
 - **音频示例更新**：刷新内置音频示例，更清晰地展示本地播放、短提示音与循环环境音等打包资源播放流程。
-- **环境感知示例页**：新增头部手势与方向稳定性示例页面，帮助开发者快速验证环境感知流程，并观察传感器驱动状态如何映射到 UI。
-- **流式 HTTPS 示例增强**：新增更完整的流式 HTTPS 示例页面，覆盖远程内容加载、结合 `TextDecoder({ stream: true })` 的文本拼接，以及相关兼容性检查。
+- **环境感知示例页**：新增[头部手势示例](../../samples/capabilities/pages/head-gesture/index.ink)与[方向稳定性示例](../../samples/capabilities/pages/orientation-stability-change/index.ink)页面，帮助开发者快速验证环境感知流程，并观察传感器驱动状态如何映射到 UI。
+- **流式 HTTPS 示例增强**：新增更完整的[流式 HTTPS 示例页](../../samples/capabilities/pages/network_https/index.ink)，覆盖远程内容加载、结合 `TextDecoder({ stream: true })` 的文本拼接，以及相关兼容性检查。
 
 # v0.15.0
 

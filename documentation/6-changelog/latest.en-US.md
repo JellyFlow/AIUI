@@ -8,16 +8,15 @@
     onLoad() {
       this.enableWorldAwareness();
     },
-    onHeadGesture(event) {
-      console.log(event.gesture);
+    onOrientationStabilityChange(event) {
+      if (event.stable) {
+        console.log('imu is stable');
+      }
     },
   };
   ```
 
-- **Head Gesture Events**: Added head gesture events such as nod and shake to make hands-free confirmation and lightweight navigation flows easier to prototype in agents.
-- **Expanded Motion Sensors**: Expanded support across absolute orientation, accelerometer, gyroscope, and magnetometer scenarios so agents can reason about pose, movement, and stability with a more complete motion stack.
-
-## APIs
+## API
 - **End-to-End Streaming Responses**: Added end-to-end streaming response support so agents can start rendering or reacting before a full payload finishes, which is especially useful for remote briefings, progressive text output, and other streaming UX patterns.
 
   ```js
@@ -44,8 +43,8 @@
   ```
 
 - **Refreshed Audio Example**: Refreshed the built-in audio example to better demonstrate local playback flows, short cues, and looping ambience with packaged assets.
-- **Environment Awareness Sample Pages**: Added dedicated sample pages for head gesture and orientation stability so developers can quickly validate environment awareness flows and see how sensor-driven state is surfaced in UI.
-- **Richer Streaming HTTPS Example**: Added a more complete streaming HTTPS sample page that demonstrates remote content loading, streamed text assembly with `TextDecoder({ stream: true })`, and compatibility checks in one place.
+- **Environment Awareness Sample Pages**: Added dedicated [head gesture sample](../../samples/capabilities/pages/head-gesture/index.ink) and [orientation stability sample](../../samples/capabilities/pages/orientation-stability-change/index.ink) pages so developers can quickly validate environment awareness flows and see how sensor-driven state is surfaced in UI.
+- **Richer Streaming HTTPS Example**: Added a more complete [streaming HTTPS sample page](../../samples/capabilities/pages/network_https/index.ink) that demonstrates remote content loading, streamed text assembly with `TextDecoder({ stream: true })`, and compatibility checks in one place.
 
 # v0.15.0
 
