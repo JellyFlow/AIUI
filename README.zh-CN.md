@@ -4,6 +4,8 @@
 
 本仓库提供用于构建 **AIUI**（Artificial Intelligence User Interface）应用的开发工具、CLI 以及 AI Agent 技能。AIUI 是一个面向带显示屏 AI 眼镜的 Agent Runtime。
 
+你还可以通过 [Awesome AIUI](https://github.com/jsar-project/awesome-aiui) 探索更完整的 AIUI 生态资源，包括相关项目、工具与示例。
+
 ## 🚀 快速开始
 
 ### 创建新的 AIUI Agent

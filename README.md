@@ -4,6 +4,8 @@
 
 This repository provides developer tools, CLIs, and AI agent skills for building applications on **AIUI** (Artificial Intelligence User Interface) — an agentic runtime designed for AI glasses with displays.
 
+Explore the broader AIUI ecosystem through [Awesome AIUI](https://github.com/jsar-project/awesome-aiui), a curated collection of related resources, projects, tools, and examples.
+
 ## 🚀 Quick Start
 
 ### Create a new AIUI Agent
