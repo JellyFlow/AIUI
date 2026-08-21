@@ -10,7 +10,7 @@ It depends on the current app instance and returns `undefined` when there is no 
 
 ## `CameraContext.takePhoto(options)`
 
-Takes a photo from a valid user interaction and returns a Promise:
+Takes a photo from a valid user interaction. `options` is required and must include `quality`:
 
 ```javascript
 const image = await cameraContext.takePhoto(options);
@@ -20,10 +20,25 @@ const image = await cameraContext.takePhoto(options);
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `options.quality` | `'high' \| 'normal' \| 'low'` | Yes | Requested image quality. |
-| `options.enableSystemPreview` | `boolean` | No | Whether to open the system camera preview before capture; defaults to `false`. |
+| `options` | `object` | Yes | Photo-capture configuration. |
+| `options.quality` | `'high' \| 'normal' \| 'low'` | Yes | Image quality: `high`, `normal`, or `low`. |
+| `options.enableSystemPreview` | `boolean` | No | When `true`, shows the system camera preview before capture; when `false`, requests capture directly. Defaults to `true`. |
 
-**Returns:** `Promise<{ data: ArrayBuffer, mimeType: string }>`. `data` is image binary data and `mimeType` is its media type. The Promise rejects when capture fails, and an invalid-state exception is thrown when the call is not made from a user interaction.
+**Returns:** `Promise<{ data: ArrayBuffer, mimeType: string }>`.
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `data` | `ArrayBuffer` | Complete binary content of the image. |
+| `mimeType` | `string` | Image MIME type, such as `image/jpeg`. |
+
+The Promise rejects when capture fails. An exception is thrown when `options` is omitted, `quality` is missing, or the call is not made from a user interaction.
+
+```javascript
+const image = await cameraContext.takePhoto({
+  quality: 'high',
+  enableSystemPreview: true,
+});
+```
 
 ## Recommendations
 

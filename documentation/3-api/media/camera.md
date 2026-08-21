@@ -10,7 +10,7 @@ const cameraContext = wx.media.createCameraContext();
 
 ## `CameraContext.takePhoto(options)`
 
-在有效用户交互中拍照，并返回 Promise：
+在有效用户交互中拍照。`options` 必须传入，并且必须包含 `quality`：
 
 ```javascript
 const image = await cameraContext.takePhoto(options);
@@ -20,10 +20,25 @@ const image = await cameraContext.takePhoto(options);
 
 | 参数 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- |
-| `options.quality` | `'high' \| 'normal' \| 'low'` | 是 | 期望的图像质量。 |
-| `options.enableSystemPreview` | `boolean` | 否 | 是否在拍摄前打开系统相机预览，默认 `false`。 |
+| `options` | `object` | 是 | 拍照配置对象。 |
+| `options.quality` | `'high' \| 'normal' \| 'low'` | 是 | 图像质量：`high` 为高质量、`normal` 为普通质量、`low` 为低质量。 |
+| `options.enableSystemPreview` | `boolean` | 否 | `true` 时先显示系统相机预览界面再拍摄；`false` 时直接请求拍摄。省略时为 `true`。 |
 
-**返回值：** `Promise<{ data: ArrayBuffer, mimeType: string }>`。`data` 是图像二进制数据，`mimeType` 是其媒体类型。拍照失败时 Promise 拒绝；调用不在用户交互中时会抛出状态异常。
+**返回值：** `Promise<{ data: ArrayBuffer, mimeType: string }>`。
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `data` | `ArrayBuffer` | 图像的完整二进制内容。 |
+| `mimeType` | `string` | 图像 MIME 类型，例如 `image/jpeg`。 |
+
+拍照失败时 Promise 拒绝；未传入 `options`、缺少 `quality` 或调用不在用户交互中时会抛出异常。
+
+```javascript
+const image = await cameraContext.takePhoto({
+  quality: 'high',
+  enableSystemPreview: true,
+});
+```
 
 ## 使用建议
 
