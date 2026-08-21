@@ -1,10 +1,13 @@
 # Base (base)
 
-Provides some basic methods and properties, mainly for environment variables, basic type conversion, and encoding.
-
 ## Methods
 
-- `wx.env`: Gets the environment variables object.
-- `wx.canIUse(schema)`: Checks whether a Mini Program API, callback, parameter, component, etc. is available in the current version.
-- `wx.base64ToArrayBuffer(base64)`: Converts a Base64 string into ArrayBuffer data.
-- `wx.arrayBufferToBase64(buffer)`: Converts ArrayBuffer data into a Base64 string.
+### `wx.canIUse(schema)`
+
+Returns whether `schema` is a non-empty string. It is currently a compatibility placeholder and does not check whether an API, parameter, or component is actually available.
+
+### `wx.arrayBufferToBase64(buffer)`
+
+Encodes an `ArrayBuffer` as a standard Base64 string. A detached ArrayBuffer throws an exception.
+
+`wx.env` and `wx.base64ToArrayBuffer()` are not currently provided.

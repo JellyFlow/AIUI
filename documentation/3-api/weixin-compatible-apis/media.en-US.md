@@ -1,15 +1,15 @@
 # Media (media)
 
-Provides APIs for interacting with device media, such as the camera, recorder, and images.
+Media APIs are mounted under `wx.media` and depend on the current app instance. Both APIs return `undefined` when the app uses `lifetime: 'cut'`.
 
 ## Camera
 
-- `wx.createCameraContext()`: Creates a CameraContext object for the camera.
+### `wx.media.createCameraContext()`
 
-See: [Camera](/AIUI/api/media-camera)
+Creates a `CameraContext`; it returns `undefined` when no current app instance is available. See [Camera](/AIUI/api/media-camera).
 
 ## Recording
 
-- `wx.getRecorderManager()`: Gets the globally unique RecorderManager.
+### `wx.media.getRecorderManager()`
 
-See: [Recorder](/AIUI/api/media-recorder)
+Returns a wrapper for the current app's native `RecorderManager`. It returns `undefined` on wasm32, in an app with `lifetime: 'cut'`, or when the app has no recorder manager. See [Recorder](/AIUI/api/media-recorder).

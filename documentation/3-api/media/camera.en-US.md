@@ -1,65 +1,32 @@
 # Camera
 
-Camera capabilities are used to access the device camera in a page and interact with the camera component through page logic.
-
-In AIUI, camera-related capabilities are currently provided mainly through WeChat Mini Program compatible APIs. For pages that need photo capture, preview, or camera interaction, the typical flow is to create a `CameraContext` first and then manage concrete operations through that context.
-
-## Entry
-
-Create a camera context through `wx.createCameraContext()`:
+Get a camera context through `wx.media.createCameraContext()`:
 
 ```javascript
-const cameraContext = wx.createCameraContext();
+const cameraContext = wx.media.createCameraContext();
 ```
 
-## Basic Usage
+It depends on the current app instance and returns `undefined` when there is no app context or when the app uses `lifetime: 'cut'`.
+
+## `CameraContext.takePhoto(options)`
+
+Takes a photo from a valid user interaction and returns a Promise:
 
 ```javascript
-export default {
-  onReady() {
-    this.cameraContext = wx.createCameraContext();
-  }
-}
+const image = await cameraContext.takePhoto(options);
+// image.data: ArrayBuffer
+// image.mimeType: string
 ```
 
-It is usually recommended to create the camera context only after the page finishes its initial render, so that camera-related views in the page are ready.
-
-## Core APIs
-
-### `wx.createCameraContext()`
-
-- **Return Value**: `CameraContext`
-- **Description**: Creates and returns a camera context object used to interact with camera capabilities in the page.
-
-### `CameraContext`
-
-- **Description**: A camera context object.
-- **Usage**: Acts as the bridge between page logic and the camera component. Photo capture, preview control, and other camera-related operations are typically built around this object.
+`options` is parsed as host-platform photo options. The Promise rejects when capture fails, and an invalid-state exception is thrown when the call is not made from a user interaction.
 
 ## Recommendations
 
-- Initialize the camera in `onReady()` to avoid creating the context too early before page rendering is complete.
-- Camera capabilities are usually used together with a camera component in the page, so it is recommended to clearly expose states such as initialization complete, capturing, and operation failed to users.
-- If camera interaction is no longer needed after page switching, clean up relevant page state promptly to avoid stale references.
-- If your scenario only needs to open the camera and perform a single action, keep the interaction flow simple and reduce page state complexity.
-
-## Example
-
-```javascript
-export default {
-  data: {
-    cameraReady: false
-  },
-
-  onReady() {
-    this.cameraContext = wx.createCameraContext();
-    this.setData({ cameraReady: true });
-  }
-}
-```
+- Check that `cameraContext` is not `undefined` before use.
+- Call `takePhoto()` only from an interaction callback such as a user tap.
+- Process, persist, or upload image data using `data` and `mimeType`.
 
 ## Continue Reading
 
-- **[Media](/AIUI/api/media)**: Return to the media capability overview.
-- **[Recorder](/AIUI/api/media-recorder)**: Learn about recording capabilities and the recorder manager.
-- **[Media (media)](/AIUI/api/weixin-compatible-apis-media)**: View the original entry documentation for WeChat Mini Program compatible APIs.
+- **[Media (media)](/AIUI/api/weixin-compatible-apis-media)**: View the entry point and availability limits.
+- **[Recorder](/AIUI/api/media-recorder)**: Learn about the native recorder manager API.

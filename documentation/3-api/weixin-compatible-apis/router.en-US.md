@@ -17,7 +17,7 @@ Closes the current page and navigates to another page within the app. It is comm
 - **Use cases**: Replacing a step page, moving from a form page to a result page after submission, or chaining guide pages without preserving the previous page.
 - **Parameters**: `object.url` specifies the target page path.
 - **Page stack behavior**: The current page is popped from the stack and the target page is pushed, so the overall stack depth usually stays the same.
-- **Notes**: Cannot navigate to a tabBar page.
+- **Callbacks**: The implementation supports `success()` and `complete()`; it does not implement `fail()`.
 
 Example:
 
@@ -35,7 +35,7 @@ Keeps the current page and navigates to a new page. This is the most common forw
 - **Parameters**: `object.url` specifies the target page path.
 - **Page stack behavior**: The current page remains in the stack, and the target page is pushed onto the top of the stack.
 - **Callbacks**: May trigger `success()` when the call succeeds, and `complete()` when the call finishes.
-- **Notes**: Cannot navigate to a tabBar page.
+- **Callbacks**: The implementation supports `success()` and `complete()`; it does not implement `fail()`.
 
 Example:
 
@@ -53,7 +53,7 @@ Closes the current page and returns to the previous page. It can also return acr
 - **Parameters**: `object.delta` indicates how many levels to go back. If omitted, the default value is `1`.
 - **Page stack behavior**: The current page and any intermediate pages being skipped are removed from the stack.
 - **Callbacks**: May trigger `success()` when the call succeeds, and `complete()` when the call finishes.
-- **Notes**: If the specified back level is greater than the current page stack depth, the actual result depends on the runtime behavior. It is recommended to pass a value that matches the real stack depth.
+- **Notes**: The host router determines the actual back-navigation range; the binding does not validate page-stack depth.
 
 Example:
 
