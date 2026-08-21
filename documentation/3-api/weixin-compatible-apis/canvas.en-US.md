@@ -4,6 +4,8 @@
 
 ### `wx.createCanvasContext(canvasId)`
 
-Creates and returns a 2D drawing context for the `<canvas>` component with this ID on the current page. It returns `undefined` when the page, node, or canvas cannot be found.
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `canvasId` | `string` | Yes | ID of a `<canvas>` node on the current page. |
 
-`canvasToTempFilePath`, `canvasGetImageData`, and `canvasPutImageData` are not currently provided.
+**Returns:** the Canvas 2D drawing context, or `undefined` when the page, node, or canvas cannot be found.

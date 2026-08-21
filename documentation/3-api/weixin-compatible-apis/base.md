@@ -4,10 +4,16 @@
 
 ### `wx.canIUse(schema)`
 
-返回 `schema` 是否为非空字符串。当前仅用于兼容性占位，不会校验 API、参数或组件是否实际可用。
+| 参数 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `schema` | `string` | 是 | 兼容性查询字符串。 |
+
+**返回值：** `boolean`。非空字符串返回 `true`，空字符串返回 `false`；当前不校验 API、参数或组件是否实际可用。
 
 ### `wx.arrayBufferToBase64(buffer)`
 
-将 `ArrayBuffer` 编码为标准 Base64 字符串。传入已分离的 ArrayBuffer 会抛出异常。
+| 参数 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `buffer` | `ArrayBuffer` | 是 | 要编码的二进制数据。 |
 
-`wx.env` 和 `wx.base64ToArrayBuffer()` 当前未提供。
+**返回值：** `string`，标准 Base64 编码结果。传入已分离的 ArrayBuffer 会抛出异常。

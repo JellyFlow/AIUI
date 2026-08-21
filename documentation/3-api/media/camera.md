@@ -18,7 +18,12 @@ const image = await cameraContext.takePhoto(options);
 // image.mimeType: string
 ```
 
-`options` 会按原样解析为宿主平台的拍照选项。拍照失败时 Promise 会拒绝；调用不在用户交互中时会抛出状态异常。
+| 参数 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `options.quality` | `'high' \| 'normal' \| 'low'` | 是 | 期望的图像质量。 |
+| `options.enableSystemPreview` | `boolean` | 否 | 是否在拍摄前打开系统相机预览，默认 `false`。 |
+
+**返回值：** `Promise<{ data: ArrayBuffer, mimeType: string }>`。`data` 是图像二进制数据，`mimeType` 是其媒体类型。拍照失败时 Promise 拒绝；调用不在用户交互中时会抛出状态异常。
 
 ## 使用建议
 

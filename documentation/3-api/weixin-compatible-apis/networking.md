@@ -18,6 +18,8 @@ AIUI 提供了一套与微信小程序兼容的网络通信接口，包括 HTTPS
 | `method` | String | 否 | `GET` | HTTP 请求方法。支持 `GET`, `POST`, `PUT`, `DELETE`, `HEAD` 等 |
 | `dataType` | String | 否 | `json` | 返回的数据格式。如果设为 `json`，会尝试对返回的数据做一次 `JSON.parse` |
 | `responseType` | String | 否 | `text` | 响应的数据类型。支持 `text`, `arraybuffer` |
+| `timeout` | Number | 否 | | 超时毫秒数；`0` 表示不设置超时。未提供时使用应用配置或运行时默认值。 |
+| `body` | String | 否 | | 仅当 `data` 未生成请求体时使用。 |
 | `success` | Function | 否 | | 接口调用成功的回调函数 |
 | `fail` | Function | 否 | | 接口调用失败的回调函数 |
 | `complete` | Function | 否 | | 接口调用结束的回调函数（调用成功、失败都会执行） |
@@ -49,6 +51,8 @@ AIUI 提供了一套与微信小程序兼容的网络通信接口，包括 HTTPS
 - **`offHeadersReceived(Function callback?)`**: 清除 HTTP Response Header 事件的全部监听函数；当前不会按传入回调逐一移除。
 - **`onChunkReceived(Function callback)`**: 监听分块接收事件。
 - **`offChunkReceived(Function callback?)`**: 清除分块接收事件的全部监听函数；当前不会按传入回调逐一移除。
+
+除 `abort()` 外，方法返回 `undefined`。`onHeadersReceived` 的回调参数为响应头键值对象；`onChunkReceived` 的回调参数为 `ArrayBuffer`。
 
 ---
 
@@ -85,6 +89,8 @@ AIUI 提供了一套与微信小程序兼容的网络通信接口，包括 HTTPS
 - **`onMessage(Function callback)`**: 监听 WebSocket 接受到服务器的消息事件。
     - 回调参数为 `{ data }`，其中 `data` 是 `String` 或 `ArrayBuffer`。
 
+所有 `SocketTask` 方法返回 `undefined`；`send` 传入其他类型会抛出 `TypeError`。
+
 ---
 
 ## EventSource
@@ -112,6 +118,8 @@ AIUI 提供了一套与微信小程序兼容的网络通信接口，包括 HTTPS
 - **`onOpen(callback)`**：连接建立时触发。
 - **`onMessage(callback)`**：收到事件时触发，参数为 `{ data, event, id }`。
 - **`onError(callback)`**：发生错误时触发，参数为 `{ errMsg }`。
+
+所有 `EventSourceTask` 方法返回 `undefined`。
 
 ---
 

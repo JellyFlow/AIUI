@@ -10,22 +10,32 @@ It returns `undefined` on wasm32, in an app with `lifetime: 'cut'`, without a cu
 
 ## Methods
 
-`start(options)`, `pause()`, `resume()`, and `stop()` return Promises. `start()` must be called from a valid user interaction while the host window is focused; `resume()` also requires a focused host window.
+### `start(options)`
 
-`start(options)` is parsed by the native recorder backend. Its current public fields are `sampleRate` (default `16000`), `numberOfChannels` (default `1`), and `format` (default `pcm`). The final audio parameters and supported formats vary by host platform.
+| Parameter | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `options.sampleRate` | `number` | No | `16000` | Requested sample rate. |
+| `options.numberOfChannels` | `number` | No | `1` | Requested channel count. |
+| `options.format` | `string` | No | `pcm` | Requested encoding format. |
+
+**Returns:** `Promise<void>`. It must be called from a valid user interaction while the host window is focused. Final audio parameters and supported formats vary by host platform.
+
+### `pause()` / `resume()` / `stop()`
+
+These methods take no parameters and return `Promise<void>`. The Promise rejects if the native recorder backend rejects the state operation; `resume()` also requires a focused host window.
 
 ## Events
 
 Each `on*` method sets one callback for its event; setting it again replaces the previous callback.
 
-| Method | Callback arguments |
-| --- | --- |
-| `onStart(callback)`, `onPause(callback)`, `onResume(callback)` | None |
-| `onStop(callback)` | `{ tempFilePath: string }` |
-| `onFrameRecorded(callback)` | `{ frameBuffer: ArrayBuffer }` |
-| `onHeader(callback)` | `(format: string, buffer: ArrayBuffer)` |
-| `onError(callback)` | `{ errMsg: string }` |
-| `onInterruptionBegin(callback)`, `onInterruptionEnd(callback)` | None |
+| Method | Parameters | Callback arguments |
+| --- | --- | --- |
+| `onStart(callback)`, `onPause(callback)`, `onResume(callback)` | `callback: Function` | None |
+| `onStop(callback)` | `callback: Function` | `{ tempFilePath: string }` |
+| `onFrameRecorded(callback)` | `callback: Function` | `{ frameBuffer: ArrayBuffer }` |
+| `onHeader(callback)` | `callback: Function` | `(format: string, buffer: ArrayBuffer)` |
+| `onError(callback)` | `callback: Function` | `{ errMsg: string }` |
+| `onInterruptionBegin(callback)`, `onInterruptionEnd(callback)` | `callback: Function` | None |
 
 ## Example
 

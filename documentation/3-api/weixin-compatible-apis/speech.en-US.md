@@ -4,10 +4,14 @@
 
 ### `wx.speech.playTTS(text)`
 
-Queues text for speech synthesis and returns the underlying speech-request identifier. It returns an empty string when the request cannot be created.
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `text` | `string` | Yes | Text to synthesize and play. |
+
+**Returns:** `string`, the underlying speech-request identifier, or an empty string if no request can be created. Synthesis is queued for playback.
 
 ### `wx.speech.startRecognition()`
 
-Starts one non-continuous speech-recognition session and returns its session ID. It must be called from a valid user interaction or throws an invalid-state exception.
+Takes no parameters.
 
-`wx.getSpeechSynthesizer()` and `wx.getSpeechRecognizer()` are not currently provided.
+**Returns:** `string`, the recognition session ID. Recognition is fixed to one non-continuous session with no interim results and at most one alternative. It must be called from a valid user interaction or throws an invalid-state exception.

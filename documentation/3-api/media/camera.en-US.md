@@ -18,7 +18,12 @@ const image = await cameraContext.takePhoto(options);
 // image.mimeType: string
 ```
 
-`options` is parsed as host-platform photo options. The Promise rejects when capture fails, and an invalid-state exception is thrown when the call is not made from a user interaction.
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `options.quality` | `'high' \| 'normal' \| 'low'` | Yes | Requested image quality. |
+| `options.enableSystemPreview` | `boolean` | No | Whether to open the system camera preview before capture; defaults to `false`. |
+
+**Returns:** `Promise<{ data: ArrayBuffer, mimeType: string }>`. `data` is image binary data and `mimeType` is its media type. The Promise rejects when capture fails, and an invalid-state exception is thrown when the call is not made from a user interaction.
 
 ## Recommendations
 

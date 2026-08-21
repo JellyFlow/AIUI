@@ -18,6 +18,7 @@ Closes the current page and navigates to another page within the app. It is comm
 - **Parameters**: `object.url` specifies the target page path.
 - **Page stack behavior**: The current page is popped from the stack and the target page is pushed, so the overall stack depth usually stays the same.
 - **Callbacks**: The implementation supports `success()` and `complete()`; it does not implement `fail()`.
+- **Returns**: `undefined`.
 
 Example:
 
@@ -36,6 +37,7 @@ Keeps the current page and navigates to a new page. This is the most common forw
 - **Page stack behavior**: The current page remains in the stack, and the target page is pushed onto the top of the stack.
 - **Callbacks**: May trigger `success()` when the call succeeds, and `complete()` when the call finishes.
 - **Callbacks**: The implementation supports `success()` and `complete()`; it does not implement `fail()`.
+- **Returns**: `undefined`.
 
 Example:
 
@@ -54,6 +56,7 @@ Closes the current page and returns to the previous page. It can also return acr
 - **Page stack behavior**: The current page and any intermediate pages being skipped are removed from the stack.
 - **Callbacks**: May trigger `success()` when the call succeeds, and `complete()` when the call finishes.
 - **Notes**: The host router determines the actual back-navigation range; the binding does not validate page-stack depth.
+- **Returns**: `undefined`.
 
 Example:
 

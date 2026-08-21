@@ -4,10 +4,15 @@
 
 ### `wx.getWindowInfo()`
 
-Returns `{ pixelRatio, screenWidth, screenHeight, windowWidth, windowHeight, statusBarHeight, safeArea }`. Width and height are logical pixels; `statusBarHeight` is currently always `0`.
+Takes no parameters.
+
+**Returns:** `{ pixelRatio, screenWidth, screenHeight, windowWidth, windowHeight, statusBarHeight, safeArea }`. Dimensions are logical pixels; `safeArea` contains `left`, `right`, `top`, `bottom`, `width`, and `height`; `statusBarHeight` is currently always `0`. Without an app context, dimensions are `0` and `pixelRatio` is `1`.
 
 ### `wx.exitMiniProgram(options?)`
 
-Requests that the current Mini Program instance be closed. `success()` and `complete()` callbacks are supported and are invoked before sending the close request.
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `options.success` | `Function` | No | Called before the close request is sent. |
+| `options.complete` | `Function` | No | Called before the close request is sent. |
 
-`getSystemInfo`, `getSystemInfoSync`, `getDeviceInfo`, `getAppBaseInfo`, and `getAppAuthorizeSetting` are not currently provided.
+**Returns:** `undefined`. Requests closure of the current Mini Program instance; callbacks do not indicate that the host has finished closing.

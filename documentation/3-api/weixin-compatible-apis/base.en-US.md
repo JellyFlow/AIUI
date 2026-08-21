@@ -4,10 +4,16 @@
 
 ### `wx.canIUse(schema)`
 
-Returns whether `schema` is a non-empty string. It is currently a compatibility placeholder and does not check whether an API, parameter, or component is actually available.
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `schema` | `string` | Yes | Compatibility-query string. |
+
+**Returns:** `boolean`. A non-empty string returns `true`, while an empty string returns `false`; it does not currently check actual API, parameter, or component availability.
 
 ### `wx.arrayBufferToBase64(buffer)`
 
-Encodes an `ArrayBuffer` as a standard Base64 string. A detached ArrayBuffer throws an exception.
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `buffer` | `ArrayBuffer` | Yes | Binary data to encode. |
 
-`wx.env` and `wx.base64ToArrayBuffer()` are not currently provided.
+**Returns:** `string`, encoded using standard Base64. A detached ArrayBuffer throws an exception.
