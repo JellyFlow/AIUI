@@ -107,12 +107,14 @@ If you'd like to request a feature or report a bug, please use the GitHub issue 
 │   │   └── preview-green.html          # browsable visual showcase (green)
 │   └── fullcolor/                      # planned — full-RGB display specs
 ├── packages/
+│   ├── cloud-integration/    # npm client for Rokid Glasses notifications
 │   └── create-aiui-agent/    # npm CLI for scaffolding AIUI agent projects
 ├── samples/
 │   ├── capabilities/         # runnable AIUI capabilities app and feature demos
 │   └── gyroscope-test/       # device diagnostic for orientation sensor behavior
 ├── skills/
-│   └── aiui-dev/             # AI Agent skill documentation (SKILL.md)
+│   ├── aiui-cloud-integration/ # Rokid Glasses cloud notification integration skill
+│   └── aiui-dev/               # AI Agent skill documentation (SKILL.md)
 └── .github/workflows/        # Automated daily build and publish workflows
 ```
 
