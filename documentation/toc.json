@@ -754,7 +754,24 @@
     "slug": "api"
   },
   {
-    "id": "4-design",
+    "id": "4-cloud",
+    "label": "云服务",
+    "children": [
+      {
+        "id": "overview",
+        "label": "能力概览",
+        "children": []
+      },
+      {
+        "id": "notifications",
+        "label": "通知下发",
+        "children": []
+      }
+    ],
+    "slug": "cloud"
+  },
+  {
+    "id": "5-design",
     "label": "设计",
     "children": [
       {
@@ -777,7 +794,7 @@
     "slug": "design"
   },
   {
-    "id": "5-tools",
+    "id": "6-tools",
     "label": "工具",
     "children": [
       {
@@ -804,7 +821,7 @@
     "slug": "tools"
   },
   {
-    "id": "6-changelog",
+    "id": "7-changelog",
     "label": "更新日志",
     "children": [
       {

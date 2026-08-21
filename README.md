@@ -50,9 +50,10 @@ The [`documentation/`](./documentation/) directory contains the official AIUI do
 - `1-framework/`: Framework fundamentals including project structure, config, WXML, and WXSS.
 - `2-components/`: Built-in component references such as `view`, `text`, `image`, `input`, `swiper`, `canvas`, and more.
 - `3-api/`: API references for framework, AI, media, device, network, storage, and compatible Web/Weixin APIs.
-- `4-design/`: Interaction and visual design guidance.
-- `5-tools/`: CLI, Craft, and debugging tool documentation.
-- `6-changelog/`: Latest release notes and change history.
+- `4-cloud/`: Cloud integration for third-party agents and Rokid Glasses notifications.
+- `5-design/`: Interaction and visual design guidance.
+- `6-tools/`: CLI, Craft, and debugging tool documentation.
+- `7-changelog/`: Latest release notes and change history.
 
 ## 🎨 Design System
 
@@ -86,6 +87,7 @@ npx skills add https://github.com/jsar-project/AIUI/tree/v0.1.0/skills/aiui-dev
 ```
 
 - **`aiui-dev` Skill**: Located in [`skills/aiui-dev/SKILL.md`](./skills/aiui-dev/SKILL.md), this document contains comprehensive API references, project structure guidelines, and `.ink` SFC specifications. You can feed this file to your AI assistant to grant it the "skill" of developing AIUI applications.
+- **`aiui-cloud-integration` Skill**: Located in [`skills/aiui-cloud-integration/SKILL.md`](./skills/aiui-cloud-integration/SKILL.md), this guide helps integrate third-party agents with Rokid Glasses cloud notifications through the npm package or direct HTTP/`curl` requests.
 
 ## Feedback
 
