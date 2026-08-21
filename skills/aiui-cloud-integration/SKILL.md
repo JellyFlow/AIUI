@@ -1,12 +1,13 @@
 ---
 name: "aiui-cloud-integration"
-description: "Integrate third-party AIUI agents with Rokid Glasses cloud notifications using @yodaos-pkg/cloud-integration. Invoke when implementing notification delivery, notification-triggered page navigation, or related agent configuration."
+description: "Integrate third-party AIUI agents with Rokid Glasses cloud notifications through @yodaos-pkg/cloud-integration or direct HTTP/curl requests. Invoke when implementing notification delivery, notification-triggered page navigation, or related agent configuration."
 ---
 
 # AIUI Cloud Integration
 
 Use this skill when an AIUI agent needs to send a notification to a Rokid
-Glasses user from a server-side or other Node.js 20+ integration.
+Glasses user from a server-side integration, whether through the Node.js
+package or a direct HTTP/curl request.
 
 ## Package
 
@@ -35,6 +36,52 @@ await cloud.sendNotification({
     content: 'Notification text shown on the Glasses.',
   },
 })
+```
+
+## Direct `curl` integration
+
+When a Node.js package is not suitable, call the cloud endpoint directly with
+`curl`. Store the SK in `ROKID_SK` instead of replacing it with a literal
+secret in scripts or command history.
+
+```bash
+curl --location 'https://rcs.rokid.com/metis/callback/message' \
+  --header 'Content-Type: application/json' \
+  --header "Authorization: Bearer ${ROKID_SK}" \
+  --data '{
+    "message_id": "message-unique-id",
+    "account_id": "target-account-id",
+    "message": {
+      "agent_id": "agent-id",
+      "content": "Notification text shown on the Glasses."
+    }
+  }'
+```
+
+For page navigation, add `tool` under `message` and use the registered route
+as `name`:
+
+```bash
+curl --location 'https://rcs.rokid.com/metis/callback/message' \
+  --header 'Content-Type: application/json' \
+  --header "Authorization: Bearer ${ROKID_SK}" \
+  --data '{
+    "message_id": "outfit-message-id",
+    "account_id": "target-account-id",
+    "message": {
+      "agent_id": "agent-id",
+      "content": "查看穿搭建议",
+      "tool": {
+        "name": "pages/cloth/index",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "field": "value"
+          }
+        }
+      }
+    }
+  }'
 ```
 
 ## Notification navigation

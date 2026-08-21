@@ -107,12 +107,14 @@ npx skills add https://github.com/jsar-project/AIUI/tree/v0.1.0/skills/aiui-dev
 │   │   └── preview-green.html          # 单绿系统的可视化预览
 │   └── fullcolor/                      # 预留 —— 全彩显示规范
 ├── packages/
+│   ├── cloud-integration/    # Rokid Glasses 云端通知集成 npm 包
 │   └── create-aiui-agent/    # 用于创建 AIUI Agent 项目的 npm CLI
 ├── samples/
 │   ├── capabilities/         # 可运行的 AIUI capabilities 应用与功能演示
 │   └── gyroscope-test/       # 陀螺仪测试与绝对方向传感器真机诊断示例
 ├── skills/
-│   └── aiui-dev/             # AI Agent 技能文档（SKILL.md）
+│   ├── aiui-cloud-integration/ # Rokid Glasses 云端通知集成技能
+│   └── aiui-dev/               # AI Agent 技能文档（SKILL.md）
 └── .github/workflows/        # 自动化每日构建与发布工作流
 ```
 
