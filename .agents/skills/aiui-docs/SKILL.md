@@ -71,6 +71,77 @@ it.
 - Use root-relative AIUI documentation links such as `/AIUI/api/...` when
   linking between rendered documentation pages, following nearby pages.
 
+## API Reference Page Structure
+
+Detailed pages under `documentation/3-api/` are task-first documents, not
+reference dumps. Organize them so a reader sees representative usage before
+individual signatures and parameter tables.
+
+Use this order for a page that documents callable APIs, constructors,
+properties, methods, or events:
+
+1. Start with a short introduction explaining what the capability enables and
+   when to choose it.
+2. Add a small set of task-named sections for typical scenarios. Each section
+   should show a focused, runnable example, followed only by the behavioral
+   explanation needed to use that example correctly.
+3. Put cross-cutting guidance such as availability, lifecycle, platform limits,
+   recommendations, and related links after the scenarios but before the
+   reference section.
+4. Make `## API Reference` the final level-two section on the page. Do not add
+   another level-two section after it.
+
+Inside `## API Reference`:
+
+- Give each public API, constructor, object, property group, method group, or
+  event group a descriptive level-three heading.
+- Document exact signatures, parameters, parameter fields, defaults, return
+  values, events, errors, and supported behavior as applicable.
+- Use tables for structured parameters and fields. Do not bury parameter
+  definitions in the earlier scenario sections.
+- Keep short code fragments only when they clarify a signature or return shape;
+  full workflows belong in the scenario sections above.
+- Keep related APIs together under the same reference section. For Web and `wx`
+  equivalents, describe both reference surfaces even when their scenario code
+  uses an API Style group.
+
+Name scenario headings after the reader's task, such as `Send a Request`,
+`Read a Streamed Response`, or `Cancel or Observe a Request`. Avoid generic
+headings such as `Examples`, `Basic Usage`, or numbered `Example 1` when a
+specific task name is available.
+
+This structure applies to API detail pages. Category landing pages whose only
+purpose is navigation, and compact compatibility catalogs that only enumerate
+supported APIs, do not need an artificial `API Reference` section. When a page
+contains real signatures or parameter details, treat it as a detail page even
+if it also serves as an overview.
+
+A typical outline is:
+
+```markdown
+# Capability
+
+Short introduction.
+
+## Complete a Typical Task
+
+Focused example and the explanation needed for this task.
+
+## Handle Another Common Scenario
+
+Focused example and the explanation needed for this task.
+
+## Availability and Current Behavior
+
+Cross-cutting constraints and guidance.
+
+## API Reference
+
+### `apiName(options?)`
+
+Signature, parameters, return value, events, and errors.
+```
+
 ## Portable Markdown
 
 Documentation must remain understandable in GitHub, editors, and ordinary
@@ -167,3 +238,7 @@ Before finishing a documentation change:
 5. Run `git diff --check` from the repository root.
 6. Review the final diff for accidental source changes, stale links, mismatched
    headings, and claims not supported by the implementation.
+7. For changed `documentation/3-api/` detail pages, verify that typical
+   scenario sections precede the reference material, `## API Reference` is the
+   final level-two section, and all concrete parameter definitions live inside
+   it.

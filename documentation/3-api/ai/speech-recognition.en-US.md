@@ -4,22 +4,7 @@ Speech recognition converts what the user says in real time into text. It is sui
 
 In AIUI, speech recognition is usually the first step in a voice interaction pipeline: user speech is recognized into text first, and then the text is passed to business logic or a large language model for further processing.
 
-## Use Cases
-
-- Voice input fields
-- Voice Q&A
-- Voice control commands
-- Interaction flows that need to listen and process at the same time
-
-## Entry Point
-
-Speech recognition is based on `SpeechRecognition`:
-
-```javascript
-const recognition = new SpeechRecognition();
-```
-
-## Basic Usage
+## Recognize a Voice Input
 
 <!-- aiui-api-style default=web -->
 
@@ -49,16 +34,12 @@ console.log('Recognition session:', sessionId);
 
 <!-- /aiui-api-style -->
 
-## Common Methods
+## Use Cases
 
-### `start()`
-- Starts a recognition session.
-
-### `stop()`
-- Requests the current recognition session to end and produce a final result if possible.
-
-### `abort()`
-- Immediately aborts the current recognition session without waiting for a normal final result.
+- Voice input fields
+- Voice Q&A
+- Voice control commands
+- Interaction flows that need to listen and process at the same time
 
 ## Event Handling Recommendations
 
@@ -76,3 +57,24 @@ console.log('Recognition session:', sessionId);
 
 - **[Speech Synthesis](/AIUI/api/ai-speech-synthesis)**: Learn how to speak text results to the user.
 - **[Large Language Model](/AIUI/api/ai-language-model)**: Learn how to pass recognized text to the model for further processing.
+
+## API Reference
+
+### Entry Point
+
+Speech recognition is based on `SpeechRecognition`:
+
+```javascript
+const recognition = new SpeechRecognition();
+```
+
+### Common Methods
+
+#### `start()`
+- Starts a recognition session.
+
+#### `stop()`
+- Requests the current recognition session to end and produce a final result if possible.
+
+#### `abort()`
+- Immediately aborts the current recognition session without waiting for a normal final result.

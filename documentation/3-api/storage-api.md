@@ -2,27 +2,7 @@
 
 AIUI 提供了一套遵循 Web Storage API 标准的本地存储接口。开发者最常用的是 `localStorage`，可以用它在用户设备上持久化存储数据。
 
-## 接口说明
-
-### localStorage
-
-`localStorage` 允许你在智能体中存储键值对数据。存储在 `localStorage` 中的数据没有过期时间。
-
-#### 方法
-
-- **`getItem(key)`**: 获取指定键名对应的值。
-    - `key`: `String`，要获取的键名。
-    - 返回值: `String` 或 `null`（如果键名不存在）。
-- **`setItem(key, value)`**: 设置指定键名对应的值。如果键名已存在，则更新其值。
-    - `key`: `String`，要设置的键名。
-    - `value`: `String`，要设置的值。
-- **`removeItem(key)`**: 移除指定键名的数据项。
-    - `key`: `String`，要移除的键名。
-- **`clear()`**: 清除当前智能体存储的所有数据。
-
-## 代码示例
-
-### 1. 存储与读取数据
+## 存储与读取数据
 
 <!-- aiui-api-style default=web -->
 
@@ -57,7 +37,7 @@ console.log(theme); // undefined
 
 <!-- /aiui-api-style -->
 
-### 2. 移除与清空数据
+## 移除与清空数据
 
 <!-- aiui-api-style default=web -->
 
@@ -80,7 +60,7 @@ wx.clearStorageSync();
 
 <!-- /aiui-api-style -->
 
-### 3. 存储对象数据
+## 存储对象数据
 
 由于 `Storage` 仅支持存储字符串，存储对象前需要进行序列化。
 
@@ -101,3 +81,23 @@ console.log(savedUser.name); // "Admin"
 - **隔离性**: 存储空间是按智能体（Agent）隔离的，不同智能体之间无法访问彼此的存储数据。
 
 完整的 wx 兼容接口见[微信小程序兼容 API](/AIUI/api/weixin-compatible-apis)。
+
+## API Reference
+
+### 接口说明
+
+#### localStorage
+
+`localStorage` 允许你在智能体中存储键值对数据。存储在 `localStorage` 中的数据没有过期时间。
+
+#### 方法
+
+- **`getItem(key)`**: 获取指定键名对应的值。
+    - `key`: `String`，要获取的键名。
+    - 返回值: `String` 或 `null`（如果键名不存在）。
+- **`setItem(key, value)`**: 设置指定键名对应的值。如果键名已存在，则更新其值。
+    - `key`: `String`，要设置的键名。
+    - `value`: `String`，要设置的值。
+- **`removeItem(key)`**: 移除指定键名的数据项。
+    - `key`: `String`，要移除的键名。
+- **`clear()`**: 清除当前智能体存储的所有数据。
