@@ -6,7 +6,7 @@ In AIUI, network capability is the foundation for building agents. Since agents 
 
 AIUI supports both the modern Web-standard `fetch` API and the WeChat Mini Program-compatible `wx.request` API.
 
-The following example sends the same POST request in both API styles. The Web API is recommended for modern development; use `wx-style` when migrating existing mini-program code.
+The following example sends the same POST request in both API styles. The Web API is recommended for modern development; use `wx` when migrating existing mini-program code.
 
 <!-- aiui-api-style default=web -->
 
@@ -30,7 +30,7 @@ if (!response.ok) {
 console.log(await response.json());
 ```
 
-**wx-style**
+**wx**
 
 ```javascript api-style=wx
 wx.request({

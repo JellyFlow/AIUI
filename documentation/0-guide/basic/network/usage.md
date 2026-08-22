@@ -6,7 +6,7 @@
 
 AIUI 同时支持现代 Web 标准的 `fetch` API 以及微信小程序兼容的 `wx.request` API。
 
-下面是同一个 POST 请求在两种 API 风格下的写法。推荐使用符合现代 Web 开发习惯的 Web API；迁移已有小程序代码时可以使用 `wx-style`。
+下面是同一个 POST 请求在两种 API 风格下的写法。推荐使用符合现代 Web 开发习惯的 Web API；迁移已有小程序代码时可以使用 `wx`。
 
 <!-- aiui-api-style default=web -->
 
@@ -30,7 +30,7 @@ if (!response.ok) {
 console.log(await response.json());
 ```
 
-**wx-style**
+**wx**
 
 ```javascript api-style=wx
 wx.request({
