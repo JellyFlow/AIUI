@@ -13,7 +13,11 @@ If you already have a server interface that needs to continuously output a text 
 
 ## Event Source Example
 
-```javascript
+<!-- aiui-api-style default=web -->
+
+**Web**
+
+```javascript api-style=web
 const eventSource = new EventSource('/api/agent/stream');
 
 eventSource.onmessage = (event) => {
@@ -25,6 +29,25 @@ eventSource.onerror = () => {
   eventSource.close();
 };
 ```
+
+**wx**
+
+```javascript api-style=wx
+const eventSource = wx.createEventSource({
+  url: '/api/agent/stream',
+});
+
+eventSource.onMessage(({ data }) => {
+  console.log('Incremental content received:', data);
+});
+
+eventSource.onError((error) => {
+  console.error('Event Source connection error', error);
+  eventSource.close();
+});
+```
+
+<!-- /aiui-api-style -->
 
 ## Event Source Recommendations
 
@@ -45,4 +68,4 @@ If you only need one request and one response, use [HTTPS](/AIUI/api/network-htt
 
 - **[HTTPS](/AIUI/api/network-https)**: Learn how to handle ordinary request-response scenarios.
 - **[WebSocket](/AIUI/api/network-websocket)**: Learn how to design and manage bidirectional real-time long connections.
-- **[Networking](/AIUI/api/weixin-compatible-apis-networking)**: Learn details of `wx.request` and `EventSource` compatible APIs.
+- **[WeChat Mini Program Compatible APIs](/AIUI/api/weixin-compatible-apis)**: See the wx APIs supported by AIUI.

@@ -65,4 +65,4 @@ click.play();
 
 - 需要一个更轻量的本地音效播放接口时，优先使用 `Sound`。
 - 需要更完整的播放控制能力时，使用 [音频播放器 (AudioPlayer)](/AIUI/api/media-audio-player)。
-- 录音、摄像头等设备媒体能力可继续参考 [多媒体 (media)](/AIUI/api/weixin-compatible-apis-media)。
+- 录音、摄像头等设备媒体能力可继续参考[微信小程序兼容 API](/AIUI/api/weixin-compatible-apis)。

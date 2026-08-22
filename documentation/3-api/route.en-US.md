@@ -14,6 +14,6 @@ wx.navigateTo({
 
 Continue reading:
 
-- **[Router](/AIUI/api/weixin-compatible-apis-router)**: See APIs such as `wx.navigateTo`, `wx.redirectTo`, and `wx.navigateBack`.
+- **[WeChat Mini Program Compatible APIs](/AIUI/api/weixin-compatible-apis)**: See APIs such as `wx.navigateTo`, `wx.redirectTo`, and `wx.navigateBack`.
 - **[App](/AIUI/api/framework-app)**: Learn about application-level configuration and lifecycle entry points.
 - **[Page](/AIUI/api/framework-page)**: Learn how pages are defined and how page-level behavior works.

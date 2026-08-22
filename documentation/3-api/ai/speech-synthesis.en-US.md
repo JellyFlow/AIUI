@@ -26,10 +26,22 @@ speechSynthesis.speak(utterance, 'immediate');
 
 ## Basic Usage
 
-```javascript
+<!-- aiui-api-style default=web -->
+
+**Web**
+
+```javascript api-style=web
 const utterance = new SpeechSynthesisUtterance('欢迎使用 AIUI');
 speechSynthesis.speak(utterance, 'enqueue');
 ```
+
+**wx**
+
+```javascript api-style=wx
+wx.speech.playTTS('欢迎使用 AIUI');
+```
+
+<!-- /aiui-api-style -->
 
 ## Methods
 

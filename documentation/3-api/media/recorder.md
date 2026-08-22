@@ -53,4 +53,4 @@ await recorderManager.start({ sampleRate: 16000, numberOfChannels: 1, format: 'p
 
 ## 继续阅读
 
-- **[多媒体 (media)](/AIUI/api/weixin-compatible-apis-media)**：查看入口与平台限制。
+- **[微信小程序兼容 API](/AIUI/api/weixin-compatible-apis)**：查看兼容接口列表。

@@ -24,7 +24,11 @@ AIUI provides a set of local storage APIs that follow the Web Storage API standa
 
 ### 1. Store And Read Data
 
-```javascript
+<!-- aiui-api-style default=web -->
+
+**Web**
+
+```javascript api-style=web
 // Store data
 localStorage.setItem('username', 'Rokid Agent');
 localStorage.setItem('version', '1.0.0');
@@ -38,15 +42,43 @@ const theme = localStorage.getItem('theme');
 console.log(theme); // null
 ```
 
+**wx**
+
+```javascript api-style=wx
+wx.setStorageSync('username', 'Rokid Agent');
+wx.setStorageSync('version', '1.0.0');
+
+const name = wx.getStorageSync('username');
+console.log(name); // "Rokid Agent"
+
+const theme = wx.getStorageSync('theme');
+console.log(theme); // undefined
+```
+
+<!-- /aiui-api-style -->
+
 ### 2. Remove And Clear Data
 
-```javascript
+<!-- aiui-api-style default=web -->
+
+**Web**
+
+```javascript api-style=web
 // Remove a specific item
 localStorage.removeItem('version');
 
 // Clear all storage
 localStorage.clear();
 ```
+
+**wx**
+
+```javascript api-style=wx
+wx.removeStorageSync('version');
+wx.clearStorageSync();
+```
+
+<!-- /aiui-api-style -->
 
 ### 3. Store Object Data
 
@@ -67,3 +99,5 @@ console.log(savedUser.name); // "Admin"
 
 - **Data type**: The `value` argument of `setItem` must be a string. If you pass another type, the system automatically converts it to a string. For complex objects, call `JSON.stringify()` manually before storing.
 - **Isolation**: Storage is isolated per agent. Different agents cannot access each other's stored data.
+
+See [WeChat Mini Program Compatible APIs](/AIUI/api/weixin-compatible-apis) for the complete wx compatibility list.

@@ -24,7 +24,11 @@ AIUI 提供了一套遵循 Web Storage API 标准的本地存储接口。开发�
 
 ### 1. 存储与读取数据
 
-```javascript
+<!-- aiui-api-style default=web -->
+
+**Web**
+
+```javascript api-style=web
 // 存储数据
 localStorage.setItem('username', 'Rokid Agent');
 localStorage.setItem('version', '1.0.0');
@@ -38,15 +42,43 @@ const theme = localStorage.getItem('theme');
 console.log(theme); // null
 ```
 
+**wx**
+
+```javascript api-style=wx
+wx.setStorageSync('username', 'Rokid Agent');
+wx.setStorageSync('version', '1.0.0');
+
+const name = wx.getStorageSync('username');
+console.log(name); // "Rokid Agent"
+
+const theme = wx.getStorageSync('theme');
+console.log(theme); // undefined
+```
+
+<!-- /aiui-api-style -->
+
 ### 2. 移除与清空数据
 
-```javascript
+<!-- aiui-api-style default=web -->
+
+**Web**
+
+```javascript api-style=web
 // 移除特定项
 localStorage.removeItem('version');
 
 // 清空所有存储
 localStorage.clear();
 ```
+
+**wx**
+
+```javascript api-style=wx
+wx.removeStorageSync('version');
+wx.clearStorageSync();
+```
+
+<!-- /aiui-api-style -->
 
 ### 3. 存储对象数据
 
@@ -67,3 +99,5 @@ console.log(savedUser.name); // "Admin"
 
 - **数据类型**: `setItem` 的 `value` 参数必须是字符串。如果传入其他类型，系统会自动将其转换为字符串。建议在存储复杂对象前手动调用 `JSON.stringify()`。
 - **隔离性**: 存储空间是按智能体（Agent）隔离的，不同智能体之间无法访问彼此的存储数据。
+
+完整的 wx 兼容接口见[微信小程序兼容 API](/AIUI/api/weixin-compatible-apis)。

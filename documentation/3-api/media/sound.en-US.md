@@ -65,4 +65,4 @@ click.play();
 
 - If you need a lighter local sound effect playback API, prefer `Sound`.
 - If you need more complete playback control, use [Audio Player (AudioPlayer)](/AIUI/api/media-audio-player).
-- For recording, camera, and other device media capabilities, continue with [Media (media)](/AIUI/api/weixin-compatible-apis-media).
+- For recording, camera, and other device media capabilities, continue with [WeChat Mini Program Compatible APIs](/AIUI/api/weixin-compatible-apis).

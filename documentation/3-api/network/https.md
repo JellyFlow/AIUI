@@ -299,9 +299,13 @@ wx.request({
 
 ## 代码示例
 
-### 1. 使用 `fetch` 拉取 JSON
+### 1. 发起 JSON 请求
 
-```javascript
+<!-- aiui-api-style default=web -->
+
+**Web**
+
+```javascript api-style=web
 const response = await fetch('/api/agent/chat', {
   method: 'POST',
   headers: {
@@ -319,6 +323,29 @@ if (!response.ok) {
 const data = await response.json();
 console.log(data);
 ```
+
+**wx**
+
+```javascript api-style=wx
+wx.request({
+  url: '/api/agent/chat',
+  method: 'POST',
+  header: {
+    'content-type': 'application/json',
+  },
+  data: {
+    message: '帮我总结今天的会议内容',
+  },
+  success(res) {
+    console.log(res.statusCode, res.data);
+  },
+  fail(error) {
+    console.error(error);
+  },
+});
+```
+
+<!-- /aiui-api-style -->
 
 ### 2. 使用 `fetch` 流式读取文本响应
 
@@ -341,28 +368,7 @@ text += decoder.decode();
 console.log(text);
 ```
 
-### 3. 使用 `wx.request` 发起普通请求
-
-```javascript
-wx.request({
-  url: '/api/agent/chat',
-  method: 'POST',
-  header: {
-    'content-type': 'application/json',
-  },
-  data: {
-    message: '帮我总结今天的会议内容',
-  },
-  success(res) {
-    console.log(res.statusCode, res.data);
-  },
-  fail(error) {
-    console.error(error);
-  },
-});
-```
-
-### 4. 使用 `RequestTask` 监听响应头和分块
+### 3. 使用 `RequestTask` 监听响应头和分块
 
 ```javascript
 const task = wx.request({
@@ -401,4 +407,4 @@ task.onChunkReceived((chunk) => {
 
 - **[Event Source](/AIUI/api/network-event-source)**：查看服务端单向流式推送的典型使用方式。
 - **[WebSocket](/AIUI/api/network-websocket)**：查看双向实时长连接场景如何设计与管理。
-- **[网络请求 (networking)](/AIUI/api/weixin-compatible-apis-networking)**：查看 `wx.request` 与 `EventSource` 兼容接口细节。
+- **[微信小程序兼容 API](/AIUI/api/weixin-compatible-apis)**：查看 AIUI 支持的 wx API 列表。

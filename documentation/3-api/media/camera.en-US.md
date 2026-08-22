@@ -48,5 +48,5 @@ const image = await cameraContext.takePhoto({
 
 ## Continue Reading
 
-- **[Media (media)](/AIUI/api/weixin-compatible-apis-media)**: View the entry point and availability limits.
+- **[WeChat Mini Program Compatible APIs](/AIUI/api/weixin-compatible-apis)**: See the compatibility API list.
 - **[Recorder](/AIUI/api/media-recorder)**: Learn about the native recorder manager API.

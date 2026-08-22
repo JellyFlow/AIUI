@@ -13,7 +13,11 @@ If your scenario only needs to request a result once, or only needs the server t
 
 ## Example
 
-```javascript
+<!-- aiui-api-style default=web -->
+
+**Web**
+
+```javascript api-style=web
 const socket = new WebSocket('wss://example.com/realtime');
 
 socket.addEventListener('open', () => {
@@ -31,6 +35,31 @@ socket.addEventListener('close', () => {
   console.log('连接已关闭');
 });
 ```
+
+**wx**
+
+```javascript api-style=wx
+const socket = wx.connectSocket({
+  url: 'wss://example.com/realtime',
+});
+
+socket.onOpen(() => {
+  socket.send(JSON.stringify({
+    type: 'hello',
+    sessionId: 'demo-session',
+  }));
+});
+
+socket.onMessage(({ data }) => {
+  console.log('Message received:', data);
+});
+
+socket.onClose(() => {
+  console.log('Connection closed');
+});
+```
+
+<!-- /aiui-api-style -->
 
 ## Recommendations
 
@@ -58,4 +87,4 @@ For these scenarios, [HTTPS](/AIUI/api/network-https) or [Event Source](/AIUI/ap
 
 - **[HTTPS](/AIUI/api/network-https)**: Learn which business scenarios are better suited to request-response.
 - **[Event Source](/AIUI/api/network-event-source)**: Learn which business scenarios are better suited to one-way streaming pushes from the server.
-- **[Networking](/AIUI/api/weixin-compatible-apis-networking)**: Learn details of compatible APIs such as `wx.connectSocket`.
+- **[WeChat Mini Program Compatible APIs](/AIUI/api/weixin-compatible-apis)**: See the wx APIs supported by AIUI.

@@ -13,7 +13,11 @@
 
 ## 示例
 
-```javascript
+<!-- aiui-api-style default=web -->
+
+**Web**
+
+```javascript api-style=web
 const socket = new WebSocket('wss://example.com/realtime');
 
 socket.addEventListener('open', () => {
@@ -31,6 +35,31 @@ socket.addEventListener('close', () => {
   console.log('连接已关闭');
 });
 ```
+
+**wx**
+
+```javascript api-style=wx
+const socket = wx.connectSocket({
+  url: 'wss://example.com/realtime',
+});
+
+socket.onOpen(() => {
+  socket.send(JSON.stringify({
+    type: 'hello',
+    sessionId: 'demo-session',
+  }));
+});
+
+socket.onMessage(({ data }) => {
+  console.log('收到消息:', data);
+});
+
+socket.onClose(() => {
+  console.log('连接已关闭');
+});
+```
+
+<!-- /aiui-api-style -->
 
 ## 使用建议
 
@@ -58,4 +87,4 @@ socket.addEventListener('close', () => {
 
 - **[HTTPS](/AIUI/api/network-https)**：查看普通请求响应更适合怎样的业务。
 - **[Event Source](/AIUI/api/network-event-source)**：查看服务端单向流式推送更适合怎样的业务。
-- **[网络请求 (networking)](/AIUI/api/weixin-compatible-apis-networking)**：查看 `wx.connectSocket` 等兼容接口细节。
+- **[微信小程序兼容 API](/AIUI/api/weixin-compatible-apis)**：查看 AIUI 支持的 wx API 列表。

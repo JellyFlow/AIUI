@@ -299,9 +299,13 @@ Completion callback. It runs whether the request succeeds or fails.
 
 ## Code Examples
 
-### 1. Load JSON with `fetch`
+### 1. Send a JSON request
 
-```javascript
+<!-- aiui-api-style default=web -->
+
+**Web**
+
+```javascript api-style=web
 const response = await fetch('/api/agent/chat', {
   method: 'POST',
   headers: {
@@ -319,6 +323,29 @@ if (!response.ok) {
 const data = await response.json();
 console.log(data);
 ```
+
+**wx**
+
+```javascript api-style=wx
+wx.request({
+  url: '/api/agent/chat',
+  method: 'POST',
+  header: {
+    'content-type': 'application/json',
+  },
+  data: {
+    message: 'Summarize today\'s meeting for me',
+  },
+  success(res) {
+    console.log(res.statusCode, res.data);
+  },
+  fail(error) {
+    console.error(error);
+  },
+});
+```
+
+<!-- /aiui-api-style -->
 
 ### 2. Read a streaming text response with `fetch`
 
@@ -341,28 +368,7 @@ text += decoder.decode();
 console.log(text);
 ```
 
-### 3. Send a regular request with `wx.request`
-
-```javascript
-wx.request({
-  url: '/api/agent/chat',
-  method: 'POST',
-  header: {
-    'content-type': 'application/json',
-  },
-  data: {
-    message: 'Summarize today\'s meeting for me',
-  },
-  success(res) {
-    console.log(res.statusCode, res.data);
-  },
-  fail(error) {
-    console.error(error);
-  },
-});
-```
-
-### 4. Observe headers and chunks with `RequestTask`
+### 3. Observe headers and chunks with `RequestTask`
 
 ```javascript
 const task = wx.request({
@@ -401,4 +407,4 @@ If you need continuous one-way server push, continue with [Event Source](/AIUI/a
 
 - **[Event Source](/AIUI/api/network-event-source)**: Learn the typical usage pattern for one-way streaming pushes from the server.
 - **[WebSocket](/AIUI/api/network-websocket)**: Learn how to design and manage bidirectional real-time long connections.
-- **[Networking](/AIUI/api/weixin-compatible-apis-networking)**: Learn details of `wx.request` and `EventSource` compatible APIs.
+- **[WeChat Mini Program Compatible APIs](/AIUI/api/weixin-compatible-apis)**: See the wx APIs supported by AIUI.

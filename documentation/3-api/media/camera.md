@@ -48,5 +48,5 @@ const image = await cameraContext.takePhoto({
 
 ## 继续阅读
 
-- **[多媒体 (media)](/AIUI/api/weixin-compatible-apis-media)**：查看入口和可用性限制。
+- **[微信小程序兼容 API](/AIUI/api/weixin-compatible-apis)**：查看兼容接口列表。
 - **[录音](/AIUI/api/media-recorder)**：查看原生录音管理器接口。

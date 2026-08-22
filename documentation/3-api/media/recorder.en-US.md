@@ -53,4 +53,4 @@ await recorderManager.start({ sampleRate: 16000, numberOfChannels: 1, format: 'p
 
 ## Continue Reading
 
-- **[Media (media)](/AIUI/api/weixin-compatible-apis-media)**: View the entry point and platform limits.
+- **[WeChat Mini Program Compatible APIs](/AIUI/api/weixin-compatible-apis)**: See the compatibility API list.

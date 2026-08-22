@@ -21,7 +21,11 @@ const recognition = new SpeechRecognition();
 
 ## Basic Usage
 
-```javascript
+<!-- aiui-api-style default=web -->
+
+**Web**
+
+```javascript api-style=web
 const recognition = new SpeechRecognition();
 
 recognition.onresult = (event) => {
@@ -35,6 +39,15 @@ recognition.onerror = (event) => {
 
 recognition.start();
 ```
+
+**wx**
+
+```javascript api-style=wx
+const sessionId = wx.speech.startRecognition();
+console.log('Recognition session:', sessionId);
+```
+
+<!-- /aiui-api-style -->
 
 ## Common Methods
 

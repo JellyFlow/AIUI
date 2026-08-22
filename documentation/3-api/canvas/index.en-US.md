@@ -98,7 +98,11 @@ An object representing a repeating pattern.
 
 ### 1. Draw Basic Shapes
 
-```javascript
+<!-- aiui-api-style default=web -->
+
+**Web**
+
+```javascript api-style=web
 const canvas = this.selectComponent('#myCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -119,6 +123,28 @@ ctx.ellipse(350, 60, 50, 30, Math.PI / 4, 0, Math.PI * 2);
 ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
 ctx.fill();
 ```
+
+**wx**
+
+```javascript api-style=wx
+const ctx = wx.createCanvasContext('myCanvas');
+
+ctx.fillStyle = 'red';
+ctx.fillRect(10, 10, 100, 100);
+
+ctx.beginPath();
+ctx.arc(200, 60, 50, 0, Math.PI * 2);
+ctx.strokeStyle = 'blue';
+ctx.lineWidth = 5;
+ctx.stroke();
+
+ctx.beginPath();
+ctx.ellipse(350, 60, 50, 30, Math.PI / 4, 0, Math.PI * 2);
+ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
+ctx.fill();
+```
+
+<!-- /aiui-api-style -->
 
 ### 2. Use Gradients
 

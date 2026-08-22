@@ -13,7 +13,11 @@
 
 ## Event Source 示例
 
-```javascript
+<!-- aiui-api-style default=web -->
+
+**Web**
+
+```javascript api-style=web
 const eventSource = new EventSource('/api/agent/stream');
 
 eventSource.onmessage = (event) => {
@@ -25,6 +29,25 @@ eventSource.onerror = () => {
   eventSource.close();
 };
 ```
+
+**wx**
+
+```javascript api-style=wx
+const eventSource = wx.createEventSource({
+  url: '/api/agent/stream',
+});
+
+eventSource.onMessage(({ data }) => {
+  console.log('收到增量内容:', data);
+});
+
+eventSource.onError((error) => {
+  console.error('Event Source 连接异常', error);
+  eventSource.close();
+});
+```
+
+<!-- /aiui-api-style -->
 
 ## Event Source 使用建议
 
@@ -45,4 +68,4 @@ eventSource.onerror = () => {
 
 - **[HTTPS](/AIUI/api/network-https)**：查看普通请求响应场景的使用方式。
 - **[WebSocket](/AIUI/api/network-websocket)**：查看双向实时长连接场景如何设计与管理。
-- **[网络请求 (networking)](/AIUI/api/weixin-compatible-apis-networking)**：查看 `wx.request` 与 `EventSource` 兼容接口细节。
+- **[微信小程序兼容 API](/AIUI/api/weixin-compatible-apis)**：查看 AIUI 支持的 wx API 列表。
