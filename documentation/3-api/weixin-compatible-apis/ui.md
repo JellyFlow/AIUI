@@ -1,12 +1,15 @@
 # 界面 (ui)
 
-提供用于操作界面交互（如弹窗、Toast 等）的接口。
+## 方法
 
-## 交互反馈
+### `wx.setBackgroundColor(options)`
 
-- `wx.showToast(Object object)`: 显示消息提示框。
-- `wx.hideToast(Object object)`: 隐藏消息提示框。
-- `wx.showModal(Object object)`: 显示模态对话框。
-- `wx.showLoading(Object object)`: 显示 loading 提示框。
-- `wx.hideLoading(Object object)`: 隐藏 loading 提示框。
-- `wx.showActionSheet(Object object)`: 显示操作菜单。
+| 参数 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `options.backgroundColor` | `string` | 否 | 页面背景色。 |
+| `options.backgroundColorTop` | `string` | 否 | 顶部背景色。 |
+| `options.backgroundColorBottom` | `string` | 否 | 底部背景色。 |
+| `options.success` | `Function` | 否 | 调用成功回调。 |
+| `options.complete` | `Function` | 否 | 调用结束回调。 |
+
+**返回值：** `undefined`。当前绑定不将颜色应用到渲染器，但会依次调用提供的 `success` 和 `complete`。

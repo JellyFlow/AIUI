@@ -18,6 +18,8 @@ Initiates an HTTPS network request.
 | `method` | String | No | `GET` | HTTP request method. Supports `GET`, `POST`, `PUT`, `DELETE`, `HEAD`, etc. |
 | `dataType` | String | No | `json` | Returned data format. If set to `json`, the returned data will be passed through `JSON.parse` when possible |
 | `responseType` | String | No | `text` | Response data type. Supports `text`, `arraybuffer` |
+| `timeout` | Number | No | | Timeout in milliseconds. `0` disables the timeout; otherwise the app setting or runtime default is used. |
+| `body` | String | No | | Used only when `data` did not produce a request body. |
 | `success` | Function | No | | Callback function invoked when the API call succeeds |
 | `fail` | Function | No | | Callback function invoked when the API call fails |
 | `complete` | Function | No | | Callback function invoked when the API call finishes, whether it succeeds or fails |
@@ -46,9 +48,11 @@ The object returned by `wx.request`.
 
 - **`abort()`**: Aborts the network request task.
 - **`onHeadersReceived(Function callback)`**: Listens for the HTTP response header event. This fires earlier than the request completion event.
-- **`offHeadersReceived(Function callback)`**: Removes the listener for the HTTP response header event.
+- **`offHeadersReceived(Function callback?)`**: Clears all HTTP response-header listeners; the current implementation does not remove one specific callback.
 - **`onChunkReceived(Function callback)`**: Listens for chunk received events.
-- **`offChunkReceived(Function callback)`**: Removes the listener for chunk received events.
+- **`offChunkReceived(Function callback?)`**: Clears all chunk-received listeners; the current implementation does not remove one specific callback.
+
+Except for `abort()`, these methods return `undefined`. The `onHeadersReceived` callback receives a response-header key-value object; `onChunkReceived` receives an `ArrayBuffer`.
 
 ---
 
@@ -77,14 +81,15 @@ The object returned by `wx.connectSocket`.
 
 #### Methods
 
-- **`send(Object object)`**: Sends data through the WebSocket connection.
-    - `data`: `String` or `ArrayBuffer`.
+- **`send(data)`**: Sends `String`, `ArrayBuffer`, or `Uint8Array` data through the WebSocket connection.
 - **`close()`**: Closes the WebSocket connection.
 - **`onOpen(Function callback)`**: Listens for the WebSocket open event.
 - **`onClose(Function callback)`**: Listens for the WebSocket close event.
 - **`onError(Function callback)`**: Listens for WebSocket error events.
 - **`onMessage(Function callback)`**: Listens for messages received from the server over WebSocket.
-    - Callback parameter `data`: `String` or `ArrayBuffer`.
+    - The callback receives `{ data }`, where `data` is a `String` or `ArrayBuffer`.
+
+All `SocketTask` methods return `undefined`; `send` throws a `TypeError` for other data types.
 
 ---
 
@@ -99,10 +104,22 @@ Creates an EventSource connection for Server-Sent Events (SSE).
 | Property | Type | Required | Description |
 | :--- | :--- | :--- | :--- |
 | `url` | String | Yes | Developer server API address |
+| `method` | String | No | HTTP method; defaults to `GET` |
+| `header` | Object | No | Request headers |
+| `data` / `body` | String/Object/ArrayBuffer | No | Request body |
 
 **Return value**:
 
 Returns an `EventSourceTask` object.
+
+### `EventSourceTask`
+
+- **`close()`**: Closes the connection.
+- **`onOpen(callback)`**: Fires when the connection opens.
+- **`onMessage(callback)`**: Fires for an event and receives `{ data, event, id }`.
+- **`onError(callback)`**: Fires for an error and receives `{ errMsg }`.
+
+All `EventSourceTask` methods return `undefined`.
 
 ---
 
@@ -151,7 +168,7 @@ const task = wx.connectSocket({
 
 task.onOpen(() => {
   console.log('连接已打开');
-  task.send({ data: 'Hello Server' });
+task.send('Hello Server');
 });
 
 task.onMessage((res) => {

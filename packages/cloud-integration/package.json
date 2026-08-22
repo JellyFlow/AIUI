@@ -1,0 +1,24 @@
+{
+  "name": "@yodaos-pkg/cloud-integration",
+  "version": "1.0.0",
+  "description": "Rokid Glasses cloud notification integration for third-party agents.",
+  "type": "module",
+  "main": "./index.js",
+  "files": [
+    "index.js"
+  ],
+  "exports": {
+    ".": "./index.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "license": "Apache-2.0"
+}

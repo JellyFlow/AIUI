@@ -4,6 +4,10 @@ If this is your first time seeing AIUI, you can think of it as a framework for b
 
 It is not just a chatbot, and it is not only a traditional UI framework. AIUI is a way to organize **AI capabilities**, **user interfaces**, **device capabilities**, and **agent logic** into one product, so developers can build intelligent agents that people can actually use.
 
+![AIUI connects AI, interactive interfaces, and capabilities across devices](../image/overview/aiui-ecosystem.png)
+
+From lightweight prompts on glasses to persistent task interfaces and access to cameras, voice, and sensors, AIUI lets the same agent combine the right interaction and device capabilities for each context.
+
 ## What Is AIUI Mainly Used For?
 
 In one sentence:
@@ -56,6 +60,10 @@ At a high level, you can understand AIUI as four parts:
 These parts work together in one loop:
 
 **The user makes a request -> the system understands the intent -> the agent decides how to handle it -> UI and capabilities complete the task together -> the result is returned to the user**
+
+![The AIUI interaction loop from user request to feedback](../image/overview/interaction-loop.png)
+
+This is not a pipeline that runs only once. The user can act on the feedback or clarify their intent, and the agent begins another cycle of understanding, execution, and feedback.
 
 Here is what each part means.
 
@@ -118,6 +126,10 @@ If the interface is what users can see, and logic is what makes things work, the
 ## What Parts Does AIUI Include?
 
 If you look at AIUI itself rather than the documentation structure, you can first understand it as six parts:
+
+![The six core AIUI modules and how they relate](../image/overview/architecture.en-US.svg)
+
+The diagram shows how these modules work together: the **Agent Framework** organizes the application, **Built-in Components** and **APIs** provide the interface and capabilities, and the **Ink Runtime** executes them. **Design Guidelines** and **Developer Tools** support the entire development process.
 
 ### 1. Agent Framework
 

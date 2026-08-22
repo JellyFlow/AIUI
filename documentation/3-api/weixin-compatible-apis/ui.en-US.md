@@ -1,12 +1,15 @@
 # UI (ui)
 
-Provides APIs for UI interactions such as dialogs and toast messages.
+## Methods
 
-## Interaction Feedback
+### `wx.setBackgroundColor(options)`
 
-- `wx.showToast(Object object)`: Displays a toast message.
-- `wx.hideToast(Object object)`: Hides the toast message.
-- `wx.showModal(Object object)`: Displays a modal dialog.
-- `wx.showLoading(Object object)`: Displays a loading prompt.
-- `wx.hideLoading(Object object)`: Hides the loading prompt.
-- `wx.showActionSheet(Object object)`: Displays an action sheet.
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `options.backgroundColor` | `string` | No | Page background color. |
+| `options.backgroundColorTop` | `string` | No | Top background color. |
+| `options.backgroundColorBottom` | `string` | No | Bottom background color. |
+| `options.success` | `Function` | No | Success callback. |
+| `options.complete` | `Function` | No | Completion callback. |
+
+**Returns:** `undefined`. The current binding does not apply colors to the renderer, but invokes supplied `success` and `complete` callbacks in that order.

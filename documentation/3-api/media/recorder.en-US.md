@@ -1,72 +1,56 @@
 # Recorder
 
-Recording capabilities are used to capture the user's voice or environmental sound and manage the recording process in page logic.
-
-In AIUI, recording-related capabilities are currently provided mainly through WeChat Mini Program compatible APIs. The recording entry uses a globally unique recorder manager, which is suitable for scenarios such as voice input, voice messages, and audio collection.
-
-## Entry
-
-Get the recorder manager through `wx.getRecorderManager()`:
+The recorder API is provided by the current app's native recorder manager:
 
 ```javascript
-const recorderManager = wx.getRecorderManager();
+const recorderManager = wx.media.getRecorderManager();
 ```
 
-## Basic Usage
+It returns `undefined` on wasm32, in an app with `lifetime: 'cut'`, without a current app instance, or when the app has no recorder manager.
 
-```javascript
-export default {
-  onLoad() {
-    this.recorderManager = wx.getRecorderManager();
-  }
-}
-```
+## Methods
 
-The recorder manager is a globally unique object. It is usually recommended to obtain it during page initialization and manage recording state centrally in page logic.
+### `start(options)`
 
-## Core APIs
+| Parameter | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `options.sampleRate` | `number` | No | `16000` | Requested sample rate. |
+| `options.numberOfChannels` | `number` | No | `1` | Requested channel count. |
+| `options.format` | `string` | No | `pcm` | Requested encoding format. |
 
-### `wx.getRecorderManager()`
+**Returns:** `Promise<void>`. It must be called from a valid user interaction while the host window is focused. Final audio parameters and supported formats vary by host platform.
 
-- **Return Value**: `RecorderManager`
-- **Description**: Gets the globally unique recorder manager object.
+### `pause()` / `resume()` / `stop()`
 
-### `RecorderManager`
+These methods take no parameters and return `Promise<void>`. The Promise rejects if the native recorder backend rejects the state operation; `resume()` also requires a focused host window.
 
-- **Description**: A recorder manager object.
-- **Usage**: Responsible for recording lifecycle management. Starting, stopping, and handling recording states are usually centered around this object.
+## Events
 
-## Recommendations
+Each `on*` method sets one callback for its event; setting it again replaces the previous callback.
 
-- Recording usually involves obvious state transitions such as idle, recording, recording finished, and recording failed, so it is recommended to reflect these states directly in the UI.
-- Since `RecorderManager` is globally unique, avoid maintaining separate recording manager instances across multiple pages or logic branches.
-- When the page is hidden, the recording flow exits, or the business process ends, end the current recording-related state promptly to avoid confusing follow-up interactions.
-- If your goal is only to capture a short voice clip, prefer a simple loop of start recording -> stop recording -> process result.
+| Method | Parameters | Callback arguments |
+| --- | --- | --- |
+| `onStart(callback)`, `onPause(callback)`, `onResume(callback)` | `callback: Function` | None |
+| `onStop(callback)` | `callback: Function` | `{ tempFilePath: string }` |
+| `onFrameRecorded(callback)` | `callback: Function` | `{ frameBuffer: ArrayBuffer }` |
+| `onHeader(callback)` | `callback: Function` | `(format: string, buffer: ArrayBuffer)` |
+| `onError(callback)` | `callback: Function` | `{ errMsg: string }` |
+| `onInterruptionBegin(callback)`, `onInterruptionEnd(callback)` | `callback: Function` | None |
 
 ## Example
 
 ```javascript
-export default {
-  data: {
-    recording: false
-  },
+const recorderManager = wx.media.getRecorderManager();
+if (!recorderManager) return;
 
-  onLoad() {
-    this.recorderManager = wx.getRecorderManager();
-  },
+recorderManager.onFrameRecorded(({ frameBuffer }) => {
+  // Process an audio frame provided by the native recorder backend.
+});
+recorderManager.onError(({ errMsg }) => console.error(errMsg));
 
-  startRecording() {
-    this.setData({ recording: true });
-  },
-
-  stopRecording() {
-    this.setData({ recording: false });
-  }
-}
+await recorderManager.start({ sampleRate: 16000, numberOfChannels: 1, format: 'pcm' });
 ```
 
 ## Continue Reading
 
-- **[Media](/AIUI/api/media)**: Return to the media capability overview.
-- **[Camera](/AIUI/api/media-camera)**: Learn about camera capabilities and the camera context.
-- **[Media (media)](/AIUI/api/weixin-compatible-apis-media)**: View the original entry documentation for WeChat Mini Program compatible APIs.
+- **[Media (media)](/AIUI/api/weixin-compatible-apis-media)**: View the entry point and platform limits.

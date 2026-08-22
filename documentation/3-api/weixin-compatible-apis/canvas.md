@@ -1,10 +1,11 @@
 # 画布 (canvas)
 
-提供用于操作 `canvas` 组件的绘图接口。
-
 ## 方法
 
-- `wx.createCanvasContext(string canvasId, Object this)`: 创建 canvas 的绘图上下文 CanvasContext 对象。
-- `wx.canvasToTempFilePath(Object object, Object this)`: 把当前画布指定区域的内容导出生成指定大小的图片。
-- `wx.canvasGetImageData(Object object, Object this)`: 获取 canvas 区域隐含的像素数据。
-- `wx.canvasPutImageData(Object object, Object this)`: 将像素数据绘制到画布。
+### `wx.createCanvasContext(canvasId)`
+
+| 参数 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `canvasId` | `string` | 是 | 当前页面中 `<canvas>` 节点的 ID。 |
+
+**返回值：** 对应 Canvas 的 2D 绘图上下文；找不到当前页面、节点或 Canvas 时为 `undefined`。

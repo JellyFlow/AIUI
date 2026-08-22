@@ -1,65 +1,52 @@
 # 相机
 
-相机能力用于在页面中接入设备摄像头，并通过页面逻辑与相机组件进行交互。
-
-在 AIUI 中，相机相关能力目前主要通过微信小程序兼容接口提供。对于需要拍照、预览或与摄像头交互的页面，通常会先创建一个 `CameraContext`，再通过该上下文管理具体操作。
-
-## 入口
-
-通过 `wx.createCameraContext()` 创建相机上下文：
+通过 `wx.media.createCameraContext()` 获取相机上下文：
 
 ```javascript
-const cameraContext = wx.createCameraContext();
+const cameraContext = wx.media.createCameraContext();
 ```
 
-## 基本用法
+该方法依赖当前应用实例；应用配置 `lifetime: 'cut'` 或应用上下文不存在时返回 `undefined`。
+
+## `CameraContext.takePhoto(options)`
+
+在有效用户交互中拍照。`options` 必须传入，并且必须包含 `quality`：
 
 ```javascript
-export default {
-  onReady() {
-    this.cameraContext = wx.createCameraContext();
-  }
-}
+const image = await cameraContext.takePhoto(options);
+// image.data: ArrayBuffer
+// image.mimeType: string
 ```
 
-通常建议在页面初次渲染完成后再创建相机上下文，这样可以确保页面中的相机相关视图已经准备就绪。
+| 参数 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `options` | `object` | 是 | 拍照配置对象。 |
+| `options.quality` | `'high' \| 'normal' \| 'low'` | 是 | 图像质量：`high` 为高质量、`normal` 为普通质量、`low` 为低质量。 |
+| `options.enableSystemPreview` | `boolean` | 否 | `true` 时先显示系统相机预览界面再拍摄；`false` 时直接请求拍摄。省略时为 `true`。 |
 
-## 核心接口
+**返回值：** `Promise<{ data: ArrayBuffer, mimeType: string }>`。
 
-### `wx.createCameraContext()`
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `data` | `ArrayBuffer` | 图像的完整二进制内容。 |
+| `mimeType` | `string` | 图像 MIME 类型，例如 `image/jpeg`。 |
 
-- **返回值**：`CameraContext`
-- **说明**：创建并返回一个相机上下文对象，用于和页面中的相机能力交互。
+拍照失败时 Promise 拒绝；未传入 `options`、缺少 `quality` 或调用不在用户交互中时会抛出异常。
 
-### `CameraContext`
-
-- **说明**：相机上下文对象。
-- **用途**：作为页面逻辑与相机组件之间的桥梁，后续拍照、控制预览或其他相机相关操作通常都基于该对象完成。
+```javascript
+const image = await cameraContext.takePhoto({
+  quality: 'high',
+  enableSystemPreview: true,
+});
+```
 
 ## 使用建议
 
-- 把相机初始化放在 `onReady()` 之后，避免在页面尚未完成渲染时过早创建上下文。
-- 相机能力通常与页面中的相机组件配合使用，建议把“初始化完成”“正在拍摄”“操作失败”等状态明确展示给用户。
-- 如果页面切换后不再需要相机交互，及时清理相关页面状态，避免残留无效引用。
-- 当你的场景只需要“打开相机并执行一次操作”时，优先保持交互流程简洁，减少页面状态复杂度。
-
-## 示例
-
-```javascript
-export default {
-  data: {
-    cameraReady: false
-  },
-
-  onReady() {
-    this.cameraContext = wx.createCameraContext();
-    this.setData({ cameraReady: true });
-  }
-}
-```
+- 在使用前检查 `cameraContext` 是否为 `undefined`。
+- 仅在用户点击等交互回调内调用 `takePhoto()`。
+- 使用 `data` 和 `mimeType` 自行处理、保存或上传图像数据。
 
 ## 继续阅读
 
-- **[多媒体](/AIUI/api/media)**：返回多媒体能力总览。
-- **[录音](/AIUI/api/media-recorder)**：查看录音能力与录音管理器。
-- **[多媒体 (media)](/AIUI/api/weixin-compatible-apis-media)**：查看微信小程序兼容接口中的原始入口说明。
+- **[多媒体 (media)](/AIUI/api/weixin-compatible-apis-media)**：查看入口和可用性限制。
+- **[录音](/AIUI/api/media-recorder)**：查看原生录音管理器接口。

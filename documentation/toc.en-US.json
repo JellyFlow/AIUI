@@ -754,7 +754,24 @@
     "slug": "api"
   },
   {
-    "id": "4-design",
+    "id": "4-cloud",
+    "label": "Cloud",
+    "children": [
+      {
+        "id": "overview",
+        "label": "Overview",
+        "children": []
+      },
+      {
+        "id": "notifications",
+        "label": "Sending Notifications",
+        "children": []
+      }
+    ],
+    "slug": "cloud"
+  },
+  {
+    "id": "5-design",
     "label": "Design",
     "children": [
       {
@@ -777,7 +794,7 @@
     "slug": "design"
   },
   {
-    "id": "5-tools",
+    "id": "6-tools",
     "label": "Tools",
     "children": [
       {
@@ -804,7 +821,7 @@
     "slug": "tools"
   },
   {
-    "id": "6-changelog",
+    "id": "7-changelog",
     "label": "Changelog",
     "children": [
       {
