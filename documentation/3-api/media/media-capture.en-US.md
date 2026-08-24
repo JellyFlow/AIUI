@@ -172,11 +172,13 @@ Public properties include `id`, `kind`, `label`, `enabled`, `muted`, and `readyS
 
 The `dataavailable` event exposes a `Blob` as `event.data`. The recorder also dispatches `start`, `pause`, `resume`, `stop`, and `error` events.
 
-### `wx.media.createCameraContext()`
+### wx APIs
+
+#### `wx.media.createCameraContext()`
 
 Returns `CameraContext | undefined`. It returns `undefined` on wasm32, when `app.config.lifetime === 'cut'`, when no current app exists, or when the host provides no camera capability.
 
-### `CameraContext.takePhoto(options)`
+#### `CameraContext.takePhoto(options)`
 
 Must run during a valid user interaction while the host window is focused. Returns `Promise<{ data: ArrayBuffer, mimeType: string }>`.
 
@@ -186,11 +188,11 @@ Must run during a valid user interaction while the host window is focused. Retur
 | `options.mode` | `'default' \| 'wide' \| 'telephoto'` | No | Semantic capture mode mapped by the host to a device lens or capability. |
 | `options.enableSystemPreview` | `boolean` | No | Whether to show the system camera preview first. Defaults to `true`. |
 
-### `wx.media.getRecorderManager()`
+#### `wx.media.getRecorderManager()`
 
 Returns `RecorderManager | undefined`. It returns `undefined` on wasm32, when `app.config.lifetime === 'cut'`, when no current app exists, or when the host provides no recorder capability.
 
-### `RecorderManager`
+#### `RecorderManager`
 
 `start(options)`, `pause()`, `resume()`, and `stop()` all return `Promise<void>`. `start()` and `resume()` require the host window to be focused.
 

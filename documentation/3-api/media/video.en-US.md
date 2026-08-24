@@ -49,7 +49,9 @@ this.video?.load();
 
 ## API Reference
 
-### `wx.createVideoContext(videoId)`
+### wx APIs
+
+#### `wx.createVideoContext(videoId)`
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
@@ -57,7 +59,7 @@ this.video?.load();
 
 Returns `VideoContext | null`; it returns `null` when no matching mounted component exists.
 
-### `VideoContext`
+#### `VideoContext`
 
 | Method | Return Value | Description |
 | --- | --- | --- |

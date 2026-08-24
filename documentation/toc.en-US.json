@@ -297,16 +297,16 @@
             ]
           },
           {
-            "id": "custom-components",
-            "label": "Components",
-            "docId": "open-agent-format-custom-components",
-            "docPath": "1-framework/open-agent-format/custom-components.en-US.md"
-          },
-          {
             "id": "widget",
             "label": "Widget",
             "docId": "open-agent-format-widget",
             "docPath": "1-framework/open-agent-format/widget.en-US.md"
+          },
+          {
+            "id": "custom-components",
+            "label": "Components",
+            "docId": "open-agent-format-custom-components",
+            "docPath": "1-framework/open-agent-format/custom-components.en-US.md"
           },
           {
             "id": "module",

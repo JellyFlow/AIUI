@@ -49,7 +49,9 @@ this.video?.load();
 
 ## API Reference
 
-### `wx.createVideoContext(videoId)`
+### wx APIs
+
+#### `wx.createVideoContext(videoId)`
 
 | 参数 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- |
@@ -57,7 +59,7 @@ this.video?.load();
 
 返回 `VideoContext | null`；没有匹配的已挂载组件时返回 `null`。
 
-### `VideoContext`
+#### `VideoContext`
 
 | 方法 | 返回值 | 说明 |
 | --- | --- | --- |

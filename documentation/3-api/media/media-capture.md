@@ -172,11 +172,13 @@ await recorder.start({
 
 `dataavailable` 事件的 `event.data` 为 `Blob`。录制器还会分发 `start`、`pause`、`resume`、`stop` 与 `error` 事件。
 
-### `wx.media.createCameraContext()`
+### wx APIs
+
+#### `wx.media.createCameraContext()`
 
 返回 `CameraContext | undefined`。wasm32 目标、`app.config.lifetime === 'cut'`、没有当前应用实例或宿主未提供相机能力时返回 `undefined`。
 
-### `CameraContext.takePhoto(options)`
+#### `CameraContext.takePhoto(options)`
 
 必须在有效用户交互中调用，且宿主窗口需要处于焦点状态。返回 `Promise<{ data: ArrayBuffer, mimeType: string }>`。
 
@@ -186,11 +188,11 @@ await recorder.start({
 | `options.mode` | `'default' \| 'wide' \| 'telephoto'` | 否 | 由宿主映射到具体镜头或能力的语义化拍摄模式。 |
 | `options.enableSystemPreview` | `boolean` | 否 | 是否先显示系统相机预览，默认是 `true`。 |
 
-### `wx.media.getRecorderManager()`
+#### `wx.media.getRecorderManager()`
 
 返回 `RecorderManager | undefined`。wasm32 目标、`app.config.lifetime === 'cut'`、没有当前应用实例或宿主未提供录音能力时返回 `undefined`。
 
-### `RecorderManager`
+#### `RecorderManager`
 
 `start(options)`、`pause()`、`resume()` 与 `stop()` 均返回 `Promise<void>`。`start()` 与 `resume()` 要求宿主窗口处于焦点状态。
 

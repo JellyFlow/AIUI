@@ -297,16 +297,16 @@
             ]
           },
           {
-            "id": "custom-components",
-            "label": "组件",
-            "docId": "open-agent-format-custom-components",
-            "docPath": "1-framework/open-agent-format/custom-components.md"
-          },
-          {
             "id": "widget",
             "label": "Widget",
             "docId": "open-agent-format-widget",
             "docPath": "1-framework/open-agent-format/widget.md"
+          },
+          {
+            "id": "custom-components",
+            "label": "组件",
+            "docId": "open-agent-format-custom-components",
+            "docPath": "1-framework/open-agent-format/custom-components.md"
           },
           {
             "id": "module",
