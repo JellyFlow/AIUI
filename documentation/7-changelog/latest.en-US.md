@@ -3,31 +3,6 @@
 AIUI 0.17.0 brings richer agent surfaces, media capabilities, persistent file storage, and improved rendering diagnostics. This release is especially useful for agents that combine wearable interaction, streaming content, and native host capabilities.
 
 ## Framework
-- **Full Widget Support**: Added full widget support, including widget lifecycle, navigation, rendering, and framework APIs for building reusable agent surfaces.
-
-  ```js
-  export default {
-    data: { label: 'Ready' },
-    onAttach() {
-      this.setData({ label: 'Now playing' });
-    },
-  };
-  ```
-
-  A Widget entry uses WXML-like markup inside `<widget>` and binds interaction to the methods exported by `<script setup>`:
-
-  ```xml
-  <widget>
-    <view class="now-playing" bindtap="openPlayer">
-      <image src="{{cover}}" mode="aspectFill" />
-      <view>
-        <text>{{title}}</text>
-        <text>{{artist}}</text>
-      </view>
-    </view>
-  </widget>
-  ```
-
 - **Host Messaging**: Added `postMessage` support between App/Page and the host, enabling agents to exchange structured messages with their embedding application.
 
   ```js

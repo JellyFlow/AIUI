@@ -297,12 +297,6 @@
             ]
           },
           {
-            "id": "widget",
-            "label": "Widget",
-            "docId": "open-agent-format-widget",
-            "docPath": "1-framework/open-agent-format/widget.en-US.md"
-          },
-          {
             "id": "custom-components",
             "label": "Components",
             "docId": "open-agent-format-custom-components",
@@ -517,12 +511,6 @@
             "id": "page",
             "label": "Page",
             "docId": "framework-page"
-          },
-          {
-            "id": "widget",
-            "label": "Widget",
-            "docId": "framework-widget",
-            "docPath": "3-api/framework/widget.en-US.md"
           },
           {
             "id": "component",

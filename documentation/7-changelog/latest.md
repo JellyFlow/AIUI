@@ -3,31 +3,6 @@
 AIUI 0.17.0 带来了更丰富的智能体界面、媒体能力、持久化文件存储与更完善的渲染诊断。此次发布尤其适合结合可穿戴交互、流式内容与原生宿主能力的智能体。
 
 ## 框架
-- **完整的 Widget 支持**：新增完整的 Widget 支持，涵盖生命周期、导航、渲染与框架 API，可用于构建可复用的智能体界面。
-
-  ```js
-  export default {
-    data: { label: 'Ready' },
-    onAttach() {
-      this.setData({ label: 'Now playing' });
-    },
-  };
-  ```
-
-  Widget 入口使用 `<widget>` 内的 WXML 风格标记，并将交互绑定到 `<script setup>` 导出的方法：
-
-  ```xml
-  <widget>
-    <view class="now-playing" bindtap="openPlayer">
-      <image src="{{cover}}" mode="aspectFill" />
-      <view>
-        <text>{{title}}</text>
-        <text>{{artist}}</text>
-      </view>
-    </view>
-  </widget>
-  ```
-
 - **宿主消息通信**：App/Page 与宿主之间新增 `postMessage` 支持，使智能体能够与嵌入它的应用交换结构化消息。
 
   ```js
