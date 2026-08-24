@@ -404,22 +404,26 @@
           {
             "id": "view",
             "label": "<view>",
-            "docId": "view"
+            "docId": "view",
+            "docPath": "2-components/view.md"
           },
           {
             "id": "scroll-view",
             "label": "<scroll-view>",
-            "docId": "scroll-view"
+            "docId": "scroll-view",
+            "docPath": "2-components/scroll-view.md"
           },
           {
             "id": "swiper",
             "label": "<swiper>",
-            "docId": "swiper"
+            "docId": "swiper",
+            "docPath": "2-components/swiper.md"
           },
           {
             "id": "card",
             "label": "<card>",
-            "docId": "card"
+            "docId": "card",
+            "docPath": "2-components/card.md"
           }
         ]
       },
@@ -431,7 +435,8 @@
           {
             "id": "calendar",
             "label": "<calendar>",
-            "docId": "calendar"
+            "docId": "calendar",
+            "docPath": "2-components/calendar.md"
           }
         ]
       },
@@ -443,32 +448,38 @@
           {
             "id": "text",
             "label": "<text>",
-            "docId": "text"
+            "docId": "text",
+            "docPath": "2-components/text.md"
           },
           {
             "id": "icon",
             "label": "<icon>",
-            "docId": "icon"
+            "docId": "icon",
+            "docPath": "2-components/icon.md"
           },
           {
             "id": "error-state",
             "label": "<error-state>",
-            "docId": "error-state"
+            "docId": "error-state",
+            "docPath": "2-components/error-state.md"
           },
           {
             "id": "streamdown",
             "label": "<streamdown>",
-            "docId": "streamdown"
+            "docId": "streamdown",
+            "docPath": "2-components/streamdown.md"
           },
           {
             "id": "table",
             "label": "<table>",
-            "docId": "table"
+            "docId": "table",
+            "docPath": "2-components/table.md"
           },
           {
             "id": "timed-text",
             "label": "<timed-text>",
-            "docId": "timed-text"
+            "docId": "timed-text",
+            "docPath": "2-components/timed-text.md"
           }
         ]
       },
@@ -480,47 +491,56 @@
           {
             "id": "p",
             "label": "<p>",
-            "docId": "p"
+            "docId": "p",
+            "docPath": "2-components/p.md"
           },
           {
             "id": "header",
             "label": "<header>",
-            "docId": "header"
+            "docId": "header",
+            "docPath": "2-components/header.md"
           },
           {
             "id": "blockquote",
             "label": "<blockquote>",
-            "docId": "blockquote"
+            "docId": "blockquote",
+            "docPath": "2-components/blockquote.md"
           },
           {
             "id": "list",
             "label": "<list>",
-            "docId": "list"
+            "docId": "list",
+            "docPath": "2-components/list.md"
           },
           {
             "id": "list-item",
             "label": "<list-item>",
-            "docId": "list-item"
+            "docId": "list-item",
+            "docPath": "2-components/list-item.md"
           },
           {
             "id": "b",
             "label": "<b>",
-            "docId": "b"
+            "docId": "b",
+            "docPath": "2-components/b.md"
           },
           {
             "id": "i",
             "label": "<i>",
-            "docId": "i"
+            "docId": "i",
+            "docPath": "2-components/i.md"
           },
           {
             "id": "snippet",
             "label": "<snippet>",
-            "docId": "snippet"
+            "docId": "snippet",
+            "docPath": "2-components/snippet.md"
           },
           {
             "id": "formula",
             "label": "<formula>",
-            "docId": "formula"
+            "docId": "formula",
+            "docPath": "2-components/formula.md"
           }
         ]
       },
@@ -532,22 +552,26 @@
           {
             "id": "button",
             "label": "<button>",
-            "docId": "button"
+            "docId": "button",
+            "docPath": "2-components/button.md"
           },
           {
             "id": "input",
             "label": "<input>",
-            "docId": "input"
+            "docId": "input",
+            "docPath": "2-components/input.md"
           },
           {
             "id": "textarea",
             "label": "<textarea>",
-            "docId": "textarea"
+            "docId": "textarea",
+            "docPath": "2-components/textarea.md"
           },
           {
             "id": "switch",
             "label": "<switch>",
-            "docId": "switch"
+            "docId": "switch",
+            "docPath": "2-components/switch.md"
           }
         ]
       },
@@ -559,17 +583,20 @@
           {
             "id": "image",
             "label": "<image>",
-            "docId": "image"
+            "docId": "image",
+            "docPath": "2-components/image.md"
           },
           {
             "id": "video",
             "label": "<video>",
-            "docId": "video"
+            "docId": "video",
+            "docPath": "2-components/video.md"
           },
           {
             "id": "lottie-view",
             "label": "<lottie-view>",
-            "docId": "lottie-view"
+            "docId": "lottie-view",
+            "docPath": "2-components/lottie-view.md"
           }
         ]
       },
@@ -581,7 +608,8 @@
           {
             "id": "map",
             "label": "<map>",
-            "docId": "map"
+            "docId": "map",
+            "docPath": "2-components/map.md"
           }
         ]
       },
@@ -593,12 +621,14 @@
           {
             "id": "canvas",
             "label": "<canvas>",
-            "docId": "canvas"
+            "docId": "canvas",
+            "docPath": "2-components/canvas.md"
           },
           {
             "id": "chart",
             "label": "<chart>",
-            "docId": "chart"
+            "docId": "chart",
+            "docPath": "2-components/chart.md"
           }
         ]
       },
@@ -610,7 +640,8 @@
           {
             "id": "a2ui",
             "label": "<a2ui>",
-            "docId": "a2ui"
+            "docId": "a2ui",
+            "docPath": "2-components/a2ui.md"
           }
         ]
       }
