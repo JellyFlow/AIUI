@@ -535,6 +535,12 @@
             "docId": "framework-page"
           },
           {
+            "id": "widget",
+            "label": "Widget",
+            "docId": "framework-widget",
+            "docPath": "3-api/framework/widget.md"
+          },
+          {
             "id": "component",
             "label": "Component",
             "docId": "framework-component",
@@ -573,14 +579,16 @@
             "label": "Audio Player"
           },
           {
-            "id": "camera",
-            "label": "Camera",
-            "docId": "media-camera"
+            "id": "media-capture",
+            "label": "媒体采集",
+            "docId": "media-media-capture",
+            "docPath": "3-api/media/media-capture.md"
           },
           {
-            "id": "recorder",
-            "label": "录音",
-            "docId": "media-recorder"
+            "id": "video",
+            "label": "视频播放",
+            "docId": "media-video",
+            "docPath": "3-api/media/video.md"
           }
         ]
       },
@@ -637,6 +645,12 @@
           {
             "id": "gyroscope",
             "label": "陀螺仪"
+          },
+          {
+            "id": "battery-manager",
+            "label": "电池状态",
+            "docId": "device-battery-manager",
+            "docPath": "3-api/device/battery-manager.md"
           }
         ]
       },
@@ -668,6 +682,12 @@
             "id": "storage-api",
             "label": "localStorage",
             "docId": "storage-api"
+          },
+          {
+            "id": "opfs",
+            "label": "OPFS",
+            "docId": "storage-opfs",
+            "docPath": "3-api/storage/opfs.md"
           }
         ]
       },
