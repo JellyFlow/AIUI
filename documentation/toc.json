@@ -403,54 +403,23 @@
         "children": [
           {
             "id": "view",
-            "label": "view",
+            "label": "<view>",
             "docId": "view"
           },
           {
             "id": "scroll-view",
-            "label": "scroll-view",
+            "label": "<scroll-view>",
             "docId": "scroll-view"
-          }
-        ]
-      },
-      {
-        "id": "basic-content",
-        "label": "基础内容",
-        "expanded": true,
-        "children": [
-          {
-            "id": "text",
-            "label": "text",
-            "docId": "text"
           },
           {
-            "id": "icon",
-            "label": "icon",
-            "docId": "icon",
-            "status": "unsupported"
+            "id": "swiper",
+            "label": "<swiper>",
+            "docId": "swiper"
           },
           {
-            "id": "error-state",
-            "label": "error-state",
-            "docId": "error-state"
-          },
-          {
-            "id": "streamdown",
-            "label": "streamdown",
-            "docId": "streamdown",
-            "status": "unsupported"
-          }
-        ]
-      },
-      {
-        "id": "form-components",
-        "label": "表单组件",
-        "expanded": true,
-        "children": [
-          {
-            "id": "button",
-            "label": "button",
-            "docId": "button"
+            "id": "card",
+            "label": "<card>",
+            "docId": "card"
           }
         ]
       },
@@ -461,8 +430,124 @@
         "children": [
           {
             "id": "calendar",
-            "label": "calendar",
+            "label": "<calendar>",
             "docId": "calendar"
+          }
+        ]
+      },
+      {
+        "id": "basic-content",
+        "label": "基础内容",
+        "expanded": true,
+        "children": [
+          {
+            "id": "text",
+            "label": "<text>",
+            "docId": "text"
+          },
+          {
+            "id": "icon",
+            "label": "<icon>",
+            "docId": "icon"
+          },
+          {
+            "id": "error-state",
+            "label": "<error-state>",
+            "docId": "error-state"
+          },
+          {
+            "id": "streamdown",
+            "label": "<streamdown>",
+            "docId": "streamdown"
+          },
+          {
+            "id": "table",
+            "label": "<table>",
+            "docId": "table"
+          },
+          {
+            "id": "timed-text",
+            "label": "<timed-text>",
+            "docId": "timed-text"
+          }
+        ]
+      },
+      {
+        "id": "semantic-content",
+        "label": "语义内容",
+        "expanded": true,
+        "children": [
+          {
+            "id": "p",
+            "label": "<p>",
+            "docId": "p"
+          },
+          {
+            "id": "header",
+            "label": "<header>",
+            "docId": "header"
+          },
+          {
+            "id": "blockquote",
+            "label": "<blockquote>",
+            "docId": "blockquote"
+          },
+          {
+            "id": "list",
+            "label": "<list>",
+            "docId": "list"
+          },
+          {
+            "id": "list-item",
+            "label": "<list-item>",
+            "docId": "list-item"
+          },
+          {
+            "id": "b",
+            "label": "<b>",
+            "docId": "b"
+          },
+          {
+            "id": "i",
+            "label": "<i>",
+            "docId": "i"
+          },
+          {
+            "id": "snippet",
+            "label": "<snippet>",
+            "docId": "snippet"
+          },
+          {
+            "id": "formula",
+            "label": "<formula>",
+            "docId": "formula"
+          }
+        ]
+      },
+      {
+        "id": "form-components",
+        "label": "表单组件",
+        "expanded": true,
+        "children": [
+          {
+            "id": "button",
+            "label": "<button>",
+            "docId": "button"
+          },
+          {
+            "id": "input",
+            "label": "<input>",
+            "docId": "input"
+          },
+          {
+            "id": "textarea",
+            "label": "<textarea>",
+            "docId": "textarea"
+          },
+          {
+            "id": "switch",
+            "label": "<switch>",
+            "docId": "switch"
           }
         ]
       },
@@ -473,13 +558,30 @@
         "children": [
           {
             "id": "image",
-            "label": "image",
+            "label": "<image>",
             "docId": "image"
           },
           {
+            "id": "video",
+            "label": "<video>",
+            "docId": "video"
+          },
+          {
             "id": "lottie-view",
-            "label": "lottie-view",
+            "label": "<lottie-view>",
             "docId": "lottie-view"
+          }
+        ]
+      },
+      {
+        "id": "location-components",
+        "label": "位置组件",
+        "expanded": true,
+        "children": [
+          {
+            "id": "map",
+            "label": "<map>",
+            "docId": "map"
           }
         ]
       },
@@ -490,12 +592,12 @@
         "children": [
           {
             "id": "canvas",
-            "label": "canvas",
+            "label": "<canvas>",
             "docId": "canvas"
           },
           {
             "id": "chart",
-            "label": "chart",
+            "label": "<chart>",
             "docId": "chart"
           }
         ]
@@ -507,7 +609,7 @@
         "children": [
           {
             "id": "a2ui",
-            "label": "a2ui",
+            "label": "<a2ui>",
             "docId": "a2ui"
           }
         ]
