@@ -519,6 +519,12 @@
             "docId": "framework-page"
           },
           {
+            "id": "widget",
+            "label": "Widget",
+            "docId": "framework-widget",
+            "docPath": "3-api/framework/widget.en-US.md"
+          },
+          {
             "id": "component",
             "label": "Component",
             "docId": "framework-component",
@@ -557,14 +563,16 @@
             "label": "Audio Player"
           },
           {
-            "id": "camera",
-            "label": "Camera",
-            "docId": "media-camera"
+            "id": "media-capture",
+            "label": "Media Capture",
+            "docId": "media-media-capture",
+            "docPath": "3-api/media/media-capture.en-US.md"
           },
           {
-            "id": "recorder",
-            "label": "Recorder",
-            "docId": "media-recorder"
+            "id": "video",
+            "label": "Video Playback",
+            "docId": "media-video",
+            "docPath": "3-api/media/video.en-US.md"
           }
         ]
       },
@@ -621,6 +629,12 @@
           {
             "id": "gyroscope",
             "label": "Gyroscope"
+          },
+          {
+            "id": "battery-manager",
+            "label": "Battery Status",
+            "docId": "device-battery-manager",
+            "docPath": "3-api/device/battery-manager.en-US.md"
           }
         ]
       },
@@ -652,6 +666,12 @@
             "id": "storage-api",
             "label": "localStorage",
             "docId": "storage-api"
+          },
+          {
+            "id": "opfs",
+            "label": "OPFS",
+            "docId": "storage-opfs",
+            "docPath": "3-api/storage/opfs.en-US.md"
           }
         ]
       },
@@ -694,45 +714,7 @@
       {
         "id": "weixin-compatible-apis",
         "label": "WeChat Mini Program Compatible APIs",
-        "expanded": false,
-        "children": [
-          {
-            "id": "base",
-            "label": "Base"
-          },
-          {
-            "id": "canvas",
-            "label": "Canvas"
-          },
-          {
-            "id": "media",
-            "label": "Media"
-          },
-          {
-            "id": "networking",
-            "label": "Networking"
-          },
-          {
-            "id": "router",
-            "label": "Router"
-          },
-          {
-            "id": "speech",
-            "label": "Speech"
-          },
-          {
-            "id": "storage",
-            "label": "Storage"
-          },
-          {
-            "id": "system",
-            "label": "System"
-          },
-          {
-            "id": "ui",
-            "label": "UI"
-          }
-        ]
+        "children": []
       }
     ],
     "slug": "api"
