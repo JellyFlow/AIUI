@@ -20,7 +20,7 @@ In other words, OAF is not a single config file. It is an engineering-oriented o
 
 - `AGENTS.md` expresses the agent description layer
 - `app.json` and the application entry express the runtime layer
-- `pages/` expresses the page and interaction layer
+- `pages/` and `widgets/` express pages, persistent surfaces, and interaction
 - Components, modules, and packages express the reuse layer
 
 ## What AIUI Extends
@@ -32,6 +32,7 @@ In AIUI, a complete OAF project usually contains at least these parts:
 - `AGENTS.md`: defines agent identity, system instructions, capability boundaries, and collaboration constraints
 - `app.json`: defines the application entry, page list, and global window configuration
 - `pages/`: defines concrete pages, page lifecycle, events, and interaction logic
+- `widgets/`: defines compact host-persistent surfaces, state, and lifecycle
 - `components/`: encapsulates reusable UI and local interaction units
 - `modules/` or other regular module files: split business logic, utility functions, and asset imports
 - `package.json` and package exports: distribute reusable capabilities to other AIUI applications
@@ -55,6 +56,9 @@ agent-app/
   pages/
     home/
       index.ink
+  widgets/
+    counter/
+      index.ink
   components/
     agent-card.ink
   modules/
@@ -67,6 +71,7 @@ Each layer answers a different question:
 - `AGENTS.md`: who this agent is and how it should think and respond
 - `app.json` / `app.js`: how the agent application starts and which global behaviors it owns
 - `pages/`: which UI the user actually sees and interacts with
+- `widgets/`: which compact surfaces the host should keep visible
 - `components/`: which UI fragments should be reused and encapsulated
 - `modules/`: which logic, assets, or capabilities should be factored out
 - `package.json`: which capabilities should be exposed as a package for other projects
@@ -90,5 +95,6 @@ This matters even more in AIUI, because AIUI is not built for agents that only a
 - [app.json](/AIUI/framework/open-agent-format-app-json): learn how application entry, page lists, and global configuration work
 - [Pages](/AIUI/framework/open-agent-format-page): learn how pages carry concrete UI, lifecycle, and interaction
 - [Components](./custom-components): learn how reusable UI units are registered, composed, and connected
+- [Widgets](./widget): learn how to declare, register, and develop Widgets
 - [Modules](./module): learn how logic, assets, and WebAssembly are organized through modules
 - [Packages](./package): learn how modules and components are packaged into distributable capabilities

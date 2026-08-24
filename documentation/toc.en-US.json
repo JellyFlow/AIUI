@@ -303,6 +303,12 @@
             "docPath": "1-framework/open-agent-format/custom-components.en-US.md"
           },
           {
+            "id": "widget",
+            "label": "Widget",
+            "docId": "open-agent-format-widget",
+            "docPath": "1-framework/open-agent-format/widget.en-US.md"
+          },
+          {
             "id": "module",
             "label": "Modules",
             "docId": "open-agent-format-module",

@@ -12,6 +12,7 @@ However, a complete application-level definition usually includes more than `app
 `app.json` is mainly used to declare:
 
 - Which pages the application contains
+- Which Widget entries and families the application contains
 - Which page the application starts from
 - Global window styles
 - Shared base configuration across pages
@@ -23,6 +24,12 @@ A typical example looks like this:
   "pages": [
     "pages/index/index",
     "pages/logs/logs"
+  ],
+  "widgets": [
+    {
+      "path": "widgets/counter/index",
+      "family": "1x1"
+    }
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -36,7 +43,10 @@ A typical example looks like this:
 The two most important parts here are:
 
 - `pages`: Declares the list of page paths
+- `widgets`: Declares Widget paths and families
 - `window`: Declares the global window configuration
+
+Do not include the `.ink` extension in `widgets[].path`. `widgets[].family` currently supports `1x1` and `1x2` and must match `widget.family` in the corresponding Widget file. See [Widget Development](./widget) for the complete workflow.
 
 ## Its Relationship With `AGENTS.md`
 

@@ -12,6 +12,7 @@
 `app.json` 主要用于声明：
 
 - 应用包含哪些页面
+- 应用包含哪些 Widget 入口及其规格
 - 应用从哪个页面开始启动
 - 全局窗口样式
 - 跨页面共享的基础配置
@@ -23,6 +24,12 @@
   "pages": [
     "pages/index/index",
     "pages/logs/logs"
+  ],
+  "widgets": [
+    {
+      "path": "widgets/counter/index",
+      "family": "1x1"
+    }
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -36,7 +43,10 @@
 这里最重要的两个部分是：
 
 - `pages`：声明页面路径列表
+- `widgets`：声明 Widget 路径和规格
 - `window`：声明全局窗口配置
+
+`widgets[].path` 不包含 `.ink` 扩展名。`widgets[].family` 当前支持 `1x1` 和 `1x2`，并且必须与对应 Widget 文件中声明的 `widget.family` 一致。完整开发流程参见 [Widget 开发](./widget)。
 
 ## 它和 `AGENTS.md` 的关系
 
