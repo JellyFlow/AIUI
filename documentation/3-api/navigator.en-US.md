@@ -50,7 +50,19 @@ console.log('UA:', userAgent);
 
 #### `navigator.id`
 
-- **Description**: Returns the opaque content identifier for the current Agent on this device. It is an empty string when there is no current app instance.
+- **Type**: Read-only `string`.
+- **Description**: Returns an opaque identifier for the current Agent on the current device. Its scope is determined by the **combination of Agent and device**: the same Agent on the same device normally receives the same value; different Agents on the same device, or the same Agent on different devices, receive different values.
+
+```javascript
+const agentDeviceId = navigator.id;
+console.log('Agent device ID:', agentDeviceId);
+```
+
+The value normally starts with `cid_` and is derived by the runtime from the Agent identity and device-side identity material. It is not an Agent URL, file path, device serial number, MAC address, or any other raw hardware identifier. Do not parse the value or depend on its specific format.
+
+As long as the device-side identity material remains available, `navigator.id` stays stable across normal application restarts and upgrades. It may change after a factory reset, after host identity data is cleared or lost, or when the host replaces the device identity material used for derivation. It is an empty string `''` when there is no current app instance.
+
+Use it only for purposes such as associating local data, restoring device-side state, or diagnostics within the same Agent scope. Do not use it as an authentication credential or assume that it never changes. If it is uploaded or stored across services, protect it as device-identifying information with appropriate privacy and security controls.
 
 #### `navigator.language`
 
