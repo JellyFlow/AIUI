@@ -33,18 +33,15 @@
       },
       {
         "id": "overview",
-        "label": "Overview",
-        "children": []
+        "label": "Overview"
       },
       {
         "id": "concepts",
-        "label": "Concepts",
-        "children": []
+        "label": "Concepts"
       },
       {
         "id": "structure",
-        "label": "Project Structure",
-        "children": []
+        "label": "Project Structure"
       },
       {
         "id": "framework",
@@ -574,14 +571,12 @@
       },
       {
         "id": "route",
-        "label": "Routing",
-        "children": []
+        "label": "Routing"
       },
       {
         "id": "navigator",
         "label": "Navigator",
-        "docId": "weixin-compatible-apis-navigator",
-        "children": []
+        "docId": "weixin-compatible-apis-navigator"
       },
       {
         "id": "media",
@@ -724,43 +719,35 @@
       {
         "id": "canvas",
         "label": "Canvas",
-        "children": [],
         "hasIndex": true
       },
       {
         "id": "encoding",
-        "label": "Encoding",
-        "children": []
+        "label": "Encoding"
       },
       {
         "id": "crypto",
-        "label": "Crypto",
-        "children": []
+        "label": "Crypto"
       },
       {
         "id": "console",
-        "label": "Console",
-        "children": []
+        "label": "Console"
       },
       {
         "id": "performance",
-        "label": "Performance",
-        "children": []
+        "label": "Performance"
       },
       {
         "id": "open-services",
-        "label": "Open Services",
-        "children": []
+        "label": "Open Services"
       },
       {
         "id": "web-apis",
-        "label": "Web API",
-        "children": []
+        "label": "Web API"
       },
       {
         "id": "weixin-compatible-apis",
-        "label": "WeChat Mini Program Compatible APIs",
-        "children": []
+        "label": "WeChat Mini Program Compatible APIs"
       }
     ],
     "slug": "api"
@@ -777,8 +764,7 @@
           {
             "id": "create-first-agent",
             "label": "Create Your First AIUI Agent",
-            "sourcePath": "4-tutorials/getting-started/create-first-agent",
-            "children": []
+            "sourcePath": "4-tutorials/getting-started/create-first-agent"
           }
         ]
       },
@@ -790,50 +776,42 @@
           {
             "id": "build-interactive-counter",
             "label": "Build an Interactive Counter",
-            "sourcePath": "4-tutorials/interface/build-interactive-counter",
-            "children": []
+            "sourcePath": "4-tutorials/interface/build-interactive-counter"
           },
           {
             "id": "conditional-content",
             "label": "Render Content from State",
-            "sourcePath": "4-tutorials/interface/conditional-content",
-            "children": []
+            "sourcePath": "4-tutorials/interface/conditional-content"
           },
           {
             "id": "render-a-list",
             "label": "Render a Dynamic List",
-            "sourcePath": "4-tutorials/interface/render-a-list",
-            "children": []
+            "sourcePath": "4-tutorials/interface/render-a-list"
           },
           {
             "id": "handle-text-input",
             "label": "Read Text Input",
-            "sourcePath": "4-tutorials/interface/handle-text-input",
-            "children": []
+            "sourcePath": "4-tutorials/interface/handle-text-input"
           },
           {
             "id": "build-flex-layout",
             "label": "Lay Out a Page with Flexbox",
-            "sourcePath": "4-tutorials/interface/build-flex-layout",
-            "children": []
+            "sourcePath": "4-tutorials/interface/build-flex-layout"
           },
           {
             "id": "navigate-between-pages",
             "label": "Navigate Between Pages",
-            "sourcePath": "4-tutorials/interface/navigate-between-pages",
-            "children": []
+            "sourcePath": "4-tutorials/interface/navigate-between-pages"
           },
           {
             "id": "use-page-lifecycle",
             "label": "Use the Page Lifecycle",
-            "sourcePath": "4-tutorials/interface/use-page-lifecycle",
-            "children": []
+            "sourcePath": "4-tutorials/interface/use-page-lifecycle"
           },
           {
             "id": "draw-on-canvas",
             "label": "Draw on Canvas",
-            "sourcePath": "4-tutorials/interface/draw-on-canvas",
-            "children": []
+            "sourcePath": "4-tutorials/interface/draw-on-canvas"
           }
         ]
       },
@@ -845,26 +823,22 @@
           {
             "id": "load-remote-data",
             "label": "Load and Display Remote Data",
-            "sourcePath": "4-tutorials/data/load-remote-data",
-            "children": []
+            "sourcePath": "4-tutorials/data/load-remote-data"
           },
           {
             "id": "persist-settings",
             "label": "Persist User Settings",
-            "sourcePath": "4-tutorials/data/persist-settings",
-            "children": []
+            "sourcePath": "4-tutorials/data/persist-settings"
           },
           {
             "id": "receive-server-events",
             "label": "Receive Server-Sent Events",
-            "sourcePath": "4-tutorials/data/receive-server-events",
-            "children": []
+            "sourcePath": "4-tutorials/data/receive-server-events"
           },
           {
             "id": "connect-a-websocket",
             "label": "Connect a WebSocket",
-            "sourcePath": "4-tutorials/data/connect-a-websocket",
-            "children": []
+            "sourcePath": "4-tutorials/data/connect-a-websocket"
           }
         ]
       },
@@ -876,20 +850,17 @@
           {
             "id": "create-a-widget",
             "label": "Create a Widget",
-            "sourcePath": "4-tutorials/framework/create-a-widget",
-            "children": []
+            "sourcePath": "4-tutorials/framework/create-a-widget"
           },
           {
             "id": "run-an-agent-worker",
             "label": "Run an Agent Worker",
-            "sourcePath": "4-tutorials/framework/run-an-agent-worker",
-            "children": []
+            "sourcePath": "4-tutorials/framework/run-an-agent-worker"
           },
           {
             "id": "reuse-a-component",
             "label": "Reuse a Custom Component",
-            "sourcePath": "4-tutorials/framework/reuse-a-component",
-            "children": []
+            "sourcePath": "4-tutorials/framework/reuse-a-component"
           }
         ]
       },
@@ -901,20 +872,17 @@
           {
             "id": "generate-text-with-llm",
             "label": "Generate Text with a Language Model",
-            "sourcePath": "4-tutorials/ai/generate-text-with-llm",
-            "children": []
+            "sourcePath": "4-tutorials/ai/generate-text-with-llm"
           },
           {
             "id": "speak-text",
             "label": "Speak a Text Message",
-            "sourcePath": "4-tutorials/ai/speak-text",
-            "children": []
+            "sourcePath": "4-tutorials/ai/speak-text"
           },
           {
             "id": "recognize-speech",
             "label": "Recognize a Speech Input",
-            "sourcePath": "4-tutorials/ai/recognize-speech",
-            "children": []
+            "sourcePath": "4-tutorials/ai/recognize-speech"
           }
         ]
       },
@@ -926,8 +894,7 @@
           {
             "id": "read-accelerometer",
             "label": "Read Accelerometer Data",
-            "sourcePath": "4-tutorials/device/read-accelerometer",
-            "children": []
+            "sourcePath": "4-tutorials/device/read-accelerometer"
           }
         ]
       },
@@ -939,8 +906,7 @@
           {
             "id": "package-an-aix",
             "label": "Package an AIX File",
-            "sourcePath": "4-tutorials/delivery/package-an-aix",
-            "children": []
+            "sourcePath": "4-tutorials/delivery/package-an-aix"
           }
         ]
       }
@@ -953,13 +919,11 @@
     "children": [
       {
         "id": "overview",
-        "label": "Overview",
-        "children": []
+        "label": "Overview"
       },
       {
         "id": "notifications",
-        "label": "Sending Notifications",
-        "children": []
+        "label": "Sending Notifications"
       }
     ],
     "slug": "cloud"
@@ -981,8 +945,7 @@
       },
       {
         "id": "interaction",
-        "label": "Interaction Design",
-        "children": []
+        "label": "Interaction Design"
       }
     ],
     "slug": "design"
@@ -993,23 +956,19 @@
     "children": [
       {
         "id": "intro",
-        "label": "Introduction",
-        "children": []
+        "label": "Introduction"
       },
       {
         "id": "AIUI_Studio",
-        "label": "AIUI Studio Platform",
-        "children": []
+        "label": "AIUI Studio Platform"
       },
       {
         "id": "craft",
-        "label": "Craft Platform",
-        "children": []
+        "label": "Craft Platform"
       },
       {
         "id": "skills",
-        "label": "Skills",
-        "children": []
+        "label": "Skills"
       }
     ],
     "slug": "tools"
@@ -1020,8 +979,7 @@
     "children": [
       {
         "id": "latest",
-        "label": "Latest Version",
-        "children": []
+        "label": "Latest Version"
       }
     ],
     "slug": "changelog"

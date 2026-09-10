@@ -33,18 +33,15 @@
       },
       {
         "id": "overview",
-        "label": "总览",
-        "children": []
+        "label": "总览"
       },
       {
         "id": "concepts",
-        "label": "概念",
-        "children": []
+        "label": "概念"
       },
       {
         "id": "structure",
-        "label": "项目结构",
-        "children": []
+        "label": "项目结构"
       },
       {
         "id": "framework",
@@ -729,14 +726,12 @@
       },
       {
         "id": "route",
-        "label": "路由",
-        "children": []
+        "label": "路由"
       },
       {
         "id": "navigator",
         "label": "Navigator",
-        "docId": "weixin-compatible-apis-navigator",
-        "children": []
+        "docId": "weixin-compatible-apis-navigator"
       },
       {
         "id": "media",
@@ -904,43 +899,35 @@
       {
         "id": "canvas",
         "label": "画布",
-        "children": [],
         "hasIndex": true
       },
       {
         "id": "encoding",
-        "label": "编码",
-        "children": []
+        "label": "编码"
       },
       {
         "id": "crypto",
-        "label": "加密",
-        "children": []
+        "label": "加密"
       },
       {
         "id": "console",
-        "label": "控制台",
-        "children": []
+        "label": "控制台"
       },
       {
         "id": "performance",
-        "label": "性能",
-        "children": []
+        "label": "性能"
       },
       {
         "id": "open-services",
-        "label": "开放平台",
-        "children": []
+        "label": "开放平台"
       },
       {
         "id": "web-apis",
-        "label": "Web API",
-        "children": []
+        "label": "Web API"
       },
       {
         "id": "weixin-compatible-apis",
-        "label": "微信小程序兼容 API",
-        "children": []
+        "label": "微信小程序兼容 API"
       }
     ],
     "slug": "api"
@@ -957,8 +944,7 @@
           {
             "id": "create-first-agent",
             "label": "创建第一个 AIUI 智能体",
-            "sourcePath": "4-tutorials/getting-started/create-first-agent",
-            "children": []
+            "sourcePath": "4-tutorials/getting-started/create-first-agent"
           }
         ]
       },
@@ -970,50 +956,42 @@
           {
             "id": "build-interactive-counter",
             "label": "构建一个交互式计数器",
-            "sourcePath": "4-tutorials/interface/build-interactive-counter",
-            "children": []
+            "sourcePath": "4-tutorials/interface/build-interactive-counter"
           },
           {
             "id": "conditional-content",
             "label": "根据状态显示内容",
-            "sourcePath": "4-tutorials/interface/conditional-content",
-            "children": []
+            "sourcePath": "4-tutorials/interface/conditional-content"
           },
           {
             "id": "render-a-list",
             "label": "渲染动态列表",
-            "sourcePath": "4-tutorials/interface/render-a-list",
-            "children": []
+            "sourcePath": "4-tutorials/interface/render-a-list"
           },
           {
             "id": "handle-text-input",
             "label": "读取文本输入",
-            "sourcePath": "4-tutorials/interface/handle-text-input",
-            "children": []
+            "sourcePath": "4-tutorials/interface/handle-text-input"
           },
           {
             "id": "build-flex-layout",
             "label": "使用 Flexbox 布局页面",
-            "sourcePath": "4-tutorials/interface/build-flex-layout",
-            "children": []
+            "sourcePath": "4-tutorials/interface/build-flex-layout"
           },
           {
             "id": "navigate-between-pages",
             "label": "在 Page 之间导航",
-            "sourcePath": "4-tutorials/interface/navigate-between-pages",
-            "children": []
+            "sourcePath": "4-tutorials/interface/navigate-between-pages"
           },
           {
             "id": "use-page-lifecycle",
             "label": "使用 Page 生命周期",
-            "sourcePath": "4-tutorials/interface/use-page-lifecycle",
-            "children": []
+            "sourcePath": "4-tutorials/interface/use-page-lifecycle"
           },
           {
             "id": "draw-on-canvas",
             "label": "在 Canvas 上绘图",
-            "sourcePath": "4-tutorials/interface/draw-on-canvas",
-            "children": []
+            "sourcePath": "4-tutorials/interface/draw-on-canvas"
           }
         ]
       },
@@ -1025,26 +1003,22 @@
           {
             "id": "load-remote-data",
             "label": "加载并展示远程数据",
-            "sourcePath": "4-tutorials/data/load-remote-data",
-            "children": []
+            "sourcePath": "4-tutorials/data/load-remote-data"
           },
           {
             "id": "persist-settings",
             "label": "持久化用户设置",
-            "sourcePath": "4-tutorials/data/persist-settings",
-            "children": []
+            "sourcePath": "4-tutorials/data/persist-settings"
           },
           {
             "id": "receive-server-events",
             "label": "接收服务端事件流",
-            "sourcePath": "4-tutorials/data/receive-server-events",
-            "children": []
+            "sourcePath": "4-tutorials/data/receive-server-events"
           },
           {
             "id": "connect-a-websocket",
             "label": "建立 WebSocket 连接",
-            "sourcePath": "4-tutorials/data/connect-a-websocket",
-            "children": []
+            "sourcePath": "4-tutorials/data/connect-a-websocket"
           }
         ]
       },
@@ -1056,20 +1030,17 @@
           {
             "id": "create-a-widget",
             "label": "创建一个 Widget",
-            "sourcePath": "4-tutorials/framework/create-a-widget",
-            "children": []
+            "sourcePath": "4-tutorials/framework/create-a-widget"
           },
           {
             "id": "run-an-agent-worker",
             "label": "运行 Agent Worker",
-            "sourcePath": "4-tutorials/framework/run-an-agent-worker",
-            "children": []
+            "sourcePath": "4-tutorials/framework/run-an-agent-worker"
           },
           {
             "id": "reuse-a-component",
             "label": "复用自定义组件",
-            "sourcePath": "4-tutorials/framework/reuse-a-component",
-            "children": []
+            "sourcePath": "4-tutorials/framework/reuse-a-component"
           }
         ]
       },
@@ -1081,20 +1052,17 @@
           {
             "id": "generate-text-with-llm",
             "label": "使用语言模型生成文本",
-            "sourcePath": "4-tutorials/ai/generate-text-with-llm",
-            "children": []
+            "sourcePath": "4-tutorials/ai/generate-text-with-llm"
           },
           {
             "id": "speak-text",
             "label": "播报一段文本",
-            "sourcePath": "4-tutorials/ai/speak-text",
-            "children": []
+            "sourcePath": "4-tutorials/ai/speak-text"
           },
           {
             "id": "recognize-speech",
             "label": "识别一次语音输入",
-            "sourcePath": "4-tutorials/ai/recognize-speech",
-            "children": []
+            "sourcePath": "4-tutorials/ai/recognize-speech"
           }
         ]
       },
@@ -1106,8 +1074,7 @@
           {
             "id": "read-accelerometer",
             "label": "读取加速度计数据",
-            "sourcePath": "4-tutorials/device/read-accelerometer",
-            "children": []
+            "sourcePath": "4-tutorials/device/read-accelerometer"
           }
         ]
       },
@@ -1119,8 +1086,7 @@
           {
             "id": "package-an-aix",
             "label": "打包 AIX 文件",
-            "sourcePath": "4-tutorials/delivery/package-an-aix",
-            "children": []
+            "sourcePath": "4-tutorials/delivery/package-an-aix"
           }
         ]
       }
@@ -1133,23 +1099,19 @@
     "children": [
       {
         "id": "overview",
-        "label": "能力概览",
-        "children": []
+        "label": "能力概览"
       },
       {
         "id": "account-token",
-        "label": "账号 Token",
-        "children": []
+        "label": "账号 Token"
       },
       {
         "id": "messaging",
-        "label": "消息服务",
-        "children": []
+        "label": "消息服务"
       },
       {
         "id": "notifications",
-        "label": "通知下发",
-        "children": []
+        "label": "通知下发"
       }
     ],
     "slug": "cloud"
@@ -1171,8 +1133,7 @@
       },
       {
         "id": "interaction",
-        "label": "交互设计",
-        "children": []
+        "label": "交互设计"
       }
     ],
     "slug": "design"
@@ -1183,23 +1144,19 @@
     "children": [
       {
         "id": "intro",
-        "label": "介绍",
-        "children": []
+        "label": "介绍"
       },
       {
         "id": "AIUI_Studio",
-        "label": "AIUI Studio 平台",
-        "children": []
+        "label": "AIUI Studio 平台"
       },
       {
         "id": "craft",
-        "label": "Craft 平台",
-        "children": []
+        "label": "Craft 平台"
       },
       {
         "id": "skills",
-        "label": "Skills",
-        "children": []
+        "label": "Skills"
       }
     ],
     "slug": "tools"
@@ -1210,8 +1167,7 @@
     "children": [
       {
         "id": "latest",
-        "label": "最新版本",
-        "children": []
+        "label": "最新版本"
       }
     ],
     "slug": "changelog"
