@@ -165,6 +165,20 @@
         "hasIndex": true
       },
       {
+        "id": "account",
+        "label": "账号与身份",
+        "expanded": false,
+        "children": [
+          {
+            "id": "authorization",
+            "label": "用户账号授权",
+            "docId": "authorization",
+            "docPath": "0-guide/account/authorization.md"
+          }
+        ],
+        "hasIndex": true
+      },
+      {
         "id": "debug",
         "label": "调试",
         "expanded": false,
@@ -1185,11 +1199,6 @@
       {
         "id": "skills",
         "label": "Skills",
-        "children": []
-      },
-      {
-        "id": "debug",
-        "label": "真机调试",
         "children": []
       }
     ],
