@@ -211,6 +211,37 @@ await writer.close();
 
 `phrase` 是希望优先识别的词语，不能为空。`boost` 是可选权重，省略时为 `1`；数值越高，表示越希望识别服务优先考虑这个词。是否支持热词以 `capabilities.phrases` 为准。
 
+## 选择语音分段方式
+
+`segmentation` 用于提示识别服务如何确定一段最终结果的边界。先检查 `segmentationModes`，再传入当前服务支持的模式：
+
+```javascript
+const capabilities = await SpeechRecognitionSession.getCapabilities();
+const segmentation = capabilities.segmentationModes.includes('vad')
+  ? 'vad'
+  : capabilities.segmentationModes.includes('auto')
+    ? 'auto'
+    : undefined;
+
+const session = new SpeechRecognitionSession({
+  lang: 'zh-CN',
+  interimResults: true,
+  segmentation,
+});
+```
+
+三种模式的含义如下：
+
+| 模式 | 分段依据 |
+| --- | --- |
+| `auto` | 使用当前宿主或识别服务的默认分段策略。 |
+| `vad` | 优先使用语音活动检测（Voice Activity Detection）识别说话后的连续静音，并以此确定语音边界。 |
+| `semantic` | 优先根据识别内容的语义完整性确定句子边界。 |
+
+`vad` 中的时间指“检测到语音后持续静音的时长”，不是从会话开始计算的绝对时间，也不是 `MediaRecorder.start(250)` 中的音频分片间隔。当前 JavaScript API 不提供静音阈值参数，具体需要连续静音多少毫秒由宿主或识别服务决定；不要把 `segmentation` 传成对象，也不要传入 `silenceDurationMs`。如果业务必须使用固定的 VAD 静音阈值，需要由宿主能力实现并公开相应配置后才能使用。
+
+分段只决定识别结果何时成为一个最终句段，不会关闭 `audio` 流或结束会话。调用 `writer.close()` 仍然表示音频输入全部结束。省略 `segmentation` 时，运行时不会向宿主发送明确的分段模式；显式传入的模式如果不在 `segmentationModes` 中，首次 `writer.write()` 会以 `NotSupportedError` 拒绝。
+
 ## 更新 ASR 上下文
 
 上下文用于告诉识别服务当前对话正在讨论什么。可以在写入第一段音频前设置初始上下文，也可以在识别过程中通过 `updateContext()` 替换上下文：
@@ -317,7 +348,7 @@ const recognition = new SpeechRecognition();
 | `interimResults` | `boolean` | 是否接收尚未最终确认的中间结果，默认 `false`。 |
 | `maxAlternatives` | `number` | 每个结果最多返回多少个候选，默认且最小为 `1`。 |
 | `phrases` | `SpeechRecognitionPhrase[]` | 自定义热词及可选权重。使用前检查 `capabilities.phrases`。 |
-| `segmentation` | `string` | 分段方式：`auto`、`vad` 或 `semantic`。使用前检查 `segmentationModes`。 |
+| `segmentation` | `'auto' \| 'vad' \| 'semantic'` | 可选的分段提示。省略时不指定模式；使用前检查 `segmentationModes`。当前 API 不支持设置 VAD 静音时长。 |
 | `audio` | `SpeechRecognitionAudioOptions` | 输入音频格式。 |
 
 **`SpeechRecognitionPhrase`**
@@ -336,7 +367,7 @@ const recognition = new SpeechRecognition();
 | `channelCount` | `number` | 声道数，例如单声道为 `1`。 |
 | `sampleFormat` | `'s16' \| 'f32'` | PCM 采样格式。 |
 
-实例提供只读的 `audio` 可写流和 `state`。当前实现中的 `state` 可能为 `idle`、`opening`、`streaming`、`closing` 或 `closed`。实例还支持 `onstart`、`onaudiostart`、`onresult`、`onerror`、`onaudioend` 和 `onend` 事件。
+实例提供只读的 `audio` 可写流和 `state`。当前实现中的 `state` 可能为 `idle`、`opening`、`streaming`、`closing`、`closed`、`aborted` 或 `errored`。实例还支持 `onstart`、`onaudiostart`、`onresult`、`onerror`、`onaudioend` 和 `onend` 事件。
 
 ### `SpeechRecognitionSession.getCapabilities()`
 
@@ -354,7 +385,7 @@ const capabilities = await SpeechRecognitionSession.getCapabilities();
 | `maxAlternatives` | `number` | 每个识别结果支持的最大候选数量。 |
 | `phrases` | `boolean` | 是否支持 `phrases` 自定义热词。 |
 | `contextUpdates` | `boolean` | 是否支持设置和更新 ASR 上下文。 |
-| `segmentationModes` | `Array<'auto' \| 'vad' \| 'semantic'>` | 支持的音频分段方式。 |
+| `segmentationModes` | `Array<'auto' \| 'vad' \| 'semantic'>` | 宿主能够执行的音频分段方式；不包含 VAD 静音阈值。 |
 
 `audioFormats` 中的每一项包含：
 

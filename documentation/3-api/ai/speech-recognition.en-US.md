@@ -211,6 +211,37 @@ await writer.close();
 
 `phrase` is the term to prioritize and must not be empty. `boost` is an optional weight that defaults to `1`; a higher value asks the recognition service to give the phrase more consideration. Support is reported by `capabilities.phrases`.
 
+## Choose a Speech Segmentation Mode
+
+`segmentation` hints how the recognition service should determine the boundary of each final result. Check `segmentationModes` first, then pass a mode supported by the current service:
+
+```javascript
+const capabilities = await SpeechRecognitionSession.getCapabilities();
+const segmentation = capabilities.segmentationModes.includes('vad')
+  ? 'vad'
+  : capabilities.segmentationModes.includes('auto')
+    ? 'auto'
+    : undefined;
+
+const session = new SpeechRecognitionSession({
+  lang: 'en-US',
+  interimResults: true,
+  segmentation,
+});
+```
+
+The modes have the following meanings:
+
+| Mode | Segmentation basis |
+| --- | --- |
+| `auto` | Uses the current host or recognition service's default segmentation strategy. |
+| `vad` | Prefers voice activity detection (VAD), which detects continuous silence after speech to determine a speech boundary. |
+| `semantic` | Prefers sentence boundaries based on whether the recognized content is semantically complete. |
+
+For `vad`, time means the duration of continuous silence after speech is detected. It is not an absolute time measured from the start of the session, nor is it the audio chunk interval in `MediaRecorder.start(250)`. The current JavaScript API does not expose a silence-threshold option; the host or recognition service decides how many milliseconds of silence end a segment. Do not pass an object or `silenceDurationMs` as `segmentation`. A fixed VAD silence threshold requires the host capability to implement and expose such an option first.
+
+Segmentation only determines when a recognition result becomes a final segment. It does not close the `audio` stream or end the session; `writer.close()` still signals that all audio input has ended. When `segmentation` is omitted, the runtime sends no explicit segmentation mode to the host. If an explicit mode is not listed in `segmentationModes`, the first `writer.write()` rejects with `NotSupportedError`.
+
 ## Update ASR Context
 
 Context tells the recognition service what the current conversation is about. Set initial context before the first audio write, or replace it during recognition with `updateContext()`:
@@ -311,7 +342,7 @@ Creates a recognition session with a writable audio stream. Common options inclu
 | `interimResults` | `boolean` | Whether unconfirmed interim results are reported. Defaults to `false`. |
 | `maxAlternatives` | `number` | Maximum alternatives returned for each result. The default and minimum are `1`. |
 | `phrases` | `SpeechRecognitionPhrase[]` | Custom phrases and optional weights. Check `capabilities.phrases` first. |
-| `segmentation` | `string` | `auto`, `vad`, or `semantic`. Check `segmentationModes` first. |
+| `segmentation` | `'auto' \| 'vad' \| 'semantic'` | Optional segmentation hint. Omit it to leave the mode unspecified. Check `segmentationModes` first. The current API does not configure the VAD silence duration. |
 | `audio` | `SpeechRecognitionAudioOptions` | Input audio format. |
 
 **`SpeechRecognitionPhrase`**
@@ -330,7 +361,7 @@ Creates a recognition session with a writable audio stream. Common options inclu
 | `channelCount` | `number` | Channel count; use `1` for mono. |
 | `sampleFormat` | `'s16' \| 'f32'` | PCM sample format. |
 
-The instance provides a read-only writable stream in `audio` and a read-only `state`. In the current implementation, `state` can be `idle`, `opening`, `streaming`, `closing`, or `closed`. The instance also supports `onstart`, `onaudiostart`, `onresult`, `onerror`, `onaudioend`, and `onend`.
+The instance provides a read-only writable stream in `audio` and a read-only `state`. In the current implementation, `state` can be `idle`, `opening`, `streaming`, `closing`, `closed`, `aborted`, or `errored`. The instance also supports `onstart`, `onaudiostart`, `onresult`, `onerror`, `onaudioend`, and `onend`.
 
 ### `SpeechRecognitionSession.getCapabilities()`
 
@@ -348,7 +379,7 @@ Returns `Promise<SpeechRecognitionCapabilities>`. Call it before creating a sess
 | `maxAlternatives` | `number` | Maximum alternatives supported for each result. |
 | `phrases` | `boolean` | Whether custom `phrases` are supported. |
 | `contextUpdates` | `boolean` | Whether ASR context can be set and updated. |
-| `segmentationModes` | `Array<'auto' \| 'vad' \| 'semantic'>` | Supported audio segmentation modes. |
+| `segmentationModes` | `Array<'auto' \| 'vad' \| 'semantic'>` | Audio segmentation modes the host can honor; this does not include a VAD silence threshold. |
 
 Each item in `audioFormats` contains:
 
