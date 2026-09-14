@@ -213,15 +213,35 @@ await writer.close();
 
 ## Choose a Speech Segmentation Mode
 
-`segmentation` hints how the recognition service should determine the boundary of each final result. Check `segmentationModes` first, then pass a mode supported by the current service:
+`segmentation` hints how the recognition service should determine the boundary of each final result. Check `segmentationModes` and `vadSilenceDuration` first, then pass a mode and VAD silence threshold supported by the current service:
 
 ```javascript
 const capabilities = await SpeechRecognitionSession.getCapabilities();
-const segmentation = capabilities.segmentationModes.includes('vad')
-  ? 'vad'
-  : capabilities.segmentationModes.includes('auto')
-    ? 'auto'
-    : undefined;
+let segmentation;
+
+if (capabilities.segmentationModes.includes('vad')) {
+  const timing = capabilities.vadSilenceDuration;
+  const preferredSilenceMs = 800;
+
+  if (
+    timing.supported &&
+    timing.minMs !== undefined &&
+    timing.maxMs !== undefined
+  ) {
+    segmentation = {
+      mode: 'vad',
+      silenceDurationMs: Math.min(
+        timing.maxMs,
+        Math.max(timing.minMs, preferredSilenceMs)
+      ),
+    };
+  } else {
+    // Use the host or recognition service's default VAD silence threshold.
+    segmentation = 'vad';
+  }
+} else if (capabilities.segmentationModes.includes('auto')) {
+  segmentation = 'auto';
+}
 
 const session = new SpeechRecognitionSession({
   lang: 'en-US',
@@ -238,9 +258,11 @@ The modes have the following meanings:
 | `vad` | Prefers voice activity detection (VAD), which detects continuous silence after speech to determine a speech boundary. |
 | `semantic` | Prefers sentence boundaries based on whether the recognized content is semantically complete. |
 
-For `vad`, time means the duration of continuous silence after speech is detected. It is not an absolute time measured from the start of the session, nor is it the audio chunk interval in `MediaRecorder.start(250)`. The current JavaScript API does not expose a silence-threshold option; the host or recognition service decides how many milliseconds of silence end a segment. Do not pass an object or `silenceDurationMs` as `segmentation`. A fixed VAD silence threshold requires the host capability to implement and expose such an option first.
+For `vad`, time means the duration of continuous silence after speech is detected. It is not an absolute time measured from the start of the session, nor is it the audio chunk interval in `MediaRecorder.start(250)`. To customize it, use `{ mode: 'vad', silenceDurationMs }`. `silenceDurationMs` is measured in milliseconds and must be a non-negative integer inside the inclusive range advertised by `vadSilenceDuration.minMs` and `maxMs`. When `vadSilenceDuration.supported` is `false`, the string form `'vad'` remains available, but the host or recognition service chooses the threshold.
 
-Segmentation only determines when a recognition result becomes a final segment. It does not close the `audio` stream or end the session; `writer.close()` still signals that all audio input has ended. When `segmentation` is omitted, the runtime sends no explicit segmentation mode to the host. If an explicit mode is not listed in `segmentationModes`, the first `writer.write()` rejects with `NotSupportedError`.
+Segmentation only determines when a recognition result becomes a final segment. It does not close the `audio` stream or end the session; `writer.close()` still signals that all audio input has ended. When `segmentation` is omitted, the runtime sends no explicit segmentation mode to the host. The string form remains backwards compatible, and an object without `silenceDurationMs` also uses the host's default threshold.
+
+`silenceDurationMs` is valid only with `mode: 'vad'`. A value that is not a finite non-negative integer, or using the field with another mode, makes the constructor throw `RangeError` or `TypeError`. On the first `writer.write()`, an explicit mode outside `segmentationModes`, lack of custom VAD timing support, or a missing or invalid advertised range rejects with `NotSupportedError`; a value outside the advertised range rejects with `RangeError`.
 
 ## Update ASR Context
 
@@ -342,8 +364,19 @@ Creates a recognition session with a writable audio stream. Common options inclu
 | `interimResults` | `boolean` | Whether unconfirmed interim results are reported. Defaults to `false`. |
 | `maxAlternatives` | `number` | Maximum alternatives returned for each result. The default and minimum are `1`. |
 | `phrases` | `SpeechRecognitionPhrase[]` | Custom phrases and optional weights. Check `capabilities.phrases` first. |
-| `segmentation` | `'auto' \| 'vad' \| 'semantic'` | Optional segmentation hint. Omit it to leave the mode unspecified. Check `segmentationModes` first. The current API does not configure the VAD silence duration. |
+| `segmentation` | `SpeechRecognitionSegmentationMode \| SpeechRecognitionSegmentationOptions` | Optional segmentation hint. It accepts the existing string form or an object that configures the VAD silence threshold. Omit it to leave the mode unspecified. |
 | `audio` | `SpeechRecognitionAudioOptions` | Input audio format. |
+
+**`SpeechRecognitionSegmentationMode`**
+
+The type is `'auto' | 'vad' | 'semantic'`.
+
+**`SpeechRecognitionSegmentationOptions`**
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `mode` | `SpeechRecognitionSegmentationMode` | Yes | Segmentation mode. Check `capabilities.segmentationModes` first. |
+| `silenceDurationMs` | `number` | No | Milliseconds of continuous silence after detected speech that end a VAD segment. Valid only for `vad` and must be inside the host-advertised range. |
 
 **`SpeechRecognitionPhrase`**
 
@@ -379,7 +412,16 @@ Returns `Promise<SpeechRecognitionCapabilities>`. Call it before creating a sess
 | `maxAlternatives` | `number` | Maximum alternatives supported for each result. |
 | `phrases` | `boolean` | Whether custom `phrases` are supported. |
 | `contextUpdates` | `boolean` | Whether ASR context can be set and updated. |
-| `segmentationModes` | `Array<'auto' \| 'vad' \| 'semantic'>` | Audio segmentation modes the host can honor; this does not include a VAD silence threshold. |
+| `segmentationModes` | `SpeechRecognitionSegmentationMode[]` | Audio segmentation modes the host can honor. |
+| `vadSilenceDuration` | `{ supported: boolean; minMs?: number; maxMs?: number }` | Whether a custom VAD silence threshold is supported and the range accepted by the host. |
+
+`vadSilenceDuration` contains:
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `supported` | `boolean` | Whether `silenceDurationMs` can customize the VAD silence threshold. |
+| `minMs` | `number` | Minimum accepted milliseconds. Present only when customization is supported and a valid range is advertised. |
+| `maxMs` | `number` | Maximum accepted milliseconds. Present only when customization is supported and a valid range is advertised. |
 
 Each item in `audioFormats` contains:
 
