@@ -13,6 +13,68 @@
 </scroll-view>
 ```
 
+## 约束横向滚动区域
+
+`scroll-x` 只启用横向溢出处理，不会替容器指定宽度。通常父级的默认拉伸布局会让 `scroll-view` 占满可用宽度；如果父级使用 `align-items: flex-start` 等非拉伸布局，宽度为 `auto` 的滚动容器可能随内容展开，因而没有可滚动的可视区域。
+
+下面的完整 `.ink` 页面通过 `width: 100%` 将横向滚动区域限制在父级可用宽度内：
+
+```html
+<script setup>
+const items = Array.from({ length: 8 }, (_, index) => ({
+  id: index + 1,
+  label: `项目 ${index + 1}`
+}));
+
+export default {
+  data: { items }
+};
+</script>
+
+<page>
+  <view class="page">
+    <scroll-view class="gallery" scroll-x="true">
+      <view class="track">
+        <view class="item" ink:for="{{ items }}" ink:key="id">
+          {{ item.label }}
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+</page>
+
+<style>
+.page {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.gallery {
+  width: 100%;
+  height: 88px;
+  overflow: hidden;
+}
+
+.track {
+  display: flex;
+  flex-direction: row;
+  width: 1324px;
+  height: 88px;
+}
+
+.item {
+  width: 144px;
+  height: 64px;
+  margin-right: 12px;
+  background-color: #60a5fa;
+  flex-shrink: 0;
+}
+</style>
+```
+
+这里的关键不是必须写出某个固定像素宽度，而是让 `scroll-view` 获得一个小于内容宽度的确定可视宽度。父级已经能够约束并拉伸子项时，可以不重复声明 `width`。
+
 ## 属性
 
 | 属性 | 类型 | 默认值 | 描述 |

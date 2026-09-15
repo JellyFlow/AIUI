@@ -13,6 +13,68 @@ The `scroll-view` component is a scrollable view container that allows users to 
 </scroll-view>
 ```
 
+## Constrain the Horizontal Scroll Area
+
+`scroll-x` enables horizontal overflow handling; it does not assign a width to the container. A parent's default stretch layout usually makes `scroll-view` fill the available width. If the parent uses a non-stretch layout such as `align-items: flex-start`, however, an auto-width scroll container can expand to fit its content and leave no scrollable viewport.
+
+This complete `.ink` page uses `width: 100%` to constrain the horizontal scroll area to the width available from its parent:
+
+```html
+<script setup>
+const items = Array.from({ length: 8 }, (_, index) => ({
+  id: index + 1,
+  label: `Item ${index + 1}`
+}));
+
+export default {
+  data: { items }
+};
+</script>
+
+<page>
+  <view class="page">
+    <scroll-view class="gallery" scroll-x="true">
+      <view class="track">
+        <view class="item" ink:for="{{ items }}" ink:key="id">
+          {{ item.label }}
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+</page>
+
+<style>
+.page {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.gallery {
+  width: 100%;
+  height: 88px;
+  overflow: hidden;
+}
+
+.track {
+  display: flex;
+  flex-direction: row;
+  width: 1324px;
+  height: 88px;
+}
+
+.item {
+  width: 144px;
+  height: 64px;
+  margin-right: 12px;
+  background-color: #60a5fa;
+  flex-shrink: 0;
+}
+</style>
+```
+
+The important part is not a particular fixed pixel width. The `scroll-view` needs a definite viewport width smaller than its content. If the parent already constrains and stretches its children, you do not need to repeat the `width` declaration.
+
 ## Properties
 
 | Property | Type | Default | Description |
