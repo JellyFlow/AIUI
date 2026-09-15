@@ -106,6 +106,7 @@ text {
 
 ## Continue Reading
 
+- [Assets](/AIUI/framework/open-agent-format-assets)
 - [Widget Development](/AIUI/framework/open-agent-format-widget)
 - [Agent Worker Development](/AIUI/framework/open-agent-format-agent-worker)
 - [app.json](/AIUI/framework/open-agent-format-app-json)

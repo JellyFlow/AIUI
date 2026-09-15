@@ -5,10 +5,10 @@
 ## 使用方法
 
 ```xml
-<lottie-view 
-  src="assets/animation.json" 
-  auto-play="true" 
-  loop="true" 
+<lottie-view
+  src="/assets/animation.json"
+  auto-play="true"
+  loop="true"
   speed="1.0"
   width="200"
   height="200"
@@ -19,7 +19,7 @@
 
 | 属性 | 类型 | 描述 | 默认值 |
 |-----------|------|-------------|---------|
-| `src` | String | Lottie JSON 文件的路径或 URL。 | `""` |
+| `src` | String | Lottie JSON 或 `.lottie` 归档的路径或 URL。 | `""` |
 | `auto-play` | Boolean | 是否在加载完成后自动开始播放。 | `true` |
 | `loop` | Boolean | 动画播放到结尾后是否循环播放。 | `true` |
 | `speed` | Number | 动画播放速度倍数（例如，1.0 为正常速度）。 | `1.0` |
@@ -28,3 +28,5 @@
 ## 事件
 
 目前，`lottie-view` 组件暂未向 WXML/JS 抛出公共事件，主要在内部处理加载相关的事件。
+
+本地路径、网络 URL、外部图片和 `.lottie` 归档的支持规则请查看[资源（Assets）](/AIUI/framework/open-agent-format-assets)。

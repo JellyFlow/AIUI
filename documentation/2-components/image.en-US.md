@@ -56,3 +56,5 @@ For example, keep a fixed width and calculate the height automatically:
 | `mode` | String | `scaleToFill` | Resizing mode: `scaleToFill`, `aspectFit`, `aspectFill`, `widthFix`, or `heightFix`. |
 
 `scaleToFill` stretches the image to fill its container, so the image ratio may change. Use `aspectFit` or `aspectFill` when preserving the original ratio matters.
+
+See [Assets](/AIUI/framework/open-agent-format-assets) for local path and network URL support.

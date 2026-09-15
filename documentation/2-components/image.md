@@ -56,3 +56,5 @@
 | `mode` | String | `scaleToFill` | 图片缩放方式，可选值为 `scaleToFill`、`aspectFit`、`aspectFill`、`widthFix` 或 `heightFix`。 |
 
 `scaleToFill` 会让图片填满容器，因此图片比例可能发生变化。需要保持原始比例时，通常优先使用 `aspectFit` 或 `aspectFill`。
+
+本地路径和网络 URL 的支持规则请查看[资源（Assets）](/AIUI/framework/open-agent-format-assets)。

@@ -5,10 +5,10 @@ The `lottie-view` component is used to render Lottie animations, a JSON-based an
 ## Usage
 
 ```xml
-<lottie-view 
-  src="assets/animation.json" 
-  auto-play="true" 
-  loop="true" 
+<lottie-view
+  src="/assets/animation.json"
+  auto-play="true"
+  loop="true"
   speed="1.0"
   width="200"
   height="200"
@@ -19,7 +19,7 @@ The `lottie-view` component is used to render Lottie animations, a JSON-based an
 
 | Property | Type | Description | Default |
 |-----------|------|-------------|---------|
-| `src` | String | The path or URL of the Lottie JSON file. | `""` |
+| `src` | String | Path or URL of a Lottie JSON file or `.lottie` archive. | `""` |
 | `auto-play` | Boolean | Whether to automatically start playback after loading is complete. | `true` |
 | `loop` | Boolean | Whether to loop the animation after it reaches the end. | `true` |
 | `speed` | Number | The animation playback speed multiplier (for example, `1.0` is normal speed). | `1.0` |
@@ -28,3 +28,5 @@ The `lottie-view` component is used to render Lottie animations, a JSON-based an
 ## Events
 
 Currently, the `lottie-view` component does not expose public events to WXML/JS and mainly handles loading-related events internally.
+
+See [Assets](/AIUI/framework/open-agent-format-assets) for local paths, network URLs, external images, and `.lottie` archives.

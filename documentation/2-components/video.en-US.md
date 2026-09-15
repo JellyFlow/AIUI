@@ -8,7 +8,7 @@
 <video
   id="preview"
   src="https://example.com/video.mp4"
-  poster="assets/poster.jpg"
+  poster="/assets/poster.jpg"
   autoplay="true"
   object-fit="contain"
   bindtimeupdate="handleTimeUpdate"
@@ -37,3 +37,5 @@ Wireframe mode also supports `wireframe-threshold`, `wireframe-thickness`, `wire
 ## Events
 
 Use `bind<event>` or `catch<event>` for `loadstart`, `loadedmetadata`, `canplay`, `play`, `playing`, `pause`, `waiting`, `stalled`, `seeking`, `seeked`, `timeupdate`, `ended`, `volumechange`, `ratechange`, and `error`. `timeupdate` returns `{ currentTime }`; `error` returns `{ message }`.
+
+See [Assets](/AIUI/framework/open-agent-format-assets) for local paths, network URLs, and object URL support.

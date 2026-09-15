@@ -8,7 +8,7 @@
 <video
   id="preview"
   src="https://example.com/video.mp4"
-  poster="assets/poster.jpg"
+  poster="/assets/poster.jpg"
   autoplay="true"
   object-fit="contain"
   bindtimeupdate="handleTimeUpdate"
@@ -37,3 +37,5 @@
 ## 事件
 
 通过 `bind<event>` 或 `catch<event>` 监听 `loadstart`、`loadedmetadata`、`canplay`、`play`、`playing`、`pause`、`waiting`、`stalled`、`seeking`、`seeked`、`timeupdate`、`ended`、`volumechange`、`ratechange` 和 `error`。`timeupdate` 返回 `{ currentTime }`，`error` 返回 `{ message }`。
+
+本地路径、网络 URL 和 Object URL 的支持规则请查看[资源（Assets）](/AIUI/framework/open-agent-format-assets)。

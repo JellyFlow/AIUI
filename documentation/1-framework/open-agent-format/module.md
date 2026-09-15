@@ -182,3 +182,5 @@ console.log(click instanceof Sound);
 - 模块能力适用于页面、组件及其他可复用逻辑文件
 - 推荐将通用逻辑拆分到独立模块中，避免页面文件过于臃肿
 - 如果需要复用组件能力，请优先使用组件；如果只是复用逻辑或资源，优先使用模块
+
+有关组件 `src`、相对路径、包根路径和网络资源的规则，请查看[资源（Assets）](/AIUI/framework/open-agent-format-assets)。

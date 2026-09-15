@@ -104,4 +104,5 @@ Open Agent Format 的价值，不在于引入新的术语，而在于让智能�
 - [Agent Worker](/AIUI/framework/open-agent-format-agent-worker)：了解如何开发共享后台任务
 - [组件](./custom-components)：了解可复用 UI 单元如何注册、组合和通信
 - [模块](./module)：了解逻辑、资源和 WebAssembly 如何通过模块组织
+- [资源（Assets）](./assets)：了解包内路径、网络 URL 和不同资源类型的加载规则
 - [Package](./package)：了解如何把模块与组件封装成可分发能力

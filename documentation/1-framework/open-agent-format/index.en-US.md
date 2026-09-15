@@ -104,4 +104,5 @@ This matters even more in AIUI, because AIUI is not built for agents that only a
 - [Agent Worker](/AIUI/framework/open-agent-format-agent-worker): learn how to build a shared background task
 - [Components](./custom-components): learn how reusable UI units are registered, composed, and connected
 - [Modules](./module): learn how logic, assets, and WebAssembly are organized through modules
+- [Assets](./assets): learn how bundled paths, network URLs, and different asset types are loaded
 - [Packages](./package): learn how modules and components are packaged into distributable capabilities

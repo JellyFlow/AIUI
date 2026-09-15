@@ -106,6 +106,7 @@ text {
 
 ## 继续阅读
 
+- [资源（Assets）](/AIUI/framework/open-agent-format-assets)
 - [Widget 开发](/AIUI/framework/open-agent-format-widget)
 - [Agent Worker 开发](/AIUI/framework/open-agent-format-agent-worker)
 - [app.json](/AIUI/framework/open-agent-format-app-json)

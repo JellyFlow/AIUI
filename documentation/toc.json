@@ -340,6 +340,12 @@
             "docPath": "1-framework/open-agent-format/module.md"
           },
           {
+            "id": "assets",
+            "label": "资源（Assets）",
+            "docId": "open-agent-format-assets",
+            "docPath": "1-framework/open-agent-format/assets.md"
+          },
+          {
             "id": "packages",
             "label": "Package",
             "docId": "open-agent-format-packages",

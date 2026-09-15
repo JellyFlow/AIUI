@@ -182,3 +182,5 @@ In this mode:
 - Module support can be used in pages, components, and other reusable logic files
 - Shared logic is best extracted into standalone modules to keep page files focused
 - Prefer components for reusable UI structure, and modules for reusable logic or assets
+
+See [Assets](/AIUI/framework/open-agent-format-assets) for component `src`, relative-path, application-root, and network-asset rules.
