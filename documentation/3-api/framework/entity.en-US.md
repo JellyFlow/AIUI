@@ -40,7 +40,9 @@ if (result.interrupted) {
 }
 ```
 
-`scrollTo()` moves to a position. `scrollBy()` moves by a distance from the current position. User input or a newer scrolling command can interrupt smooth scrolling, in which case `interrupted` is `true`.
+`scrollTo()` moves to a position. `scrollBy()` moves by a distance from the current position. Changing the scroll position through code triggers the same `scroll` and `scrollend` events as user scrolling, so event handlers do not need to distinguish the source. See [`scroll-view`](/AIUI/components/scroll-view) for event usage and detail fields.
+
+For a scrolling sequence that produces events, the Promise returned by `scrollTo()` or `scrollBy()` settles after `scrollend` has been dispatched, so code after `await` can read the final position. A no-movement operation dispatches no events but still settles its Promise. User input or a newer scrolling command can interrupt smooth scrolling, in which case `interrupted` is `true`.
 
 ## API Reference
 
@@ -66,7 +68,7 @@ if (result.interrupted) {
 
 ### Scrolling Method Parameters
 
-The object form accepts `left`, `top`, and `behavior`. `behavior` can be `auto`, `instant`, or `smooth`. The returned Promise resolves to `{ interrupted: boolean }`.
+The object form accepts `left`, `top`, and `behavior`. `behavior` can be `auto`, `instant`, or `smooth`: `instant` scrolls immediately, `smooth` animates the scroll, and the default `auto` follows the entity's computed `scroll-behavior`. The returned Promise resolves to `{ interrupted: boolean }`.
 
 Assigning `scrollTop` or `scrollLeft` scrolls immediately and clamps values to the valid range. A regular non-scrollable entity remains at `0`.
 

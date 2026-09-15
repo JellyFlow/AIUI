@@ -26,6 +26,45 @@
 | `scroll-speed` | Number | `25.0` | 自动滚动的速度。 |
 | `scroll-direction` | String | `vertical` | 自动滚动的方向 (`vertical` 或 `horizontal`)。 |
 
+## 监听滚动
+
+使用 `bindscroll` 监听滚动位置变化，使用 `bindscrollend` 监听一次滚动结束：
+
+```xml
+<scroll-view
+  class="scroll-container"
+  scroll-y="true"
+  bindscroll="handleScroll"
+  bindscrollend="handleScrollEnd"
+>
+  <!-- 列表内容 -->
+</scroll-view>
+```
+
+```javascript
+export default {
+  handleScroll(event) {
+    console.log('当前位置', event.detail.scrollTop);
+  },
+
+  handleScrollEnd(event) {
+    console.log('最终位置', event.detail.scrollTop);
+  }
+};
+```
+
+无论滚动由用户操作还是代码触发，监听函数收到的事件类型和数据结构都相同，事件中不包含滚动来源。只有滚动位置实际发生变化时才会派发 `scroll`；当前滚动序列结束时会派发一次 `scrollend`。用户手势和平滑滚动可能连续派发多个 `scroll`，而代码触发的立即滚动会同步依次派发一次 `scroll` 和一次 `scrollend`。
+
+`event.detail` 包含以下字段：
+
+| 字段 | 类型 | 说明 |
+| :--- | :--- | :--- |
+| `scrollTop` / `scrollLeft` | Number | 事件派发时的纵向或横向滚动位置 |
+| `scrollWidth` / `scrollHeight` | Number | 可滚动内容的宽度或高度 |
+| `clientWidth` / `clientHeight` | Number | 当前可视区域的宽度或高度 |
+| `scrollBottom` | Number | 距离内容底部的剩余距离 |
+| `isAtBottom` | Boolean | 是否已经滚动到底部 |
+
 ## 功能特性
 
 - 支持横向和纵向滚动。

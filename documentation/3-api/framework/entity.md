@@ -40,7 +40,9 @@ if (result.interrupted) {
 }
 ```
 
-`scrollTo()` 移动到指定位置，`scrollBy()` 在当前位置基础上移动一段距离。用户操作或后续滚动命令可能打断平滑滚动，此时返回结果的 `interrupted` 为 `true`。
+`scrollTo()` 移动到指定位置，`scrollBy()` 在当前位置基础上移动一段距离。通过代码改变滚动位置时，会触发与用户滚动相同的 `scroll` 和 `scrollend` 事件，监听端不需要区分来源。事件用法和数据字段请参阅 [`scroll-view`](/AIUI/components/scroll-view)。
+
+对于会产生事件的滚动序列，`scrollTo()` 或 `scrollBy()` 返回的 Promise 会在 `scrollend` 派发后完成，因此从 `await` 后继续执行时可以读取最终位置。无位移操作不派发事件，但 Promise 仍会完成。用户操作或后续滚动命令可能打断平滑滚动，此时返回结果的 `interrupted` 为 `true`。
 
 ## API Reference
 
@@ -66,7 +68,7 @@ if (result.interrupted) {
 
 ### 滚动方法参数
 
-对象形式支持 `left`、`top` 和 `behavior`。`behavior` 可以是 `auto`、`instant` 或 `smooth`。方法返回的 Promise 会得到 `{ interrupted: boolean }`。
+对象形式支持 `left`、`top` 和 `behavior`。`behavior` 可以是 `auto`、`instant` 或 `smooth`：`instant` 立即滚动，`smooth` 使用动画滚动，默认的 `auto` 则依据节点当前计算得到的 `scroll-behavior` 决定。方法返回的 Promise 会得到 `{ interrupted: boolean }`。
 
 设置 `scrollTop` 或 `scrollLeft` 会立即滚动，并把超出范围的值限制在有效滚动区域内。普通的非滚动节点会保持在 `0`。
 

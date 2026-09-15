@@ -26,6 +26,45 @@ The `scroll-view` component is a scrollable view container that allows users to 
 | `scroll-speed` | Number | `25.0` | The speed of automatic scrolling. |
 | `scroll-direction` | String | `vertical` | The direction of automatic scrolling (`vertical` or `horizontal`). |
 
+## Listen for Scrolling
+
+Use `bindscroll` to observe scroll position changes and `bindscrollend` to observe the end of a scrolling sequence:
+
+```xml
+<scroll-view
+  class="scroll-container"
+  scroll-y="true"
+  bindscroll="handleScroll"
+  bindscrollend="handleScrollEnd"
+>
+  <!-- List content -->
+</scroll-view>
+```
+
+```javascript
+export default {
+  handleScroll(event) {
+    console.log('Current position', event.detail.scrollTop);
+  },
+
+  handleScrollEnd(event) {
+    console.log('Final position', event.detail.scrollTop);
+  }
+};
+```
+
+Whether scrolling comes from user input or code, handlers receive the same event types and data shape, and the event does not identify its source. A `scroll` event is dispatched only when the scroll position actually changes, and one `scrollend` event is dispatched when the current scrolling sequence ends. User gestures and smooth scrolling can dispatch multiple `scroll` events, while an immediate code-triggered scroll synchronously dispatches one `scroll` event followed by one `scrollend` event.
+
+`event.detail` contains these fields:
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `scrollTop` / `scrollLeft` | Number | Vertical or horizontal scroll position when the event is dispatched |
+| `scrollWidth` / `scrollHeight` | Number | Width or height of the scrollable content |
+| `clientWidth` / `clientHeight` | Number | Width or height of the visible area |
+| `scrollBottom` | Number | Remaining vertical distance to the bottom |
+| `isAtBottom` | Boolean | Whether the entity is at the bottom |
+
 ## Features
 
 - Supports both horizontal and vertical scrolling.
