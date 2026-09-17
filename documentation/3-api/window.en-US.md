@@ -2,8 +2,6 @@
 
 `Window` represents the current AIUI Agent window. The global `window` object lets an Agent read the window dimensions, open a configured Widget, or request that the current Agent close.
 
-This page describes the window capabilities in Ink `v0.18.x`.
-
 ## Read the Window Dimensions
 
 Use `innerWidth` and `innerHeight` to read the current viewport dimensions in pixels:
@@ -33,7 +31,7 @@ The `target` argument is optional and defaults to `_widget`. You can also pass i
 window.open('widgets/weather/index?city=hangzhou', '_widget');
 ```
 
-In Ink `v0.18.x`, `window.open()` opens declared Widgets only. It cannot open Pages, external URLs, or arbitrary Widgets that are not configured in `app.json.widgets`. The call returns immediately without returning a Widget instance or an opening result. See [Widget](/AIUI/framework/open-agent-format-widget) for declaration details and [Routing](/AIUI/api/route) for the complete routing behavior.
+In AIUI, `window.open()` opens declared Widgets only. It cannot open Pages, external URLs, or arbitrary Widgets that are not configured in `app.json.widgets`. The call returns immediately without returning a Widget instance or an opening result. See [Widget](/AIUI/framework/open-agent-format-widget) for declaration details and [Routing](/AIUI/api/route) for the complete routing behavior.
 
 ## Close the Current Agent
 
@@ -55,7 +53,7 @@ console.log(window === self); // true
 console.log(window === global); // true
 ```
 
-Ink `v0.18.x` explicitly mounts a subset of Web APIs on `window`. Do not assume that every directly accessible global symbol also has a corresponding `window.xxx` property. See the corresponding API pages for exact exposure and limitations.
+AIUI explicitly mounts a subset of Web APIs on `window`. Do not assume that every directly accessible global symbol also has a corresponding `window.xxx` property. See the corresponding API pages for exact exposure and limitations.
 
 Agent Workers use a separate global scope and do not provide `Window`. See [AgentWorker](/AIUI/api/framework-agent-worker) for its global object and lifecycle.
 
@@ -82,7 +80,7 @@ Requests that the host open a Widget declared by the current Agent.
 
 **Return value**: `undefined`.
 
-Throws a `TypeError` when `url` is empty. Do not pass a `target` other than `_widget`; Ink `v0.18.x` does not support opening other targets through this method.
+Throws a `TypeError` when `url` is empty. Do not pass a `target` other than `_widget`; AIUI does not support opening other targets through this method.
 
 ### `window.close()`
 

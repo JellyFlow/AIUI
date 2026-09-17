@@ -2,8 +2,6 @@
 
 `Window` 表示当前 AIUI 智能体的窗口。通过全局 `window` 对象，可以读取窗口尺寸、打开已配置的 Widget 或请求关闭当前智能体。
 
-本文描述 Ink `v0.18.x` 中的窗口能力。
-
 ## 读取窗口尺寸
 
 使用 `innerWidth` 和 `innerHeight` 获取当前窗口视口的像素尺寸：
@@ -33,7 +31,7 @@ window.open('widgets/weather/index?city=hangzhou');
 window.open('widgets/weather/index?city=hangzhou', '_widget');
 ```
 
-Ink `v0.18.x` 仅支持通过 `window.open()` 打开已声明的 Widget，不支持打开 Page、外部 URL 或任意未在 `app.json.widgets` 中配置的 Widget。调用会立即返回，不会返回 Widget 实例或打开结果。Widget 的声明方式请参阅 [Widget](/AIUI/framework/open-agent-format-widget)，完整路由说明请参阅[路由](/AIUI/api/route)。
+AIUI 仅支持通过 `window.open()` 打开已声明的 Widget，不支持打开 Page、外部 URL 或任意未在 `app.json.widgets` 中配置的 Widget。调用会立即返回，不会返回 Widget 实例或打开结果。Widget 的声明方式请参阅 [Widget](/AIUI/framework/open-agent-format-widget)，完整路由说明请参阅[路由](/AIUI/api/route)。
 
 ## 关闭当前智能体
 
@@ -55,7 +53,7 @@ console.log(window === self); // true
 console.log(window === global); // true
 ```
 
-`v0.18.x` 会将部分 Web API 显式挂载到 `window`，但不要据此推断每个可直接使用的全局符号都存在对应的 `window.xxx` 属性。具体暴露方式与限制请查看对应的 API 页面。
+AIUI 会将部分 Web API 显式挂载到 `window`，但不要据此推断每个可直接使用的全局符号都存在对应的 `window.xxx` 属性。具体暴露方式与限制请查看对应的 API 页面。
 
 Agent Worker 使用独立的全局作用域，不提供 `Window`。有关 Worker 全局对象和生命周期，请参阅 [AgentWorker](/AIUI/api/framework-agent-worker)。
 
@@ -82,7 +80,7 @@ Agent Worker 使用独立的全局作用域，不提供 `Window`。有关 Worker
 
 **返回值**：`undefined`。
 
-`url` 为空时抛出 `TypeError`。不要传入 `_widget` 以外的 `target` 值；Ink `v0.18.x` 不支持通过该方法打开其他目标。
+`url` 为空时抛出 `TypeError`。不要传入 `_widget` 以外的 `target` 值；AIUI 不支持通过该方法打开其他目标。
 
 ### `window.close()`
 
