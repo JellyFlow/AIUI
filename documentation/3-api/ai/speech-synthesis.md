@@ -135,11 +135,11 @@ player.play();
 
 `SpeechSynthesisUtterance` 是一个可修改的语音合成请求对象。`speechSynthesis.speak()` 和 `speechSynthesis.synthesize()` 都接收该对象，并对当前支持的属性采用相同的处理方式。
 
-#### `new SpeechSynthesisUtterance(text?)`
+#### `new SpeechSynthesisUtterance(text)`
 
 | 参数 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- |
-| `text` | `string` | 否 | 初始播报文本，默认为空字符串。 |
+| `text` | `string` | 是 | 初始播报文本。 |
 
 #### 属性
 

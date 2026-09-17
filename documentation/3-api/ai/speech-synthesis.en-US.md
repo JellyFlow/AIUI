@@ -135,11 +135,11 @@ These entry points represent different workflows. Choose one based on whether yo
 
 `SpeechSynthesisUtterance` is a mutable speech-synthesis request object. Both `speechSynthesis.speak()` and `speechSynthesis.synthesize()` accept this object and handle its currently supported properties consistently.
 
-#### `new SpeechSynthesisUtterance(text?)`
+#### `new SpeechSynthesisUtterance(text)`
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `text` | `string` | No | Initial text to speak. Defaults to an empty string. |
+| `text` | `string` | Yes | Initial text to speak. |
 
 #### Properties
 
