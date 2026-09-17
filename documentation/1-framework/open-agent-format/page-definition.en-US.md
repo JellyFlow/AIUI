@@ -1,161 +1,189 @@
 # Page Definition
 
-`Page` is used to register a page in an agent. The logic of each page is exported as a configuration object through `export default`.
+An AIUI Page combines **Page configuration**, **Page logic**, **Page structure**, and **Page styles**. The recommended `.ink` single-file form uses `<script def>` for configuration, `<script setup>` for exported Page logic, `<page>` for the interface structure, and `<style>` for Page styles.
 
-The page accepts an `Object` parameter that specifies the page's initial data, lifecycle callbacks, event handlers, and more.
+The distinction matters: `<script def>` contains JSON, not executable JavaScript. Put lifecycle callbacks, event handlers, and initial state in the object exported from `<script setup>`.
 
-AIUI page structure follows a `Page` definition model similar to WeChat Mini Programs.
+## Complete Page Example
 
-## Object object
-
-| Property | Type | Default | Required | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| `data` | Object | | No | Initial data of the page |
-| `options` | Object | | No | Component options of the page |
-| `onLoad` | function | | No | Lifecycle callback that listens for page load |
-| `onShow` | function | | No | Lifecycle callback that listens for page display |
-| `onKeyUp` | function | | No | Key-up event callback for page-level `keyup` events. You can get the key code through `event.code` |
-| `onKeyDown` | function | | No | Key-down event callback for page-level `keydown` events. You can get the key code through `event.code` |
-| `onVoiceWakeup` | function | | No | Voice wakeup event callback for page-level `voicewakeup` events. You can get the wake word through `event.keyword`. The default value is `leqi` |
-| `onReady` | function | | No | Lifecycle callback that listens for the first render completion of the page |
-| `onHide` | function | | No | Lifecycle callback that listens for the page being hidden |
-| `onUnload` | function | | No | Lifecycle callback that listens for the page being unloaded |
-| Others | any | | No | Developers can add any functions or data and access them through `this` in page methods |
-
-## Example Code
-
-```javascript
-export default {
-  data: {
-    text: "This is page data.",
-    user: {
-      name: 'Rokid'
+```html
+<script type="application/json" def>
+{
+  "navigationBarTitleText": "Weather",
+  "description": "Displays weather for a city.",
+  "schema": {
+    "data": {
+      "type": "object",
+      "properties": {
+        "city": {
+          "type": "string",
+          "description": "The city to query."
+        }
+      },
+      "required": ["city"]
     }
   },
-  onLoad(options) {
-    // Page load
+  "usingComponents": {
+    "weather-card": "components/weather-card"
   },
-  handleUpdate() {
-    // Update data
+  "disableScroll": true
+}
+</script>
+
+<script setup>
+export default {
+  data: {
+    city: '',
+    status: 'Waiting'
+  },
+  onLoad(query) {
     this.setData({
-      text: 'Updated Text',
-      'user.name': 'New Name' // Path-based updates are supported
-    }, () => {
-      console.log('Data updated');
+      city: query.city || '',
+      status: query.city ? 'Ready' : 'Choose a city'
     });
   },
   handleComplete() {
-    // Complete the current page task
     this.finish();
   }
 }
+</script>
+
+<page>
+  <weather-card city="{{city}}" status="{{status}}" />
+  <button bindtap="handleComplete">Done</button>
+</page>
+
+<style>
+page {
+  padding: 16px;
+}
+</style>
 ```
 
-## Lifecycle Callback Details
+The same Page can be split into matching `.json`, `.js`, `.wxml`, and `.wxss` files. In that form, `.json` is equivalent to `<script def>`, and `.js` is equivalent to the default export in `<script setup>`. Do not mix both forms for the same route.
 
-### `onLoad(Object options)`
+## `<script def>` Page Configuration
 
-Triggered when the page loads, and called only once globally. You can get the parameters passed when opening the current page through `options`. It is usually used to initialize page data or process route parameters.
+`<script def>` must contain a valid JSON object. It cannot contain comments, functions, variables, or trailing commas. Keeping `type="application/json"` is recommended because it makes the content type explicit.
 
-```javascript
-export default {
-  onLoad(options) {
-    this.setData({
-      pageId: options.id || '',
-      status: 'page loaded'
-    });
+### Common Fields
+
+| Field | Type | Required | Purpose |
+| :--- | :--- | :--- | :--- |
+| `navigationBarTitleText` | string | No | Sets the Page title; whether it is visible depends on how the host presents navigation |
+| `description` | string | Recommended for conversational Pages | Explains to the model what the Page does and when to use it; describe observable capability rather than a generic title |
+| `schema` | Object | No | Describes data that the host or model can provide when opening the Page; Page input belongs in `schema.data` |
+| `usingComponents` | Object | No | Registers custom components used by this Page; each key is a template tag name and each value is a component path or package export |
+| `disableScroll` | boolean | No | Disables default scrolling on the Page root; defaults to `false` |
+
+Together, `description` and `schema.data` describe a Page as a callable UI tool. An immersive agent commonly enters the first Page registered in `app.json`, so that Page does not always need to be exposed as an independent tool. A conversational card Page should define both fields precisely.
+
+### `schema.data`
+
+`schema.data` uses JSON Schema to describe data passed into the Page. Common fields include:
+
+| Field | Type | Purpose |
+| :--- | :--- | :--- |
+| `type` | string | Root data type; Page input normally uses `object` |
+| `properties` | Object | Defines each input field, including its type, meaning, and constraints |
+| `required` | string[] | Lists fields that must be supplied; fields not listed are optional |
+| `properties.<name>.type` | string | Field type, such as `string`, `number`, `integer`, `boolean`, `object`, or `array` |
+| `properties.<name>.description` | string | Tells the model the field's meaning, format, unit, and value requirements |
+| `properties.<name>.enum` | any[] | Restricts the field to a set of values |
+| `properties.<name>.items` | Object | Describes array elements when the field type is `array` |
+| `properties.<name>.default` | any | Describes a suggested default; Page logic should still handle a missing field |
+
+`schema.data` describes **input used to open the Page**. It is different from `data` in the Page logic object: the former helps the model and host construct invocation arguments, while the latter is local state for the first render. Read incoming values from `onLoad(query)`, then copy them into Page state with `setData()`.
+
+```json
+{
+  "description": "Displays weather for a city and date.",
+  "schema": {
+    "data": {
+      "type": "object",
+      "properties": {
+        "city": {
+          "type": "string",
+          "minLength": 1,
+          "description": "City name, for example Hangzhou."
+        },
+        "date": {
+          "type": "string",
+          "description": "Query date in YYYY-MM-DD format."
+        },
+        "unit": {
+          "type": "string",
+          "enum": ["celsius", "fahrenheit"],
+          "default": "celsius",
+          "description": "Temperature unit."
+        }
+      },
+      "required": ["city"]
+    }
   }
 }
 ```
 
-### `onShow()`
+### Other Compatibility Fields
 
-Triggered when the page is displayed or brought to the foreground. It is suitable for visibility-related logic such as refreshing display state, resuming polling, or re-fetching lightweight data.
+The Page configuration parser also accepts mini-app-style window, background, renderer, and host extension fields, including `navigationBarBackgroundColor`, `navigationBarTextStyle`, `navigationStyle`, `homeButton`, `backgroundColor`, `backgroundColorContent`, `backgroundTextStyle`, `backgroundColorTop`, `backgroundColorBottom`, `enablePullDownRefresh`, `onReachBottomDistance`, `pageOrientation`, `viewport`, `style`, `initialRenderingCache`, `singlePage`, `restartStrategy`, `handleWebviewPreload`, `visualEffectInBackground`, `enablePassiveEvent`, `renderer`, `rendererOptions`, and `componentFramework`.
 
-```javascript
-export default {
-  onShow() {
-    this.setData({
-      visible: true,
-      status: 'page visible'
-    });
-  }
-}
-```
+These fields primarily provide compatibility with different hosts or reserve future behavior. Their presence does not mean every host implements the corresponding visual or interaction effect. Unless your target host documents such a contract, prefer the common fields above and use `<style>` for Page content styling.
 
-### `onReady()`
+## `<script setup>` Page Logic
 
-Triggered when the page completes its first render, and called only once globally. At this point the page is ready, so it is suitable for logic that depends on the first screen being rendered.
+Page logic default-exports an object. Its fields become the current Page instance's state, lifecycle callbacks, and event handlers.
 
-```javascript
-export default {
-  onReady() {
-    this.setData({
-      status: 'page ready'
-    });
-  }
-}
-```
+| Field | Type | Required | Purpose |
+| :--- | :--- | :--- | :--- |
+| `data` | Object | No | Initial render state; values must be JSON-serializable |
+| `onLoad` | function | No | Runs once when the Page loads and receives route or tool invocation parameters |
+| `onShow` | function | No | Runs when the Page appears or returns to the foreground |
+| `onReady` | function | No | Runs once after the first render completes |
+| `onHide` | function | No | Runs when the Page is hidden or enters the background |
+| `onUnload` | function | No | Runs when the Page is unloaded; release timers, listeners, and other resources here |
+| `onKeyDown` | function | No | Runs when a key is pressed; read its code from `event.code` |
+| `onKeyUp` | function | No | Runs when a key is released; `event.preventDefault()` can intercept selected host defaults |
+| `onVoiceWakeup` | function | No | Runs for voice or touch wakeup events; use `event.keyword` when the source must be distinguished |
+| Custom methods | function | No | Handle template events or share Page logic; access the Page instance through `this` |
+| Custom fields | any | No | Store members that do not participate in rendering; values that drive the UI should live in `data` |
 
-### `onHide()`
+Do not use `options` here as a standard Page field. Parameters used to open a Page are received by `onLoad(query)`, while custom component configuration belongs in `usingComponents` inside `<script def>`.
 
-Triggered when the page is hidden or moved to the background. It is commonly used to pause timers, animations, polling requests, or clean up temporary state in the page.
+## Page Instance
 
-```javascript
-export default {
-  onHide() {
-    this.setData({
-      visible: false,
-      status: 'page hidden'
-    });
-  }
-}
-```
+Inside Page callbacks and custom methods, `this` refers to the current Page instance.
 
-### `onUnload()`
+### `this.data`
 
-Triggered when the page is unloaded. It is a good place to release resources used by the page to avoid keeping invalid references or tasks after the page is destroyed.
+Reads the current Page state. Do not rely on direct `this.data` mutation to update the UI; use `this.setData()` for values bound by the template.
+
+### `this.setData(Object patch, Function? callback)`
+
+Asynchronously sends an update to the view layer while updating `this.data`. `patch` supports path keys such as `'user.name': 'Rokid'`. The optional callback runs after this view update completes.
 
 ```javascript
-export default {
-  onUnload() {
-    console.log('page unloaded');
-  }
-}
+this.setData({
+  status: 'ready',
+  'user.name': 'Rokid'
+}, () => {
+  console.log('view updated');
+});
 ```
-
-## Event Handling
-
-In addition to lifecycle callbacks, pages also support page-level event handlers such as `onKeyDown`, `onKeyUp`, and `onVoiceWakeup`.
-
-For event triggers, parameter descriptions, and example code, see: [Events](/AIUI/framework/open-agent-format-page-events)
-
-## Instance Methods
-
-In page logic, you can access the page instance through `this` and call the following methods:
-
-### `this.setData(Object data, Function? callback)`
-
-Used to send data from the logic layer to the view layer asynchronously while also updating the corresponding value of `this.data`.
-
-- `data`: Key-value pairs of data to update. Path-based updates are supported, for example `'a.b.c': 1`
-- `callback`: Optional callback function that runs after the data update is complete
 
 ### `this.finish()`
 
-Notifies the system that the current page task has been completed.
+Notifies the host that the current Page task is complete. For a Cut agent, this commonly returns focus and leaves the current presentation. For a Scene agent, it commonly marks the end of the current interaction flow. It is not a general Page-back API, so call it only when the business task is actually complete.
 
-- For **Cut** agents, calling this method actively returns focus and exits the current presentation state
-- For **Scene** agents, it is typically used to end the current interaction flow
+## Lifecycle and Events
 
-## Page Data Object `data`
+The first opening follows `onLoad` → `onShow` → `onReady`. Covering a Page triggers `onHide`, showing it again triggers another `onShow`, and destroying it triggers `onUnload`.
 
-`data` is the initial data used for the first render of the page. When the page loads, `data` is passed from the logic layer to the rendering layer as a JSON string, so the data inside `data` must be of types that can be converted to JSON, such as strings, numbers, booleans, objects, and arrays.
-
-The rendering layer can bind to the data through WXML or the `.ink` page structure.
+For default key and wakeup behavior, event fields, and interception, see [Events](/AIUI/framework/open-agent-format-page-events). For the full lifecycle, see [Lifecycle](/AIUI/framework/open-agent-format-page-lifecycle).
 
 ## Recommended Reading
 
 - [Page Overview](/AIUI/framework/open-agent-format-page)
 - [Lifecycle](/AIUI/framework/open-agent-format-page-lifecycle)
 - [Events](/AIUI/framework/open-agent-format-page-events)
+- [Components](/AIUI/framework/open-agent-format-custom-components)
