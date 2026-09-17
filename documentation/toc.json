@@ -735,8 +735,12 @@
         "label": "路由"
       },
       {
+        "id": "window",
+        "label": "窗口"
+      },
+      {
         "id": "navigator",
-        "label": "Navigator",
+        "label": "运行平台",
         "docId": "weixin-compatible-apis-navigator"
       },
       {

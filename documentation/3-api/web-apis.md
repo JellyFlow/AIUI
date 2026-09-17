@@ -15,6 +15,7 @@ AIUI 积极拥护并主要支持 **WinterCG (Web-interoperable Runtimes Communit
 为了让开发者按使用场景更快找到文档，Web 标准能力不再集中挂在一个子目录下，而是并入各自更贴近业务的分类中：
 
 - **[画布](/AIUI/api/canvas)**：查看 Canvas 2D 绘图接口与图像处理能力。
+- **[窗口](/AIUI/api/window)**：查看智能体窗口、窗口尺寸、打开 Widget 以及关闭智能体的能力。
 - **[Web Audio](/AIUI/api/media-web-audio)**：生成声音、处理 PCM、调节音量和分析音频。
 - **[AI](/AIUI/api/ai)**：查看 Web Speech 相关能力与 AI 语音能力的关系。
 - **[设备](/AIUI/api/device)**：查看 `BarcodeDetector` 等感知类能力。

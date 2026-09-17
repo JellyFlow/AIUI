@@ -15,6 +15,7 @@ Developers can use common APIs such as `fetch`, `URL`, `TextEncoder`, `TextDecod
 To help developers find documentation faster by usage scenario, Web-standard capabilities are no longer grouped under a single subdirectory. Instead, they are organized into categories that are closer to actual business needs:
 
 - **[Canvas](/AIUI/api/canvas)**: See Canvas 2D drawing APIs and image-processing capabilities.
+- **[Window](/AIUI/api/window)**: Work with the Agent window, its dimensions, Widget opening, and Agent closing.
 - **[Web Audio](/AIUI/api/media-web-audio)**: Generate sound, process PCM, adjust volume, and analyse audio.
 - **[AI](/AIUI/api/ai)**: See the relationship between Web Speech capabilities and AI speech capabilities.
 - **[Device](/AIUI/api/device)**: See perception-related capabilities such as `BarcodeDetector`.
