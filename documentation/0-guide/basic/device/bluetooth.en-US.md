@@ -1,6 +1,6 @@
 # Bluetooth
 
-Bluetooth capabilities allow your agent to discover, connect to, and read from or write to nearby BLE (Bluetooth Low Energy) devices. They can also let the agent act as a BLE peripheral that provides data to nearby devices.
+Bluetooth capabilities allow your agent to discover, connect to, and read from or write to nearby BLE (Bluetooth Low Energy) devices.
 
 If your app needs to connect to heart-rate straps, controllers, peripheral sensors, or other BLE hardware, this is a good place to start.
 
@@ -9,7 +9,6 @@ If your app needs to connect to heart-rate straps, controllers, peripheral senso
 - Discover nearby BLE devices
 - Connect to peripherals and read from or write to GATT services and characteristics
 - Subscribe to device notifications and continuously receive status updates
-- Create a GATT Server that nearby devices can read, write, or subscribe to
 
 ## Basic Usage
 
@@ -48,68 +47,6 @@ scan.onDeviceFound((event) => {
 scan.stop();
 ```
 
-## Provide Data as a BLE Peripheral
-
-When a phone, controller, or another BLE device needs to connect to the agent, declare `bluetooth-peripheral` in a `foreground` Agent Worker. This capability provides `navigator.bluetoothPeripheral` for creating a local GATT Server.
-
-First declare the background task in `app.json`:
-
-```json
-{
-  "agentWorkers": [
-    {
-      "name": "bluetooth",
-      "script": "workers/bluetooth.js",
-      "trigger": { "type": "open" },
-      "lifetime": "foreground",
-      "capabilities": ["bluetooth-peripheral"]
-    }
-  ]
-}
-```
-
-Then create a readable characteristic and start advertising in `workers/bluetooth.js`:
-
-```javascript
-const serviceUuid = '12345678-1234-5678-1234-56789abcdef0';
-const valueUuid = '12345678-1234-5678-1234-56789abcdef1';
-
-export default {
-  onOpen(event) {
-    event.waitUntil(this.startServer());
-  },
-
-  async startServer() {
-    if (this.server?.state === 'open') return;
-
-    this.server = await navigator.bluetoothPeripheral.openGattServer({
-      services: [{
-        uuid: serviceUuid,
-        characteristics: [{
-          uuid: valueUuid,
-          properties: { read: true, notify: true },
-        }],
-      }],
-    });
-
-    const value = this.server
-      .getService(serviceUuid)
-      .getCharacteristic(valueUuid);
-
-    value.addEventListener('readrequest', (event) => {
-      event.respondWith(new Uint8Array([1]));
-    });
-
-    await this.server.startAdvertising({
-      name: 'AIUI Sensor',
-      serviceUUIDs: [serviceUuid],
-    });
-  },
-};
-```
-
-The Agent Worker keeps the Bluetooth service independent of any one Page. The `foreground` task continues providing the service while the agent still has an open Page or Widget.
-
 ## Best Practices
 
 - Prefer filtering by service UUID or device name to reduce irrelevant scan results.
@@ -120,7 +57,6 @@ The Agent Worker keeps the Bluetooth service independent of any one Page. The `f
 ## Notes
 
 - The current interface must allow user interaction when searching for, selecting, or initially connecting to a nearby device.
-- A GATT Server must be created in a `foreground` Agent Worker that declares `bluetooth-peripheral`.
 - When calls such as `connect()` or `requestDevice()` fail, distinguish between states such as "unavailable", "no permission", and "connection failed".
 - After a notification event fires, `characteristic.value` is updated to the latest cached value.
 
@@ -128,4 +64,3 @@ The Agent Worker keeps the Bluetooth service independent of any one Page. The `f
 
 - **[IMU](/AIUI/guide/basic-device-imu)**: See motion and posture sensor capabilities on the device.
 - **[Bluetooth (API Reference)](/AIUI/api/device-bluetooth)**: See the complete Bluetooth API reference.
-- **[Agent Worker](/AIUI/framework/open-agent-format-agent-worker)**: Learn how to configure a background task and choose its lifetime.

@@ -1,6 +1,6 @@
 # Agent Worker
 
-Agent Worker 是随智能体运行的后台脚本。它适合管理多个 Page 或 Widget 打开期间共用的一份临时任务状态，或者管理只应启动一次的任务，例如蓝牙 GATT Server。
+Agent Worker 是随智能体运行的后台脚本。它适合管理多个 Page 或 Widget 打开期间共用的一份临时任务状态，或者管理只应启动一次的任务。
 
 Agent Worker 不包含界面，也不是浏览器中的 Web Worker。它拥有独立的 JavaScript 运行环境，不提供 Page 或 Widget 的界面对象。
 
@@ -13,11 +13,10 @@ Agent Worker 不包含界面，也不是浏览器中的 Web Worker。它拥有�
   "pages": ["pages/index/index"],
   "agentWorkers": [
     {
-      "name": "bluetooth",
-      "script": "workers/bluetooth.js",
+      "name": "sync",
+      "script": "workers/sync.js",
       "trigger": { "type": "open" },
-      "lifetime": "foreground",
-      "capabilities": ["bluetooth-peripheral"]
+      "lifetime": "foreground"
     }
   ]
 }
@@ -29,7 +28,6 @@ Agent Worker 不包含界面，也不是浏览器中的 Web Worker。它拥有�
 | `script` | `string` | 是 | 相对于项目根目录的 `.js` 或 `.ts` 文件路径 |
 | `trigger` | `object` | 是 | 启动条件；当前仅支持 `{ "type": "open" }` |
 | `lifetime` | `string` | 是 | 任务保持运行的方式：`instant` 或 `foreground` |
-| `capabilities` | `string[]` | 否 | 任务需要的附加能力；当前支持 `bluetooth-peripheral` |
 
 `script` 不能使用绝对路径、URL、反斜杠或 `..`。当前一个智能体只能声明一个使用 `open` 的 Agent Worker。
 
@@ -97,11 +95,9 @@ export default {
 | `lifetime` | 行为 | 适合场景 |
 | :--- | :--- | :--- |
 | `instant` | 入口脚本、`onOpen()` 和通过 `waitUntil()` 登记的任务完成后停止 | 同步一次数据、完成一次短任务 |
-| `foreground` | 只要当前智能体仍有 Page 或 Widget 打开就继续运行 | 共享连接、蓝牙服务、持续监听 |
+| `foreground` | 只要当前智能体仍有 Page 或 Widget 打开就继续运行 | 共享连接、持续监听 |
 
-`bluetooth-peripheral` 是 Agent Worker 的可选蓝牙能力。声明后，后台任务可以通过 `navigator.bluetoothPeripheral` 创建 GATT Server，让附近的 BLE 设备读取、写入或订阅智能体提供的数据。适合设备状态同步、传感器数据共享和蓝牙控制等场景。
-
-`background` 是预留值，当前版本不支持；使用它会导致 `app.json` 校验失败。由于 GATT Server 需要在服务期间持续运行，`bluetooth-peripheral` 只能与 `foreground` 一起使用。
+`background` 是预留值，当前版本不支持；使用它会导致 `app.json` 校验失败。
 
 ## 可用能力与限制
 
@@ -110,12 +106,10 @@ Agent Worker 可以使用：
 - 定时器、Promise、`console` 和 `performance`
 - URL、文本编解码、Web Crypto 和 WebAssembly
 - 项目内的 ES Module
-- 在 `capabilities` 中显式声明的附加能力
 
 Agent Worker 不提供 Page、Widget、`window`、`document`、`fetch`、界面渲染、路由和媒体采集能力。需要更新界面或发送网络请求时，应由 Page 或 Widget 处理。
 
 ## 继续阅读
 
 - [AgentWorker API](/AIUI/api/framework-agent-worker)：查看 `onOpen()`、`waitUntil()`、`close()` 和可用属性
-- [蓝牙](/AIUI/api/device-bluetooth)：了解如何连接 BLE 设备或提供 GATT Server
 - [app.json](/AIUI/framework/open-agent-format-app-json)：查看应用入口配置

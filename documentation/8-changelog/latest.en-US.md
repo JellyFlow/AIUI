@@ -132,59 +132,6 @@ AIUI 0.18.0 lets you build Widgets and background tasks, and adds more familiar 
   await writer.close();
   ```
 
-- **Provide Data as a Bluetooth Peripheral**: `navigator.bluetoothPeripheral.openGattServer()` lets nearby BLE devices discover the device and read, write, or subscribe to data services defined by the app.
-
-  ```json
-  {
-    "agentWorkers": [
-      {
-        "name": "bluetooth",
-        "script": "workers/bluetooth.js",
-        "trigger": { "type": "open" },
-        "lifetime": "foreground",
-        "capabilities": ["bluetooth-peripheral"]
-      }
-    ]
-  }
-  ```
-
-  ```js
-  const serviceUuid = '12345678-1234-5678-1234-56789abcdef0';
-  const valueUuid = '12345678-1234-5678-1234-56789abcdef1';
-
-  export default {
-    server: null,
-    onOpen(event) {
-      event.waitUntil(this.publish());
-    },
-    async publish() {
-      if (this.server?.state === 'open') return;
-
-      this.server = await navigator.bluetoothPeripheral.openGattServer({
-        services: [{
-          uuid: serviceUuid,
-          characteristics: [{
-            uuid: valueUuid,
-            properties: { read: true, notify: true },
-          }],
-        }],
-      });
-
-      const value = this.server
-        .getService(serviceUuid)
-        .getCharacteristic(valueUuid);
-      value.addEventListener('readrequest', (event) => {
-        event.respondWith(new Uint8Array([1]));
-      });
-
-      await this.server.startAdvertising({
-        name: 'AIUI Sensor',
-        serviceUUIDs: [serviceUuid],
-      });
-    },
-  };
-  ```
-
 - **Open a Widget**: Use `window.open()` to open a declared Widget. Opening another Page through this API is not currently supported.
 
   ```js

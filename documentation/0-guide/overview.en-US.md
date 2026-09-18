@@ -120,7 +120,7 @@ Examples include:
 
 - AI capabilities: speech recognition, speech synthesis, large language models
 - network capabilities: requesting remote APIs and getting real-time data
-- device capabilities: connecting BLE peripherals, providing a Bluetooth GATT Server, reading sensors, and using cameras
+- device capabilities: connecting BLE peripherals, reading sensors, and using cameras
 - rendering capabilities: showing the interface efficiently on the device
 
 If the interface is what users can see, and logic is what makes things work, then underlying capabilities are what make things actually possible.

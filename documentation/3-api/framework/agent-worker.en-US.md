@@ -126,7 +126,6 @@ The event's `type` is `'open'`. Its `target` and `currentTarget` refer to the Ag
 | `language` | `string` | Preferred language |
 | `languages` | `string[]` | Language preferences in priority order |
 | `region` | `string` | Current region information |
-| `bluetoothPeripheral` | `BluetoothPeripheral \| undefined` | Bluetooth peripheral API available after declaring `bluetooth-peripheral` |
 
 ### `AgentWorkerGlobalScope`
 

@@ -132,59 +132,6 @@ AIUI 0.18.0 支持开发 Widget 和后台任务，并带来更多常用 Web API�
   await writer.close();
   ```
 
-- **作为蓝牙外设提供数据**：可以通过 `navigator.bluetoothPeripheral.openGattServer()` 让设备被附近的 BLE 设备发现，并定义可读取、写入或订阅变化的数据服务。
-
-  ```json
-  {
-    "agentWorkers": [
-      {
-        "name": "bluetooth",
-        "script": "workers/bluetooth.js",
-        "trigger": { "type": "open" },
-        "lifetime": "foreground",
-        "capabilities": ["bluetooth-peripheral"]
-      }
-    ]
-  }
-  ```
-
-  ```js
-  const serviceUuid = '12345678-1234-5678-1234-56789abcdef0';
-  const valueUuid = '12345678-1234-5678-1234-56789abcdef1';
-
-  export default {
-    server: null,
-    onOpen(event) {
-      event.waitUntil(this.publish());
-    },
-    async publish() {
-      if (this.server?.state === 'open') return;
-
-      this.server = await navigator.bluetoothPeripheral.openGattServer({
-        services: [{
-          uuid: serviceUuid,
-          characteristics: [{
-            uuid: valueUuid,
-            properties: { read: true, notify: true },
-          }],
-        }],
-      });
-
-      const value = this.server
-        .getService(serviceUuid)
-        .getCharacteristic(valueUuid);
-      value.addEventListener('readrequest', (event) => {
-        event.respondWith(new Uint8Array([1]));
-      });
-
-      await this.server.startAdvertising({
-        name: 'AIUI Sensor',
-        serviceUUIDs: [serviceUuid],
-      });
-    },
-  };
-  ```
-
 - **打开 Widget**：可以使用 `window.open()` 打开已声明的 Widget。当前还不支持通过该 API 打开其他 Page。
 
   ```js

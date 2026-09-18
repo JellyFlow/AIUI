@@ -34,7 +34,7 @@ Widget 是独立的小尺寸界面，适合展示天气、设备状态和快捷�
 
 ## Agent Worker 目录（`workers/`）
 
-Agent Worker 是不显示界面的后台脚本，适合在多个 Page 或 Widget 打开期间维护一个共享任务，例如同步数据或提供蓝牙 GATT Server。入口文件使用 `.js` 或 `.ts`，并在 `app.json.agentWorkers` 中声明：
+Agent Worker 是不显示界面的后台脚本，适合在多个 Page 或 Widget 打开期间维护一个共享任务，例如同步数据或保持共享连接。入口文件使用 `.js` 或 `.ts`，并在 `app.json.agentWorkers` 中声明：
 
 ```json
 {

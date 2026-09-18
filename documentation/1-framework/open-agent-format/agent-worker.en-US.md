@@ -1,6 +1,6 @@
 # Agent Worker
 
-An Agent Worker is a background script that runs with an agent. Use it to manage one temporary task state while several Pages or Widgets are open, or for work that should start only once, such as a Bluetooth GATT Server.
+An Agent Worker is a background script that runs with an agent. Use it to manage one temporary task state while several Pages or Widgets are open, or for work that should start only once.
 
 An Agent Worker has no interface and is not a browser Web Worker. It has an independent JavaScript environment and does not expose Page or Widget interface objects.
 
@@ -13,11 +13,10 @@ Declare the entry in the `agentWorkers` array in `app.json`:
   "pages": ["pages/index/index"],
   "agentWorkers": [
     {
-      "name": "bluetooth",
-      "script": "workers/bluetooth.js",
+      "name": "sync",
+      "script": "workers/sync.js",
       "trigger": { "type": "open" },
-      "lifetime": "foreground",
-      "capabilities": ["bluetooth-peripheral"]
+      "lifetime": "foreground"
     }
   ]
 }
@@ -29,7 +28,6 @@ Declare the entry in the `agentWorkers` array in `app.json`:
 | `script` | `string` | Yes | A `.js` or `.ts` path relative to the project root |
 | `trigger` | `object` | Yes | When to start the task; currently only `{ "type": "open" }` is supported |
 | `lifetime` | `string` | Yes | How long the task stays active: `instant` or `foreground` |
-| `capabilities` | `string[]` | No | Extra features needed by the task; currently supports `bluetooth-peripheral` |
 
 `script` cannot use an absolute path, URL, backslash, or `..`. An agent can currently declare only one Agent Worker with the `open` trigger.
 
@@ -97,11 +95,9 @@ export default {
 | `lifetime` | Behavior | Typical use |
 | :--- | :--- | :--- |
 | `instant` | Stops after the entry script, `onOpen()`, and work registered with `waitUntil()` finish | Synchronize data or complete one short task |
-| `foreground` | Keeps running while the current agent has an open Page or Widget | Shared connections, Bluetooth services, and continuous listeners |
+| `foreground` | Keeps running while the current agent has an open Page or Widget | Shared connections and continuous listeners |
 
-`bluetooth-peripheral` is an optional Bluetooth capability for an Agent Worker. After declaring it, the background task can use `navigator.bluetoothPeripheral` to create a GATT Server, allowing nearby BLE devices to read, write, or subscribe to data provided by the agent. Typical uses include device-state synchronization, sensor-data sharing, and Bluetooth controls.
-
-`background` is reserved and is not supported in the current release; using it fails `app.json` validation. Because a GATT Server must keep running while it provides its service, `bluetooth-peripheral` can only be used with `foreground`.
+`background` is reserved and is not supported in the current release; using it fails `app.json` validation.
 
 ## Available Features and Limits
 
@@ -110,12 +106,10 @@ An Agent Worker can use:
 - timers, Promises, `console`, and `performance`
 - URL, text encoding, Web Crypto, and WebAssembly
 - ES Modules from the project
-- extra features explicitly listed in `capabilities`
 
 An Agent Worker does not provide Page, Widget, `window`, `document`, `fetch`, interface rendering, routing, or media capture features. Let a Page or Widget handle visible interface updates and network requests.
 
 ## Continue Reading
 
 - [AgentWorker API](/AIUI/api/framework-agent-worker): inspect `onOpen()`, `waitUntil()`, `close()`, and available properties
-- [Bluetooth](/AIUI/api/device-bluetooth): learn how to connect to BLE devices or provide a GATT Server
 - [app.json](/AIUI/framework/open-agent-format-app-json): configure application entries

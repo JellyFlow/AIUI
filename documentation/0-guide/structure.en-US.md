@@ -34,7 +34,7 @@ A Widget is an independent compact interface for information such as weather, de
 
 ## Agent Worker Directory (`workers/`)
 
-An Agent Worker is a background script with no interface. Use it to maintain one shared task while multiple Pages or Widgets are open, such as synchronizing data or providing a Bluetooth GATT Server. Its entry is a `.js` or `.ts` file declared in `app.json.agentWorkers`:
+An Agent Worker is a background script with no interface. Use it to maintain one shared task while multiple Pages or Widgets are open, such as synchronizing data or keeping a shared connection alive. Its entry is a `.js` or `.ts` file declared in `app.json.agentWorkers`:
 
 ```json
 {

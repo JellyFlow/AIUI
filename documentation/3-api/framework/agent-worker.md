@@ -126,7 +126,6 @@ Agent Worker 的声明方式和运行时长配置请参阅 [Agent Worker 开发]
 | `language` | `string` | 首选语言 |
 | `languages` | `string[]` | 按优先级排列的语言列表 |
 | `region` | `string` | 当前区域信息 |
-| `bluetoothPeripheral` | `BluetoothPeripheral \| undefined` | 声明 `bluetooth-peripheral` 后可用的蓝牙外设 API |
 
 ### `AgentWorkerGlobalScope`
 
