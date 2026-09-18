@@ -247,6 +247,10 @@
           }
         ],
         "hasIndex": true
+      },
+      {
+        "id": "faq",
+        "label": "常见问题"
       }
     ],
     "slug": "guide"

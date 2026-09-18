@@ -247,6 +247,10 @@
           }
         ],
         "hasIndex": true
+      },
+      {
+        "id": "faq",
+        "label": "FAQ"
       }
     ],
     "slug": "guide"
