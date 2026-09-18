@@ -510,17 +510,21 @@ Web `ImageCapture.takePhoto(settings)` 与 `wx` `CameraContext.takePhoto(options
 
 ```javascript
 const bitmap = await capture.grabFrame();
-const canvas = document.createElement('canvas');
-canvas.width = bitmap.width;
-canvas.height = bitmap.height;
+const canvas = new Canvas(bitmap.width, bitmap.height);
 
 const context = canvas.getContext('2d');
 context.drawImage(bitmap, 0, 0);
-const pixels = context.getImageData(0, 0, bitmap.width, bitmap.height).data;
+const rgba = context.getImageData(0, 0, bitmap.width, bitmap.height).data;
+const buffer = rgba.buffer.slice(
+  rgba.byteOffset,
+  rgba.byteOffset + rgba.byteLength,
+);
 
-console.log(pixels.length); // RGBA 字节数。
+console.log(buffer.byteLength); // bitmap.width * bitmap.height * 4
 bitmap.close();
 ```
+
+`Canvas` 是 AIUI 提供的离屏画布，不需要创建 DOM 元素。`ImageBitmap` 本身不提供 `arrayBuffer()`；需要原始像素时，将它绘制到离屏画布，再通过 `getImageData()` 读取。示例中的 `buffer` 是独立的 `ArrayBuffer`，像素按 RGBA 顺序排列，每个通道占 1 字节，因此总字节数为 `width * height * 4`。它不是 JPEG 或 PNG 文件字节。
 
 ### `MediaRecorder`
 

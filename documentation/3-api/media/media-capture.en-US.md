@@ -510,17 +510,21 @@ Captures the current video frame and returns `Promise<ImageBitmap>`. The result 
 
 ```javascript
 const bitmap = await capture.grabFrame();
-const canvas = document.createElement('canvas');
-canvas.width = bitmap.width;
-canvas.height = bitmap.height;
+const canvas = new Canvas(bitmap.width, bitmap.height);
 
 const context = canvas.getContext('2d');
 context.drawImage(bitmap, 0, 0);
-const pixels = context.getImageData(0, 0, bitmap.width, bitmap.height).data;
+const rgba = context.getImageData(0, 0, bitmap.width, bitmap.height).data;
+const buffer = rgba.buffer.slice(
+  rgba.byteOffset,
+  rgba.byteOffset + rgba.byteLength,
+);
 
-console.log(pixels.length); // Number of RGBA bytes.
+console.log(buffer.byteLength); // bitmap.width * bitmap.height * 4
 bitmap.close();
 ```
+
+`Canvas` is an offscreen canvas provided by AIUI and does not require a DOM element. `ImageBitmap` does not provide `arrayBuffer()` itself. To obtain raw pixels, draw the bitmap to the offscreen canvas and read it with `getImageData()`. The `buffer` in this example is an independent `ArrayBuffer`. Its pixels are stored in RGBA order with one byte per channel, so the total byte length is `width * height * 4`. It does not contain JPEG or PNG file bytes.
 
 ### `MediaRecorder`
 
