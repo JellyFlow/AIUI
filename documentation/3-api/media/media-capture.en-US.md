@@ -1,10 +1,23 @@
 # Media Capture
 
-AIUI provides `navigator.mediaDevices`, `ImageCapture`, and `MediaRecorder` for camera or microphone streams, still-image capture, and audio/video recording.
+AIUI can use the camera and microphone so an agent can take photos, scan codes, read nearby text, or receive a continuous audio stream. This page starts with common tasks and then documents every field and method in the API Reference.
+
+## Choose an API Style
+
+The photo and recording examples provide two API styles:
+
+- **Web** uses `navigator.mediaDevices`, `ImageCapture`, and `MediaRecorder`. Choose it when you are familiar with browser media APIs.
+- **wx** uses `wx.media`. Choose it for existing `wx`-style code or when you want more direct photo and recording interfaces.
+
+The switch above each example changes only the API style; both options complete the same task. Choose one style for a feature. You do not need to call both APIs.
+
+The two styles return photos in different shapes. Web returns a `Blob`; `wx` returns an object containing an `ArrayBuffer` and a MIME type. Both contain an encoded image that can be uploaded, scanned, or passed to an agent as image input.
 
 ## Acquire Camera and Microphone Streams
 
-Media capture must begin during a valid user interaction while the AIUI application window is focused:
+The following code requests both the camera and microphone and returns a `MediaStream`. The stream contains video and audio tracks used by later photo, recording, and audio-analysis operations.
+
+Run this code from a user action such as a button click while the AIUI application window is focused:
 
 ```javascript
 const stream = await navigator.mediaDevices.getUserMedia({
@@ -15,10 +28,12 @@ const stream = await navigator.mediaDevices.getUserMedia({
   },
 });
 
-console.log(stream.getAudioTracks(), stream.getVideoTracks());
+const [microphoneTrack] = stream.getAudioTracks();
+const [cameraTrack] = stream.getVideoTracks();
+console.log(microphoneTrack, cameraTrack);
 ```
 
-Stop every track after use to release its device:
+Set either `audio` or `video` to `false` when only one input is needed. Stop every track after use so other features can use the camera and microphone:
 
 ```javascript
 for (const track of stream.getTracks()) {
@@ -28,7 +43,7 @@ for (const track of stream.getTracks()) {
 
 ## Capture an Image for Scanning
 
-To scan a QR code or barcode, use `wide` mode to capture an image with a default resolution of `2688 × 2016`:
+Choose `wide` mode when scanning a QR code or barcode. It captures a landscape image with a default resolution of `2688 × 2016`, suitable for payment codes and barcode recognition. This example uses high quality and shows the system preview first so the user can align the target.
 
 <!-- aiui-api-style default=web -->
 
@@ -66,11 +81,11 @@ console.log(scanImage.mimeType, scanImage.data.byteLength);
 
 <!-- /aiui-api-style -->
 
-The result is an encoded image that can be passed to a QR-code or barcode recognition workflow.
+In the Web example, `scanImage` is a `Blob`. In the `wx` example, `scanImage.data` is an `ArrayBuffer` and its encoding is available as `scanImage.mimeType`. Pass the corresponding result to the QR-code or barcode recognition workflow. The Web example calls `videoTrack.stop()` after capture to release the camera.
 
 ## Capture an Image for a Reading Agent
 
-When a reading agent needs to analyze text, a document, or an object, use `telephoto` mode to capture a portrait-oriented image with a default resolution of `1512 × 2016`:
+Choose `telephoto` mode when a reading agent needs to analyze text, a document, or an object. It captures a portrait image with a default resolution of `1512 × 2016`, suited to sending the subject to a vision model for further analysis.
 
 <!-- aiui-api-style default=web -->
 
@@ -108,11 +123,11 @@ console.log(readingImage.mimeType, readingImage.data.byteLength);
 
 <!-- /aiui-api-style -->
 
-The result can be used as image input for a reading agent or an AI image-understanding workflow.
+The result is already encoded and can be used directly as input for a reading agent, OCR, or an AI image-understanding workflow. Keep `quality: 'high'` when recognizing small text. Set `enableSystemPreview` to `false` when the user does not need to confirm framing.
 
-## Capture a Photo
+## Capture a General Photo
 
-To capture a photo, use either the Web `ImageCapture` API or the compatible API provided by `wx.media`:
+Use `default` mode for photos that are not specifically intended for scanning or reading. It provides the full FOV and a default full resolution of `4032 × 3024`, making it suitable for general photography and scenes where preserving more content matters.
 
 <!-- aiui-api-style default=web -->
 
@@ -150,11 +165,11 @@ console.log(photo.mimeType, photo.data.byteLength);
 
 <!-- /aiui-api-style -->
 
-The Web `ImageCapture` API requires a video track. `takePhoto()` returns an encoded `Blob`, while `grabFrame()` can capture an in-memory `ImageBitmap`. Stop the video track after use.
+The Web API first obtains a video track and uses it to create `ImageCapture`. `takePhoto()` returns an encoded `Blob`. Use `grabFrame()` when you only need pixels from the current frame rather than an encoded file. Always stop the video track after the Web flow finishes.
 
 ## Record Audio
 
-Both API styles continuously deliver data chunks that the application can process:
+Recording does not return one complete file immediately. It continuously produces audio chunks that an agent can upload, transcribe, or analyze while recording. The following example uses Opus and produces data every `250` milliseconds.
 
 To inspect microphone volume, waveform, or frequency data in real time, pass the same `MediaStream` to `AudioContext.createMediaStreamSource()`. See [Audio Processing (Web Audio)](/AIUI/api/media-web-audio#analyse-microphone-input) for a complete example.
 
@@ -168,13 +183,18 @@ const recorder = new MediaRecorder(stream, {
   mimeType: 'audio/ogg;codecs=opus',
 });
 
-recorder.addEventListener('dataavailable', async (event) => {
-  const chunk = await event.data.arrayBuffer();
-  console.log(chunk.byteLength);
+const chunks = [];
+recorder.addEventListener('dataavailable', (event) => {
+  chunks.push(event.data);
+  console.log('Received audio chunk', event.data.size);
+});
+recorder.addEventListener('stop', () => {
+  console.log('Recording stopped with', chunks.length, 'chunks');
 });
 
 recorder.start(250);
-// Call recorder.stop() when recording is complete.
+// Call after the user finishes speaking:
+// recorder.stop();
 ```
 
 **wx**
@@ -189,6 +209,12 @@ recorder.onHeader((format, headerBuffer) => {
 recorder.onFrameRecorded(({ frameBuffer }) => {
   console.log(frameBuffer.byteLength);
 });
+recorder.onStop(({ duration, fileSize }) => {
+  console.log('Recording stopped', duration, fileSize);
+});
+recorder.onError(({ errMsg }) => {
+  console.error('Recording failed', errMsg);
+});
 
 await recorder.start({
   sampleRate: 16000,
@@ -196,9 +222,14 @@ await recorder.start({
   format: 'opus',
   frameSize: 250,
 });
+
+// Call after the user finishes speaking:
+// await recorder.stop();
 ```
 
 <!-- /aiui-api-style -->
+
+Each Web `event.data` value is an encoded `Blob`. The `wx` `frameBuffer` is an `ArrayBuffer`; in Opus mode, `onHeader()` first provides an initialization header. Store or send the header and audio chunks in the order received when processing streaming audio.
 
 ## Permissions and Current Limits
 
@@ -322,6 +353,38 @@ for (const track of stream.getTracks()) {
 }
 ```
 
+### Photo Capture Settings
+
+Web `ImageCapture.takePhoto(settings)` and `wx` `CameraContext.takePhoto(options)` use the same AIUI photo settings. The object names differ between the two API styles, but `quality`, `mode`, and `enableSystemPreview` have the same meanings and defaults.
+
+#### `quality`
+
+Type: `'high' | 'normal' | 'low'`. Default: `'high'`. This selects a relative image-quality tier. It affects the detail retained, encoded data size, and capture-processing cost, but it is not a fixed JPEG compression percentage. When an exact pixel size matters, consider the default resolution for the selected `mode` and inspect the returned result.
+
+| Value | Quality and cost | Recommended use cases |
+| --- | --- | --- |
+| `'high'` | The highest quality tier. It prioritizes image detail and generally produces more encoded data while using more processing resources. | Reading agents, AI image understanding, text recognition, and images that will be enlarged or cropped. |
+| `'normal'` | Balances image detail, encoded data size, and processing cost. | General photography and routine visual analysis that do not require maximum detail. |
+| `'low'` | A lower quality tier that prioritizes reduced encoded data size and processing cost, with less recognizable detail. | Thumbnails, quick previews, or data-sensitive workflows that do not depend on fine content. |
+
+Prefer `'high'` for OCR, reading agents, and other vision models that depend on detail. Lower the tier only when data size or processing cost is more important.
+
+#### `mode`
+
+Type: `'default' | 'wide' | 'telephoto'`. Default: `'default'`. This selects an AIUI-defined capture capability and determines the default orientation, resolution, and primary use case. `mode` and `quality` are independent: first use `mode` to choose the capture scenario, then use `quality` to adjust the quality tier within that mode.
+
+| Value | Default output resolution | Framing | Recommended use cases |
+| --- | --- | --- | --- |
+| `'default'` | `4032 × 3024` | Uses the full field of view (FOV) and full resolution to preserve the most scene and image detail. | General photography; used when `mode` is omitted. |
+| `'wide'` | `2688 × 2016` | Produces a landscape image suited to recognition in scanning workflows. | QR-code, barcode, and payment scanning. |
+| `'telephoto'` | `1512 × 2016` | Produces a portrait image suited to subject-content analysis. | Reading agents, AI image understanding, and text or object recognition. |
+
+Use `'wide'` for scanning and `'telephoto'` for reading agents or AI image understanding. Omit the field or explicitly use `'default'` when no specialized capability is required.
+
+#### `enableSystemPreview`
+
+Type: `boolean`. Default: `true`. Set it to `true` to show the system camera preview before capture when the user should confirm framing. Set it to `false` to capture directly in scanning or agent-driven image-processing flows.
+
 ### `ImageCapture`
 
 #### `new ImageCapture(videoTrack)`
@@ -334,9 +397,7 @@ Captures an encoded image and returns `Promise<Blob>`. `Blob.type` is the actual
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `settings.quality` | `'high' \| 'normal' \| 'low'` | No | Image quality. Defaults to `'high'`. |
-| `settings.mode` | `'default' \| 'wide' \| 'telephoto'` | No | Capture mode. Defaults to `'default'`. |
-| `settings.enableSystemPreview` | `boolean` | No | Whether to show the system camera preview first. Defaults to `true`. |
+| `settings` | `PhotoSettings` | No | Photo settings. Omitting it uses the defaults in [Photo Capture Settings](#photo-capture-settings). |
 
 #### `grabFrame()`
 
@@ -456,17 +517,7 @@ Call it during a valid user interaction while the AIUI application window is foc
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
-| `options.quality` | `'high' \| 'normal' \| 'low'` | No | Image quality. Defaults to `'high'`. |
-| `options.mode` | `'default' \| 'wide' \| 'telephoto'` | No | Semantic capture mode. Defaults to `'default'`. See the table below for each mode's default output resolution and recommended use cases. |
-| `options.enableSystemPreview` | `boolean` | No | Whether to show the system camera preview first. Defaults to `true`. |
-
-`mode` selects an AIUI-defined capture capability. Each mode behaves as follows:
-
-| Mode | Default output resolution | Framing | Recommended use cases |
-| --- | --- | --- | --- |
-| `'default'` | `4032 × 3024` | Uses the full field of view (FOV) and full resolution to preserve the most scene and image detail. | General photography; used when `mode` is omitted. |
-| `'wide'` | `2688 × 2016` | Provides an image size suited to recognition in scanning workflows. | QR-code and barcode scanning, including payment scenarios. |
-| `'telephoto'` | `1512 × 2016` | Produces a portrait-oriented image suited to downstream agent analysis. | Reading agents, AI image understanding, and text or object recognition. |
+| `options` | `object` | Yes | Photo settings. Fields and defaults match the Web API; see [Photo Capture Settings](#photo-capture-settings). |
 
 ### `RecorderManager`
 

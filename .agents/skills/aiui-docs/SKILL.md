@@ -132,6 +132,10 @@ Inside `## API Reference`:
 - Use tables for the structured parameters or fields of one member, not as an
   index that replaces individual member sections. Do not bury parameter
   definitions in the earlier scenario sections.
+- When equivalent Web and `wx` methods share the same option fields and
+  semantics, define that option contract once in a shared section and link to
+  it from both methods. Keep API-specific parameter names, return shapes,
+  preconditions, and errors in their respective method sections.
 - Keep short code fragments only when they clarify a signature or return shape;
   full workflows belong in the scenario sections above.
 - Keep related APIs together under the same reference section. For Web and `wx`

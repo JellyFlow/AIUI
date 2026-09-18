@@ -1,10 +1,23 @@
 # 媒体采集
 
-AIUI 提供 `navigator.mediaDevices`、`ImageCapture` 与 `MediaRecorder`，用于获取摄像头或麦克风媒体流、拍摄静态图像以及录制音视频。
+AIUI 可以调用摄像头和麦克风，让智能体拍照、扫码、读取眼前的文字，或持续接收音频。本文先从常见任务开始，再在 API Reference 中说明每个字段和方法。
+
+## 选择 API 写法
+
+页面中的拍照和录音示例提供两种写法：
+
+- **Web**：使用 `navigator.mediaDevices`、`ImageCapture` 和 `MediaRecorder`。熟悉浏览器媒体 API 时优先选择这种写法。
+- **wx**：使用 `wx.media`。已有 `wx` 风格代码，或者只需要更直接的拍照与录音接口时，可以选择这种写法。
+
+每组示例上方的切换项只是在两种 API 写法之间切换，完成的任务相同。一个功能选择其中一种写法即可，不需要同时调用两套 API。
+
+拍照成功后，两种写法返回的数据形式不同：Web 返回 `Blob`；`wx` 返回包含 `ArrayBuffer` 和 MIME type 的对象。它们都是已经编码好的图片，可以继续用于上传、扫码识别或智能体图像输入。
 
 ## 获取摄像头和麦克风媒体流
 
-媒体采集必须在有效用户交互中发起，并且 AIUI 应用窗口需要处于焦点状态：
+下面的代码会同时请求摄像头和麦克风，并得到一个 `MediaStream`。流中包含视频轨道和音频轨道，后续拍照、录音和音频分析都从这些轨道开始。
+
+请在用户点击按钮等交互事件中运行这段代码，并确保 AIUI 应用窗口处于焦点状态：
 
 ```javascript
 const stream = await navigator.mediaDevices.getUserMedia({
@@ -15,10 +28,12 @@ const stream = await navigator.mediaDevices.getUserMedia({
   },
 });
 
-console.log(stream.getAudioTracks(), stream.getVideoTracks());
+const [microphoneTrack] = stream.getAudioTracks();
+const [cameraTrack] = stream.getVideoTracks();
+console.log(microphoneTrack, cameraTrack);
 ```
 
-使用完毕后，应停止所有轨道以释放设备：
+如果只需要摄像头或麦克风，把另一项设为 `false` 即可。使用完毕后，应停止所有轨道，这样摄像头和麦克风才能被其他功能继续使用：
 
 ```javascript
 for (const track of stream.getTracks()) {
@@ -28,7 +43,7 @@ for (const track of stream.getTracks()) {
 
 ## 拍摄扫码图像
 
-扫描二维码或条码时，使用 `wide` 模式拍摄默认分辨率为 `2688 × 2016` 的图像：
+扫描二维码或条码时选择 `wide` 模式。它默认拍摄 `2688 × 2016` 的横向图像，适合支付码和条码识别。示例使用 `high` 质量，并在拍摄前显示系统预览，方便用户对准目标。
 
 <!-- aiui-api-style default=web -->
 
@@ -66,11 +81,11 @@ console.log(scanImage.mimeType, scanImage.data.byteLength);
 
 <!-- /aiui-api-style -->
 
-拍摄结果是编码后的图像，可以继续交给二维码或条码识别流程处理。
+Web 写法中的 `scanImage` 是 `Blob`；`wx` 写法中的 `scanImage.data` 是 `ArrayBuffer`，编码格式保存在 `scanImage.mimeType`。将对应结果交给二维码或条码识别流程即可。Web 写法在拍摄结束后调用了 `videoTrack.stop()`，用于释放摄像头。
 
 ## 为阅读智能体拍摄图像
 
-需要让阅读智能体分析文字、文档或物体时，使用 `telephoto` 模式拍摄默认分辨率为 `1512 × 2016` 的竖向图像：
+需要让阅读智能体分析文字、文档或物体时选择 `telephoto` 模式。它默认拍摄 `1512 × 2016` 的竖向图像，更适合将主体内容交给视觉模型继续分析。
 
 <!-- aiui-api-style default=web -->
 
@@ -108,11 +123,11 @@ console.log(readingImage.mimeType, readingImage.data.byteLength);
 
 <!-- /aiui-api-style -->
 
-拍摄结果可以作为阅读智能体或 AI 识图流程的图像输入。
+拍摄结果已经完成图像编码，可以直接作为阅读智能体、OCR 或 AI 识图流程的输入。需要识别细小文字时保留 `quality: 'high'`；如果不希望用户确认取景，可以把 `enableSystemPreview` 改为 `false`。
 
-## 拍摄照片
+## 拍摄普通照片
 
-拍摄照片时可以使用 Web `ImageCapture`，也可以使用 `wx.media` 提供的兼容接口：
+不属于扫码或阅读场景时使用 `default` 模式。它提供全 FOV 和 `4032 × 3024` 的默认全分辨率，适合普通拍照以及希望保留更多画面内容的场景。
 
 <!-- aiui-api-style default=web -->
 
@@ -150,11 +165,11 @@ console.log(photo.mimeType, photo.data.byteLength);
 
 <!-- /aiui-api-style -->
 
-Web 写法中的 `ImageCapture` 需要一个视频轨道。`takePhoto()` 返回编码后的 `Blob`，`grabFrame()` 可用于获取内存中的 `ImageBitmap`。使用完毕后应停止视频轨道。
+Web 写法需要先取得视频轨道，再用它创建 `ImageCapture`。`takePhoto()` 返回编码后的 `Blob`；如果只想读取当前画面的像素而不需要编码文件，可以使用 `grabFrame()`。Web 写法使用完毕后必须停止视频轨道。
 
 ## 录制音频
 
-录制音频时，两种 API 风格都会持续交付可处理的数据分片：
+录音不是一次返回完整文件，而是持续产生一段段音频数据。智能体可以边录边上传、转写或分析这些分片。下面的示例使用 Opus 编码，每 `250` 毫秒产生一次数据。
 
 如果需要实时读取麦克风音量、波形或频率，可以把同一个 `MediaStream` 传给 `AudioContext.createMediaStreamSource()`。完整示例请查看[音频处理（Web Audio）](/AIUI/api/media-web-audio#分析麦克风输入)。
 
@@ -168,13 +183,18 @@ const recorder = new MediaRecorder(stream, {
   mimeType: 'audio/ogg;codecs=opus',
 });
 
-recorder.addEventListener('dataavailable', async (event) => {
-  const chunk = await event.data.arrayBuffer();
-  console.log(chunk.byteLength);
+const chunks = [];
+recorder.addEventListener('dataavailable', (event) => {
+  chunks.push(event.data);
+  console.log('收到音频分片', event.data.size);
+});
+recorder.addEventListener('stop', () => {
+  console.log('录音结束，共收到', chunks.length, '个分片');
 });
 
 recorder.start(250);
-// 完成后调用 recorder.stop()。
+// 用户完成说话后调用：
+// recorder.stop();
 ```
 
 **wx**
@@ -189,6 +209,12 @@ recorder.onHeader((format, headerBuffer) => {
 recorder.onFrameRecorded(({ frameBuffer }) => {
   console.log(frameBuffer.byteLength);
 });
+recorder.onStop(({ duration, fileSize }) => {
+  console.log('录音结束', duration, fileSize);
+});
+recorder.onError(({ errMsg }) => {
+  console.error('录音失败', errMsg);
+});
 
 await recorder.start({
   sampleRate: 16000,
@@ -196,9 +222,14 @@ await recorder.start({
   format: 'opus',
   frameSize: 250,
 });
+
+// 用户完成说话后调用：
+// await recorder.stop();
 ```
 
 <!-- /aiui-api-style -->
+
+Web 的每个 `event.data` 都是编码后的 `Blob`。`wx` 的 `frameBuffer` 是 `ArrayBuffer`；Opus 模式还会先通过 `onHeader()` 提供初始化 header。处理流式音频时，应按收到的顺序保存或发送 header 和音频分片。
 
 ## 权限与当前限制
 
@@ -322,6 +353,38 @@ for (const track of stream.getTracks()) {
 }
 ```
 
+### 拍照设置
+
+Web `ImageCapture.takePhoto(settings)` 与 `wx` `CameraContext.takePhoto(options)` 使用同一组 AIUI 拍照设置。两种写法的对象名称不同，但 `quality`、`mode` 与 `enableSystemPreview` 的含义和默认值一致。
+
+#### `quality`
+
+类型为 `'high' | 'normal' | 'low'`，默认值为 `'high'`。它选择图像的相对质量档位，会影响可保留的图像细节、编码后的数据量以及拍摄处理开销，但不是固定的 JPEG 压缩百分比。需要确定输出像素尺寸时，应结合 `mode` 的默认分辨率以及返回结果进行判断。
+
+| 值 | 质量与开销 | 推荐场景 |
+| --- | --- | --- |
+| `'high'` | 最高质量档，优先保留图像细节，通常会产生更大的编码数据并占用更多处理资源。 | 阅读智能体、AI 识图、文字识别，以及需要放大或裁剪的图像。 |
+| `'normal'` | 平衡图像细节、编码数据量和处理开销。 | 不需要最高细节的通用拍摄和常规视觉分析。 |
+| `'low'` | 较低质量档，优先降低编码数据量和处理开销，可识别的细节相对较少。 | 缩略图、快速预览，或对传输数据量敏感且不依赖精细内容的场景。 |
+
+如果图像需要交给 OCR、阅读智能体或其他依赖细节的视觉模型，优先使用 `'high'`。只有在数据量或处理开销更重要时才降低档位。
+
+#### `mode`
+
+类型为 `'default' | 'wide' | 'telephoto'`，默认值为 `'default'`。它选择 AIUI 定义的拍摄能力，决定默认输出方向、分辨率和主要使用场景。`mode` 与 `quality` 是两个独立维度：先用 `mode` 选择拍摄场景，再用 `quality` 调整该模式下的质量档位。
+
+| 值 | 默认输出分辨率 | 取景特点 | 推荐场景 |
+| --- | --- | --- | --- |
+| `'default'` | `4032 × 3024` | 使用完整视场角（全 FOV）和完整分辨率，保留最多的画面与图像细节。 | 通用拍摄；省略 `mode` 时使用此模式。 |
+| `'wide'` | `2688 × 2016` | 针对扫码任务提供适合识别处理的横向图像。 | 二维码、条码和支付扫码。 |
+| `'telephoto'` | `1512 × 2016` | 提供适合主体内容分析的竖向图像。 | 阅读智能体、AI 识图、文字或物体识别。 |
+
+对于扫码场景使用 `'wide'`；对于阅读智能体或 AI 识图使用 `'telephoto'`。不需要特定能力时省略该字段或显式使用 `'default'`。
+
+#### `enableSystemPreview`
+
+类型为 `boolean`，默认值为 `true`。设为 `true` 时，拍照前显示系统相机预览，适合需要用户确认取景的场景；设为 `false` 时直接完成拍摄，适合扫码或由智能体连续处理图像的流程。
+
 ### `ImageCapture`
 
 #### `new ImageCapture(videoTrack)`
@@ -334,9 +397,7 @@ for (const track of stream.getTracks()) {
 
 | 参数 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- |
-| `settings.quality` | `'high' \| 'normal' \| 'low'` | 否 | 图像质量，默认是 `'high'`。 |
-| `settings.mode` | `'default' \| 'wide' \| 'telephoto'` | 否 | 拍摄模式，默认是 `'default'`。 |
-| `settings.enableSystemPreview` | `boolean` | 否 | 是否先显示系统相机预览，默认是 `true`。 |
+| `settings` | `PhotoSettings` | 否 | 拍照设置。省略时使用[拍照设置](#拍照设置)中的默认值。 |
 
 #### `grabFrame()`
 
@@ -456,17 +517,7 @@ const recorder = new MediaRecorder(stream, { mimeType });
 
 | 参数 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- |
-| `options.quality` | `'high' \| 'normal' \| 'low'` | 否 | 图像质量，默认是 `'high'`。 |
-| `options.mode` | `'default' \| 'wide' \| 'telephoto'` | 否 | 语义化拍摄模式，默认是 `'default'`。各模式的默认输出分辨率和推荐场景见下表。 |
-| `options.enableSystemPreview` | `boolean` | 否 | 是否先显示系统相机预览，默认是 `true`。 |
-
-`mode` 用于选择 AIUI 定义的拍摄能力。各模式的行为如下：
-
-| 模式 | 默认输出分辨率 | 取景特点 | 推荐场景 |
-| --- | --- | --- | --- |
-| `'default'` | `4032 × 3024` | 使用完整视场角（全 FOV）和完整分辨率，保留最多的画面与图像细节。 | 通用拍摄；未指定 `mode` 时使用此模式。 |
-| `'wide'` | `2688 × 2016` | 针对扫码任务提供适合识别处理的图像尺寸。 | 扫码、支付等需要捕获二维码或条码的场景。 |
-| `'telephoto'` | `1512 × 2016` | 使用竖向输出，适合将图像交给智能体继续分析。 | 阅读智能体、AI 识图以及文字或物体识别。 |
+| `options` | `object` | 是 | 拍照设置。字段及默认值与 Web 写法一致，见[拍照设置](#拍照设置)。 |
 
 ### `RecorderManager`
 
