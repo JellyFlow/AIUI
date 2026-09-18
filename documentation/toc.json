@@ -760,11 +760,11 @@
           },
           {
             "id": "sound",
-            "label": "短音效（Sound）"
+            "label": "短音效"
           },
           {
             "id": "web-audio",
-            "label": "音频处理（Web Audio）",
+            "label": "音频处理",
             "docId": "media-web-audio",
             "docPath": "3-api/media/web-audio.md"
           },

@@ -216,7 +216,7 @@ Web 写法需要先取得视频轨道，再用它创建 `ImageCapture`。`takePh
 
 录音不是一次返回完整文件，而是持续产生一段段音频数据。智能体可以边录边上传、转写或分析这些分片。下面的示例使用 Opus 编码，每 `250` 毫秒产生一次数据。
 
-如果需要实时读取麦克风音量、波形或频率，可以把同一个 `MediaStream` 传给 `AudioContext.createMediaStreamSource()`。完整示例请查看[音频处理（Web Audio）](/AIUI/api/media-web-audio#分析麦克风输入)。
+如果需要实时读取麦克风音量、波形或频率，可以把同一个 `MediaStream` 传给 `AudioContext.createMediaStreamSource()`。完整示例请查看[音频处理](/AIUI/api/media-web-audio#分析麦克风输入)。
 
 <!-- aiui-api-style default=web -->
 
