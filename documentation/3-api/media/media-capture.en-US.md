@@ -6,8 +6,6 @@ AIUI can use the camera and microphone so an agent can take photos, scan codes, 
 
 The following code requests both the camera and microphone and returns a `MediaStream`. The stream contains video and audio tracks used by later photo, recording, and audio-analysis operations.
 
-Run this code from a user action such as a button click while the AIUI application window is focused:
-
 ```javascript
 const stream = await navigator.mediaDevices.getUserMedia({
   audio: true,
@@ -19,8 +17,13 @@ const stream = await navigator.mediaDevices.getUserMedia({
 
 const [microphoneTrack] = stream.getAudioTracks();
 const [cameraTrack] = stream.getVideoTracks();
+const { width, height } = cameraTrack.getSettings();
+
+console.log('Video stream size', width, height);
 console.log(microphoneTrack, cameraTrack);
 ```
+
+`cameraTrack.getSettings()` returns the settings selected by AIUI for this video track. Its `width` and `height` are the video-stream dimensions. They may differ from the ideal values in the request, so read these settings when displaying or logging the final size.
 
 Set either `audio` or `video` to `false` when only one input is needed. Stop every track after use so other features can use the camera and microphone:
 
@@ -57,6 +60,10 @@ try {
 const detector = new BarcodeDetector({
   formats: ['qr_code', 'code_128'],
 });
+const scanBitmap = await createImageBitmap(scanImage);
+console.log('Captured image size', scanBitmap.width, scanBitmap.height);
+scanBitmap.close();
+
 const barcodes = await detector.detect(scanImage);
 
 for (const barcode of barcodes) {
@@ -82,6 +89,10 @@ const imageBlob = new Blob([scanImage.data], {
 const detector = new BarcodeDetector({
   formats: ['qr_code', 'code_128'],
 });
+const scanBitmap = await createImageBitmap(imageBlob);
+console.log('Captured image size', scanBitmap.width, scanBitmap.height);
+scanBitmap.close();
+
 const barcodes = await detector.detect(imageBlob);
 
 for (const barcode of barcodes) {
@@ -94,6 +105,8 @@ for (const barcode of barcodes) {
 In the Web example, `scanImage` is already a `Blob` and can be passed directly to `BarcodeDetector.detect()`. In the `wx` example, `scanImage.data` is an encoded `ArrayBuffer`; create a `Blob` with `scanImage.mimeType` before detection.
 
 `detect()` returns an array of recognized codes. Each result contains `format`, the barcode format, and `rawValue`, the decoded text, URL, or business data. An empty array means that no requested format was found in the image; prompt the user to align the code and try again. See [BarcodeDetector](/AIUI/api/device-barcode) for more formats and result fields.
+
+`takePhoto()` returns an encoded image without `width` or `height` fields. The example decodes it with `createImageBitmap()`, reads the dimensions, and then calls `close()` to release the bitmap.
 
 ## Capture an Image for a Reading Agent
 
@@ -108,14 +121,20 @@ const stream = await navigator.mediaDevices.getUserMedia({ video: true });
 const [videoTrack] = stream.getVideoTracks();
 const capture = new ImageCapture(videoTrack);
 
-const readingImage = await capture.takePhoto({
-  quality: 'high',
-  mode: 'telephoto',
-  enableSystemPreview: true,
-});
+let readingImage;
+try {
+  readingImage = await capture.takePhoto({
+    quality: 'high',
+    mode: 'telephoto',
+    enableSystemPreview: true,
+  });
+} finally {
+  videoTrack.stop();
+}
 
-console.log(readingImage.type, readingImage.size);
-videoTrack.stop();
+const readingBitmap = await createImageBitmap(readingImage);
+console.log('Captured image size', readingBitmap.width, readingBitmap.height);
+readingBitmap.close();
 ```
 
 **wx**
@@ -130,7 +149,12 @@ const readingImage = await camera.takePhoto({
   enableSystemPreview: true,
 });
 
-console.log(readingImage.mimeType, readingImage.data.byteLength);
+const readingBlob = new Blob([readingImage.data], {
+  type: readingImage.mimeType,
+});
+const readingBitmap = await createImageBitmap(readingBlob);
+console.log('Captured image size', readingBitmap.width, readingBitmap.height);
+readingBitmap.close();
 ```
 
 <!-- /aiui-api-style -->
@@ -150,14 +174,20 @@ const stream = await navigator.mediaDevices.getUserMedia({ video: true });
 const [videoTrack] = stream.getVideoTracks();
 const capture = new ImageCapture(videoTrack);
 
-const photo = await capture.takePhoto({
-  quality: 'high',
-  mode: 'default',
-  enableSystemPreview: true,
-});
+let photo;
+try {
+  photo = await capture.takePhoto({
+    quality: 'high',
+    mode: 'default',
+    enableSystemPreview: true,
+  });
+} finally {
+  videoTrack.stop();
+}
 
-console.log(photo.type, photo.size);
-videoTrack.stop();
+const photoBitmap = await createImageBitmap(photo);
+console.log('Captured image size', photoBitmap.width, photoBitmap.height);
+photoBitmap.close();
 ```
 
 **wx**
@@ -172,7 +202,10 @@ const photo = await camera.takePhoto({
   enableSystemPreview: true,
 });
 
-console.log(photo.mimeType, photo.data.byteLength);
+const photoBlob = new Blob([photo.data], { type: photo.mimeType });
+const photoBitmap = await createImageBitmap(photoBlob);
+console.log('Captured image size', photoBitmap.width, photoBitmap.height);
+photoBitmap.close();
 ```
 
 <!-- /aiui-api-style -->
@@ -245,7 +278,7 @@ Each Web `event.data` value is an encoded `Blob`. The `wx` `frameBuffer` is an `
 
 ## Record a Video Stream
 
-To record video, request both the camera and microphone and pass the `MediaStream` containing both tracks to `MediaRecorder`. Run the following code from a user action such as clicking Start Recording. The example selects an available video format and produces one video chunk per second. After recording stops, it combines all chunks into a `Blob` that can be saved or uploaded.
+To record video, request both the camera and microphone and pass the `MediaStream` containing both tracks to `MediaRecorder`. The example selects an available video format and produces one video chunk per second. After recording stops, it combines all chunks into a `Blob` that can be saved or uploaded.
 
 ```javascript
 const stream = await navigator.mediaDevices.getUserMedia({
@@ -256,6 +289,10 @@ const stream = await navigator.mediaDevices.getUserMedia({
     frameRate: { ideal: 30 },
   },
 });
+
+const [videoTrack] = stream.getVideoTracks();
+const { width, height } = videoTrack.getSettings();
+console.log('Video stream size', width, height);
 
 const mimeType = [
   'video/mp4',
@@ -301,7 +338,7 @@ Each `dataavailable` event provides an encoded video chunk. Combine the complete
 
 ## Permissions and Current Limits
 
-- `getUserMedia()` and `MediaRecorder.start()` must run during a valid user interaction while the AIUI application window is focused.
+- Media capture APIs are available after entering the `_blank` target; no additional user-interaction or window-focus condition applies.
 - Media capture is unavailable when `app.config.lifetime === 'cut'`.
 - The Agent Manifest must declare the corresponding camera or microphone permission; permission denial rejects the Promise.
 - `MediaRecorder` currently recognizes `audio/wav`, `audio/ogg;codecs=opus`, `video/webm;codecs=vp8,opus`, and `video/mp4`.
@@ -315,7 +352,7 @@ Each `dataavailable` event provides an encoded video chunk. Combine the complete
 
 Requests an audio or video media stream and returns `Promise<MediaStream>`. `constraints.audio` and `constraints.video` can be booleans or constraint objects; enable at least one media type. Current fields include `deviceId`, `sampleRate`, `channelCount`, `echoCancellation`, `facingMode`, `width`, `height`, and `frameRate`.
 
-Call this method during a valid user interaction while the AIUI application window is focused. Constraints express requested targets; read the settings ultimately selected for each track with `getSettings()`. The promise rejects when permission is denied, a device is unavailable, or the constraints cannot be satisfied.
+Constraints express requested targets; read the settings ultimately selected for each track with `getSettings()`. The promise rejects when permission is denied, a device is unavailable, or the constraints cannot be satisfied.
 
 #### `enumerateDevices()`
 
@@ -461,7 +498,7 @@ Creates an image capture object from a video `MediaStreamTrack` whose `readyStat
 
 #### `takePhoto(settings?)`
 
-Captures an encoded image and returns `Promise<Blob>`. `Blob.type` is the actual image MIME type and `Blob.size` is its encoded byte size. Call it during a valid user interaction while the AIUI application window is focused. An ended video track causes `InvalidStateError`; capture failures reject the promise.
+Captures an encoded image and returns `Promise<Blob>`. `Blob.type` is the actual image MIME type and `Blob.size` is its encoded byte size. An ended video track causes `InvalidStateError`; capture failures reject the promise.
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
@@ -469,7 +506,7 @@ Captures an encoded image and returns `Promise<Blob>`. `Blob.type` is the actual
 
 #### `grabFrame()`
 
-Captures the current video frame and returns `Promise<ImageBitmap>`. The result contains decoded in-memory pixels, not the original JPEG or PNG bytes; use `takePhoto()` when an encoded image is required. Call it during a valid user interaction while the AIUI application window is focused. An ended video track causes `InvalidStateError`.
+Captures the current video frame and returns `Promise<ImageBitmap>`. The result contains decoded in-memory pixels, not the original JPEG or PNG bytes; use `takePhoto()` when an encoded image is required. An ended video track causes `InvalidStateError`.
 
 ```javascript
 const bitmap = await capture.grabFrame();
@@ -501,7 +538,7 @@ A read-only `string` containing the output MIME type actually used by the record
 
 #### `start(timeslice?)`
 
-Starts recording. The optional `timeslice` specifies the data-chunk interval in milliseconds; when provided, the recorder dispatches `dataavailable` events at that cadence. Returns no value. Call it during a valid user interaction while the AIUI application window is focused. It can only be called while `state === 'inactive'`; otherwise it throws `InvalidStateError`.
+Starts recording. The optional `timeslice` specifies the data-chunk interval in milliseconds; when provided, the recorder dispatches `dataavailable` events at that cadence. Returns no value. It can only be called while `state === 'inactive'`; otherwise it throws `InvalidStateError`.
 
 #### `pause()`
 
@@ -509,7 +546,7 @@ Pauses an active recording and changes `state` to `'paused'`. Returns no value. 
 
 #### `resume()`
 
-Resumes a paused recording and changes `state` to `'recording'`. Returns no value. It can only be called while `state === 'paused'`; otherwise it throws `InvalidStateError`. The AIUI application window must be focused when it is called.
+Resumes a paused recording and changes `state` to `'recording'`. Returns no value. It can only be called while `state === 'paused'`; otherwise it throws `InvalidStateError`.
 
 #### `requestData()`
 
@@ -581,7 +618,7 @@ Returns a `RecorderManager` available to the current AIUI application. It return
 
 Captures an encoded image and returns `Promise<{ data: ArrayBuffer, mimeType: string }>`. `data` contains the complete encoded image bytes and `mimeType` identifies the actual encoding. The pair can be passed directly to file upload, code recognition, or agent image-input workflows.
 
-Call it during a valid user interaction while the AIUI application window is focused. A failed interaction check throws immediately; a failure during capture rejects the promise.
+A failure during capture rejects the promise.
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
@@ -591,7 +628,7 @@ Call it during a valid user interaction while the AIUI application window is foc
 
 #### `start(options)`
 
-Starts a new recording session and returns `Promise<void>`. Call it during a valid user interaction while the AIUI application window is focused. Register `onFrameRecorded()`, `onError()`, and `onStop()` first so an early event is not missed. Calling it again while already recording does not create a second session.
+Starts a new recording session and returns `Promise<void>`. Register `onFrameRecorded()`, `onError()`, and `onStop()` first so an early event is not missed. Calling it again while already recording does not create a second session.
 
 | `start()` Parameter | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
@@ -606,7 +643,7 @@ Pauses the current recording and returns `Promise<void>`. State changes only whi
 
 #### `resume()`
 
-Resumes a paused recording and returns `Promise<void>`. The AIUI application window must be focused when this method is called. After success, the callback registered with `onResume()` runs. Calling it when no session is paused does not start a new recording.
+Resumes a paused recording and returns `Promise<void>`. After success, the callback registered with `onResume()` runs. Calling it when no session is paused does not start a new recording.
 
 #### `stop()`
 

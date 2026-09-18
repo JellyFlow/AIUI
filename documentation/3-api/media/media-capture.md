@@ -6,8 +6,6 @@ AIUI 可以调用摄像头和麦克风，让智能体拍照、扫码、读取眼
 
 下面的代码会同时请求摄像头和麦克风，并得到一个 `MediaStream`。流中包含视频轨道和音频轨道，后续拍照、录音和音频分析都从这些轨道开始。
 
-请在用户点击按钮等交互事件中运行这段代码，并确保 AIUI 应用窗口处于焦点状态：
-
 ```javascript
 const stream = await navigator.mediaDevices.getUserMedia({
   audio: true,
@@ -19,8 +17,13 @@ const stream = await navigator.mediaDevices.getUserMedia({
 
 const [microphoneTrack] = stream.getAudioTracks();
 const [cameraTrack] = stream.getVideoTracks();
+const { width, height } = cameraTrack.getSettings();
+
+console.log('视频流尺寸', width, height);
 console.log(microphoneTrack, cameraTrack);
 ```
+
+`cameraTrack.getSettings()` 返回 AIUI 为这条视频轨道采用的设置，其中 `width` 和 `height` 是视频流尺寸。它们可能与请求时填写的理想值不同，因此需要展示或记录最终尺寸时应读取这里的结果。
 
 如果只需要摄像头或麦克风，把另一项设为 `false` 即可。使用完毕后，应停止所有轨道，这样摄像头和麦克风才能被其他功能继续使用：
 
@@ -57,6 +60,10 @@ try {
 const detector = new BarcodeDetector({
   formats: ['qr_code', 'code_128'],
 });
+const scanBitmap = await createImageBitmap(scanImage);
+console.log('拍照结果尺寸', scanBitmap.width, scanBitmap.height);
+scanBitmap.close();
+
 const barcodes = await detector.detect(scanImage);
 
 for (const barcode of barcodes) {
@@ -82,6 +89,10 @@ const imageBlob = new Blob([scanImage.data], {
 const detector = new BarcodeDetector({
   formats: ['qr_code', 'code_128'],
 });
+const scanBitmap = await createImageBitmap(imageBlob);
+console.log('拍照结果尺寸', scanBitmap.width, scanBitmap.height);
+scanBitmap.close();
+
 const barcodes = await detector.detect(imageBlob);
 
 for (const barcode of barcodes) {
@@ -94,6 +105,8 @@ for (const barcode of barcodes) {
 Web 写法中的 `scanImage` 已经是 `Blob`，可以直接传给 `BarcodeDetector.detect()`。`wx` 写法中的 `scanImage.data` 是编码后的 `ArrayBuffer`，需要结合 `scanImage.mimeType` 创建 `Blob` 后再检测。
 
 `detect()` 返回识别结果数组。每一项的 `format` 是条码格式，`rawValue` 是扫码得到的文本、网址或业务数据。数组为空表示当前图像中没有识别到指定格式的码，可以提示用户重新对准后再拍一次。更多格式和返回字段见 [BarcodeDetector](/AIUI/api/device-barcode)。
+
+`takePhoto()` 返回的是编码图片，本身没有 `width` 和 `height` 字段。示例通过 `createImageBitmap()` 解码图片并读取尺寸，读取完成后调用 `close()` 释放位图。
 
 ## 为阅读智能体拍摄图像
 
@@ -108,14 +121,20 @@ const stream = await navigator.mediaDevices.getUserMedia({ video: true });
 const [videoTrack] = stream.getVideoTracks();
 const capture = new ImageCapture(videoTrack);
 
-const readingImage = await capture.takePhoto({
-  quality: 'high',
-  mode: 'telephoto',
-  enableSystemPreview: true,
-});
+let readingImage;
+try {
+  readingImage = await capture.takePhoto({
+    quality: 'high',
+    mode: 'telephoto',
+    enableSystemPreview: true,
+  });
+} finally {
+  videoTrack.stop();
+}
 
-console.log(readingImage.type, readingImage.size);
-videoTrack.stop();
+const readingBitmap = await createImageBitmap(readingImage);
+console.log('拍照结果尺寸', readingBitmap.width, readingBitmap.height);
+readingBitmap.close();
 ```
 
 **wx**
@@ -130,7 +149,12 @@ const readingImage = await camera.takePhoto({
   enableSystemPreview: true,
 });
 
-console.log(readingImage.mimeType, readingImage.data.byteLength);
+const readingBlob = new Blob([readingImage.data], {
+  type: readingImage.mimeType,
+});
+const readingBitmap = await createImageBitmap(readingBlob);
+console.log('拍照结果尺寸', readingBitmap.width, readingBitmap.height);
+readingBitmap.close();
 ```
 
 <!-- /aiui-api-style -->
@@ -150,14 +174,20 @@ const stream = await navigator.mediaDevices.getUserMedia({ video: true });
 const [videoTrack] = stream.getVideoTracks();
 const capture = new ImageCapture(videoTrack);
 
-const photo = await capture.takePhoto({
-  quality: 'high',
-  mode: 'default',
-  enableSystemPreview: true,
-});
+let photo;
+try {
+  photo = await capture.takePhoto({
+    quality: 'high',
+    mode: 'default',
+    enableSystemPreview: true,
+  });
+} finally {
+  videoTrack.stop();
+}
 
-console.log(photo.type, photo.size);
-videoTrack.stop();
+const photoBitmap = await createImageBitmap(photo);
+console.log('拍照结果尺寸', photoBitmap.width, photoBitmap.height);
+photoBitmap.close();
 ```
 
 **wx**
@@ -172,7 +202,10 @@ const photo = await camera.takePhoto({
   enableSystemPreview: true,
 });
 
-console.log(photo.mimeType, photo.data.byteLength);
+const photoBlob = new Blob([photo.data], { type: photo.mimeType });
+const photoBitmap = await createImageBitmap(photoBlob);
+console.log('拍照结果尺寸', photoBitmap.width, photoBitmap.height);
+photoBitmap.close();
 ```
 
 <!-- /aiui-api-style -->
@@ -245,7 +278,7 @@ Web 的每个 `event.data` 都是编码后的 `Blob`。`wx` 的 `frameBuffer` �
 
 ## 录制视频流
 
-录制视频时，需要同时请求摄像头和麦克风，再把包含两种轨道的 `MediaStream` 交给 `MediaRecorder`。请从用户点击“开始录制”等交互事件中运行下面的代码。示例会选择当前可用的视频格式，每秒产生一个视频分片；停止后把所有分片合并为一个可保存或上传的 `Blob`。
+录制视频时，需要同时请求摄像头和麦克风，再把包含两种轨道的 `MediaStream` 交给 `MediaRecorder`。示例会选择当前可用的视频格式，每秒产生一个视频分片；停止后把所有分片合并为一个可保存或上传的 `Blob`。
 
 ```javascript
 const stream = await navigator.mediaDevices.getUserMedia({
@@ -256,6 +289,10 @@ const stream = await navigator.mediaDevices.getUserMedia({
     frameRate: { ideal: 30 },
   },
 });
+
+const [videoTrack] = stream.getVideoTracks();
+const { width, height } = videoTrack.getSettings();
+console.log('视频流尺寸', width, height);
 
 const mimeType = [
   'video/mp4',
@@ -301,7 +338,7 @@ recorder.start(1000);
 
 ## 权限与当前限制
 
-- `getUserMedia()` 与 `MediaRecorder.start()` 必须在有效用户交互中调用，且 AIUI 应用窗口必须处于焦点状态。
+- 进入 `_blank` target 后即可调用媒体采集 API，无需额外的用户交互或窗口焦点条件。
 - `app.config.lifetime === 'cut'` 时，媒体采集不可用。
 - Agent Manifest 必须声明对应的摄像头或麦克风权限；拒绝权限时 Promise 会拒绝。
 - `MediaRecorder` 当前识别 `audio/wav`、`audio/ogg;codecs=opus`、`video/webm;codecs=vp8,opus` 与 `video/mp4`。
@@ -315,7 +352,7 @@ recorder.start(1000);
 
 请求音频或视频媒体流，返回 `Promise<MediaStream>`。`constraints.audio` 与 `constraints.video` 可以是 `boolean` 或约束对象；至少启用一种媒体类型。当前约束字段包括 `deviceId`、`sampleRate`、`channelCount`、`echoCancellation`、`facingMode`、`width`、`height` 与 `frameRate`。
 
-必须在有效用户交互中调用，且 AIUI 应用窗口需要处于焦点状态。约束表示请求目标，最终采用的参数应通过轨道的 `getSettings()` 读取。权限被拒绝、设备不可用或约束无法满足时，Promise 会拒绝。
+约束表示请求目标，最终采用的参数应通过轨道的 `getSettings()` 读取。权限被拒绝、设备不可用或约束无法满足时，Promise 会拒绝。
 
 #### `enumerateDevices()`
 
@@ -461,7 +498,7 @@ Web `ImageCapture.takePhoto(settings)` 与 `wx` `CameraContext.takePhoto(options
 
 #### `takePhoto(settings?)`
 
-拍摄编码后的图像，返回 `Promise<Blob>`。`Blob.type` 是实际图像 MIME type，`Blob.size` 是编码后的字节数。调用必须发生在有效用户交互中，且 AIUI 应用窗口需要处于焦点状态；视频轨道已经结束时抛出 `InvalidStateError`，拍摄失败时 Promise 会拒绝。
+拍摄编码后的图像，返回 `Promise<Blob>`。`Blob.type` 是实际图像 MIME type，`Blob.size` 是编码后的字节数。视频轨道已经结束时抛出 `InvalidStateError`，拍摄失败时 Promise 会拒绝。
 
 | 参数 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- |
@@ -469,7 +506,7 @@ Web `ImageCapture.takePhoto(settings)` 与 `wx` `CameraContext.takePhoto(options
 
 #### `grabFrame()`
 
-获取当前视频帧，返回 `Promise<ImageBitmap>`。结果是已解码的内存位图，不保留原始 JPEG 或 PNG 字节；需要编码图像时应使用 `takePhoto()`。调用需要有效用户交互和处于焦点状态的 AIUI 应用窗口；视频轨道已经结束时抛出 `InvalidStateError`。
+获取当前视频帧，返回 `Promise<ImageBitmap>`。结果是已解码的内存位图，不保留原始 JPEG 或 PNG 字节；需要编码图像时应使用 `takePhoto()`。视频轨道已经结束时抛出 `InvalidStateError`。
 
 ```javascript
 const bitmap = await capture.grabFrame();
@@ -501,7 +538,7 @@ bitmap.close();
 
 #### `start(timeslice?)`
 
-开始录制。`timeslice` 是可选的分片间隔，单位为毫秒；设置后，录制器会按该节奏产生 `dataavailable` 事件。无返回值。调用必须发生在有效用户交互中，且 AIUI 应用窗口需要处于焦点状态。仅当 `state === 'inactive'` 时可以调用，否则抛出 `InvalidStateError`。
+开始录制。`timeslice` 是可选的分片间隔，单位为毫秒；设置后，录制器会按该节奏产生 `dataavailable` 事件。无返回值。仅当 `state === 'inactive'` 时可以调用，否则抛出 `InvalidStateError`。
 
 #### `pause()`
 
@@ -509,7 +546,7 @@ bitmap.close();
 
 #### `resume()`
 
-恢复已暂停的录制并将 `state` 变为 `'recording'`，无返回值。只有 `state === 'paused'` 时可以调用，否则抛出 `InvalidStateError`；调用时 AIUI 应用窗口需要处于焦点状态。
+恢复已暂停的录制并将 `state` 变为 `'recording'`，无返回值。只有 `state === 'paused'` 时可以调用，否则抛出 `InvalidStateError`。
 
 #### `requestData()`
 
@@ -581,7 +618,7 @@ const recorder = new MediaRecorder(stream, { mimeType });
 
 拍摄编码后的图像，返回 `Promise<{ data: ArrayBuffer, mimeType: string }>`。`data` 是完整的编码图像字节，`mimeType` 表示实际编码格式；可以将两者直接交给文件上传、扫码识别或智能体图像输入流程。
 
-必须在有效用户交互中调用，且 AIUI 应用窗口需要处于焦点状态。交互校验失败时会立即抛出异常；拍摄过程失败时 Promise 会拒绝。
+拍摄过程失败时 Promise 会拒绝。
 
 | 参数 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- |
@@ -591,7 +628,7 @@ const recorder = new MediaRecorder(stream, { mimeType });
 
 #### `start(options)`
 
-开始新的录音会话，返回 `Promise<void>`。必须在有效用户交互中调用，且 AIUI 应用窗口需要处于焦点状态。建议在调用前注册 `onFrameRecorded()`、`onError()` 和 `onStop()`，避免遗漏快速到达的首个事件。重复调用已在录音中的管理器不会创建第二个会话。
+开始新的录音会话，返回 `Promise<void>`。建议在调用前注册 `onFrameRecorded()`、`onError()` 和 `onStop()`，避免遗漏快速到达的首个事件。重复调用已在录音中的管理器不会创建第二个会话。
 
 | `start()` 参数 | 类型 | 必填 | 默认值 | 说明 |
 | --- | --- | --- | --- | --- |
@@ -606,7 +643,7 @@ const recorder = new MediaRecorder(stream, { mimeType });
 
 #### `resume()`
 
-恢复已暂停的录音并返回 `Promise<void>`。调用时 AIUI 应用窗口需要处于焦点状态；成功后通过 `onResume()` 通知。没有处于暂停状态时不会启动新的录音会话。
+恢复已暂停的录音并返回 `Promise<void>`。成功后通过 `onResume()` 通知。没有处于暂停状态时不会启动新的录音会话。
 
 #### `stop()`
 
