@@ -363,13 +363,37 @@ A writable `number` containing the requested maximum alternatives per result. It
 
 Requests microphone access and begins one recognition session. Calling it again while the same object is active throws `InvalidStateError`. This method must be called during a user interaction.
 
+```javascript
+const recognition = new SpeechRecognition();
+recognition.lang = 'en-US';
+recognition.interimResults = true;
+recognition.onresult = (event) => {
+  const result = event.results[event.resultIndex];
+  console.log(result[0].transcript, result.isFinal);
+};
+recognition.onerror = (event) => {
+  console.error(event.error, event.message);
+};
+
+document.querySelector('#start').addEventListener('click', () => recognition.start());
+```
+
 #### `recognition.stop()`
 
 Stops recording and writes the final audio chunk. The recognition session continues until it delivers final results and ends.
 
+```javascript
+document.querySelector('#stop').addEventListener('click', () => recognition.stop());
+recognition.onend = () => console.log('Recognition ended');
+```
+
 #### `recognition.abort()`
 
 Stops capture, releases the microphone tracks, and aborts the active session without waiting for a final result.
+
+```javascript
+document.querySelector('#cancel').addEventListener('click', () => recognition.abort());
+```
 
 #### `start` / `audiostart` / `soundstart` / `speechstart` events
 
@@ -437,7 +461,41 @@ The type is `'auto' | 'vad' | 'semantic'`.
 
 #### `session.audio`
 
-A read-only `WritableStream<Blob | ArrayBuffer | ArrayBufferView>` for ordered audio input. Its writer exposes backpressure through Promises.
+A read-only `WritableStream<Blob | ArrayBuffer | ArrayBufferView>` for ordered audio input. Call `session.audio.getWriter()` to obtain a standard `WritableStreamDefaultWriter`. The `writer` is neither a `SpeechRecognitionSession` property nor a speech-recognition-specific class.
+
+- `writer.write(audio)` writes a `Blob`, `ArrayBuffer`, or `ArrayBufferView`. Await its Promise to respect stream backpressure.
+- `writer.close()` signals that all audio has been written. The runtime waits for pending writes and final recognition results before ending the session.
+- `writer.abort(reason?)` discards unsent input and aborts the session without waiting for final results.
+
+```javascript
+const session = new SpeechRecognitionSession({
+  audio: {
+    mimeType: 'audio/pcm',
+    sampleRate: 16000,
+    channelCount: 1,
+    sampleFormat: 's16',
+  },
+});
+
+session.onresult = (event) => {
+  const result = event.results[event.resultIndex];
+  console.log(result[0].transcript, result.isFinal);
+};
+session.onerror = (event) => {
+  console.error(event.error, event.message);
+};
+
+const writer = session.audio.getWriter();
+try {
+  const pcm = await fetch('/audio/input.pcm').then((response) => response.arrayBuffer());
+  await writer.write(pcm);
+  await writer.close();
+} catch (error) {
+  await writer.abort(error).catch(() => {});
+}
+```
+
+Use `close()` for normal input completion. Use `abort()` when the user cancels or the application cannot continue providing audio. See [Streams](/AIUI/api/network-streams) for the general `WritableStream`, writer-lock, and backpressure contracts.
 
 #### `session.state`
 
@@ -483,6 +541,13 @@ Each item in `audioFormats` contains:
 
 Replaces the current ASR context with a new list of messages and returns `Promise<void>`.
 
+```javascript
+await session.updateContext([
+  { role: 'user', text: 'What will the weather be tomorrow?' },
+  { role: 'assistant', text: 'Which city should I check?' },
+]);
+```
+
 | Parameter | Type | Description |
 | --- | --- | --- |
 | `messages` | `SpeechRecognitionContextMessage[]` | Context messages in conversation order. |
@@ -497,18 +562,6 @@ Replaces the current ASR context with a new list of messages and returns `Promis
 - A non-array value, unsupported role, or empty text throws a `TypeError`.
 - Before the session starts, the method stores the context first. If context is unsupported, the first `writer.write()` rejects.
 - During recognition, the Promise returned by `updateContext()` rejects when the update fails. Check `contextUpdates` from `getCapabilities()` first.
-
-#### `writer.write(audio)`
-
-Writes one logical audio segment. The input can be a `Blob`, `ArrayBuffer`, or `ArrayBufferView`. The Promise resolves only after every transmitted part of that segment has been accepted by the runtime; session and format failures reject it.
-
-#### `writer.close()`
-
-Finishes input, waits for pending writes and final results, and then closes the session. Calling it before the first `write()` ends locally without starting a recognition task.
-
-#### `writer.abort(reason?)`
-
-Discards unsent input, aborts the recognition task, and rejects pending operations.
 
 **Events**
 

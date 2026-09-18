@@ -363,13 +363,37 @@ await writer.close();
 
 请求麦克风权限并开始一轮识别。同一对象已处于 active 状态时再次调用会抛出 `InvalidStateError`。该方法必须在用户交互中调用。
 
+```javascript
+const recognition = new SpeechRecognition();
+recognition.lang = 'zh-CN';
+recognition.interimResults = true;
+recognition.onresult = (event) => {
+  const result = event.results[event.resultIndex];
+  console.log(result[0].transcript, result.isFinal);
+};
+recognition.onerror = (event) => {
+  console.error(event.error, event.message);
+};
+
+document.querySelector('#start').addEventListener('click', () => recognition.start());
+```
+
 #### `recognition.stop()`
 
 停止录音并写入最后一个音频片段。识别会话会继续等待最终结果，然后结束。
 
+```javascript
+document.querySelector('#stop').addEventListener('click', () => recognition.stop());
+recognition.onend = () => console.log('识别已结束');
+```
+
 #### `recognition.abort()`
 
 停止采集、释放麦克风轨道，并立即中止当前会话，不等待最终结果。
+
+```javascript
+document.querySelector('#cancel').addEventListener('click', () => recognition.abort());
+```
 
 #### `start` / `audiostart` / `soundstart` / `speechstart` 事件
 
@@ -437,7 +461,41 @@ await writer.close();
 
 #### `session.audio`
 
-只读的 `WritableStream<Blob | ArrayBuffer | ArrayBufferView>`，用于按顺序写入音频。其 writer 会通过 Promise 提供背压。
+只读的 `WritableStream<Blob | ArrayBuffer | ArrayBufferView>`，用于按顺序写入音频。调用 `session.audio.getWriter()` 获得标准的 `WritableStreamDefaultWriter`；`writer` 不是 `SpeechRecognitionSession` 的属性，也不是语音识别专用类。
+
+- `writer.write(audio)` 写入一个 `Blob`、`ArrayBuffer` 或 `ArrayBufferView`。应等待返回的 Promise，以遵守流的背压。
+- `writer.close()` 表示所有音频已写入。运行时会等待待完成的写入和最终识别结果，然后结束会话。
+- `writer.abort(reason?)` 丢弃未发送的输入并中止会话，不等待最终结果。
+
+```javascript
+const session = new SpeechRecognitionSession({
+  audio: {
+    mimeType: 'audio/pcm',
+    sampleRate: 16000,
+    channelCount: 1,
+    sampleFormat: 's16',
+  },
+});
+
+session.onresult = (event) => {
+  const result = event.results[event.resultIndex];
+  console.log(result[0].transcript, result.isFinal);
+};
+session.onerror = (event) => {
+  console.error(event.error, event.message);
+};
+
+const writer = session.audio.getWriter();
+try {
+  const pcm = await fetch('/audio/input.pcm').then((response) => response.arrayBuffer());
+  await writer.write(pcm);
+  await writer.close();
+} catch (error) {
+  await writer.abort(error).catch(() => {});
+}
+```
+
+`close()` 适用于正常完成输入；用户取消或无法继续提供音频时使用 `abort()`。`WritableStream`、writer 锁和背压的通用契约参见[数据流](/AIUI/api/network-streams)。
 
 #### `session.state`
 
@@ -483,6 +541,13 @@ const capabilities = await SpeechRecognitionSession.getCapabilities();
 
 使用一组新的消息替换当前 ASR 上下文，返回 `Promise<void>`。
 
+```javascript
+await session.updateContext([
+  { role: 'user', text: '帮我查一下明天的天气' },
+  { role: 'assistant', text: '你想查哪座城市？' },
+]);
+```
+
 | 参数 | 类型 | 说明 |
 | --- | --- | --- |
 | `messages` | `SpeechRecognitionContextMessage[]` | 按对话顺序排列的上下文消息。 |
@@ -497,18 +562,6 @@ const capabilities = await SpeechRecognitionSession.getCapabilities();
 - `messages` 不是数组、角色不受支持或文本为空时，会抛出 `TypeError`。
 - 在会话开始前调用时，方法会先保存上下文；如果服务不支持上下文，首次 `writer.write()` 会拒绝。
 - 在识别过程中更新失败时，`updateContext()` 返回的 Promise 会拒绝。调用前应检查 `getCapabilities()` 返回的 `contextUpdates`。
-
-#### `writer.write(audio)`
-
-写入一个逻辑音频片段。输入可为 `Blob`、`ArrayBuffer` 或 `ArrayBufferView`。当该片段的所有传输部分都被运行时接收后，Promise 才会解析；会话或格式错误会使其拒绝。
-
-#### `writer.close()`
-
-结束输入，等待待完成的写入和最终结果，然后关闭会话。首次 `write()` 前调用会直接在本地结束，不启动识别任务。
-
-#### `writer.abort(reason?)`
-
-丢弃尚未发送的输入，中止识别任务，并拒绝尚未完成的操作。
 
 **事件**
 

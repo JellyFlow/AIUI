@@ -92,9 +92,89 @@ A reader provides `read()`, `cancel()`, `releaseLock()`, and `closed`.
 
 ### `WritableStream`
 
-The constructor accepts an optional `underlyingSink` and queuing strategy. A sink can implement `start()`, `write()`, `close()`, and `abort()`.
+Represents a destination that accepts chunks in order. Writers normally call `getWriter()` and use the returned writer to manage backpressure and lifecycle.
 
-An instance provides `locked`, `getWriter()`, `close()`, and `abort()`. A writer provides `write()`, `close()`, `abort()`, `releaseLock()`, `ready`, `closed`, and `desiredSize`.
+#### `new WritableStream(underlyingSink?, strategy?)`
+
+Creates a writable stream. `underlyingSink` can implement `start(controller)`, `write(chunk, controller)`, `close()`, and `abort(reason)`; these callbacks may return Promises. `strategy` controls queuing and backpressure through `highWaterMark` and an optional `size(chunk)` function.
+
+```javascript
+const stream = new WritableStream({
+  async write(chunk) {
+    await saveChunk(chunk);
+  },
+  close() {
+    console.log('All chunks written');
+  },
+  abort(reason) {
+    console.error('Writing aborted', reason);
+  },
+});
+```
+
+#### `stream.locked`
+
+A read-only `boolean` that is `true` while a writer locks the stream. Only one writer can lock a stream at a time.
+
+#### `stream.getWriter()`
+
+Returns a `WritableStreamDefaultWriter` and locks the stream to that writer. Calling it while the stream is already locked throws `TypeError`.
+
+```javascript
+const writer = stream.getWriter();
+try {
+  await writer.write('first');
+  await writer.write('second');
+  await writer.close();
+} finally {
+  writer.releaseLock();
+}
+```
+
+#### `stream.close()`
+
+Returns `Promise<void>` and requests that the stream close after queued writes finish. Close a locked stream through `writer.close()`.
+
+#### `stream.abort(reason?)`
+
+Returns `Promise<void>`, aborts the stream, and passes the optional reason to the underlying sink. Abort a locked stream through `writer.abort()`.
+
+### `WritableStreamDefaultWriter`
+
+The standard writer returned by `stream.getWriter()`. It exclusively locks the stream until released and exposes write backpressure, completion, and failure state.
+
+#### `writer.ready`
+
+A read-only `Promise<void>` that resolves when the stream's internal queue has capacity. Await it before sustained writes to avoid ignoring backpressure.
+
+#### `writer.closed`
+
+A read-only `Promise<void>` that resolves when the stream closes successfully. It rejects if the stream errors or the writer releases its lock before the stream closes.
+
+#### `writer.desiredSize`
+
+A read-only `number | null` estimating the capacity remaining before the queue reaches its `highWaterMark`. A negative value means the queue exceeds its target capacity; it is `null` when the stream has errored.
+
+#### `writer.write(chunk?)`
+
+Queues one chunk and returns `Promise<void>`. The Promise resolves when the underlying sink accepts the chunk and rejects if writing fails or the stream can no longer accept writes.
+
+```javascript
+await writer.ready;
+await writer.write(chunk);
+```
+
+#### `writer.close()`
+
+Returns `Promise<void>` and requests that the stream close after queued writes finish. Do not write additional chunks after calling it.
+
+#### `writer.abort(reason?)`
+
+Returns `Promise<void>`, aborts the stream, discards unprocessed chunks, and passes the optional reason to the underlying sink.
+
+#### `writer.releaseLock()`
+
+Releases the writer's lock so other code can call `getWriter()`. Do not release the lock while a `write()` is pending. The writer can no longer operate on the stream after release.
 
 ### `TransformStream`
 
