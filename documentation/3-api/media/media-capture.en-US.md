@@ -4,7 +4,7 @@ AIUI provides `navigator.mediaDevices`, `ImageCapture`, and `MediaRecorder` for 
 
 ## Acquire Camera and Microphone Streams
 
-Media capture must begin during a valid user interaction while the host window is focused:
+Media capture must begin during a valid user interaction while the AIUI application window is focused:
 
 ```javascript
 const stream = await navigator.mediaDevices.getUserMedia({
@@ -118,11 +118,11 @@ await recorder.start({
 
 ## Permissions and Current Limits
 
-- `getUserMedia()` and `MediaRecorder.start()` must run during a valid user interaction while the host window is focused.
+- `getUserMedia()` and `MediaRecorder.start()` must run during a valid user interaction while the AIUI application window is focused.
 - Media capture is unavailable when `app.config.lifetime === 'cut'`.
 - The Agent Manifest must declare the corresponding camera or microphone permission; permission denial rejects the Promise.
 - `MediaRecorder` currently recognizes `audio/wav`, `audio/ogg;codecs=opus`, `video/webm;codecs=vp8,opus`, and `video/mp4`.
-- Constraints are requests. A device or host may return different compatible settings; read the final result with `track.getSettings()`.
+- Constraints are requests. A device may return different compatible settings; read the final result with `track.getSettings()`.
 
 ## API Reference
 
@@ -178,25 +178,33 @@ The `dataavailable` event exposes a `Blob` as `event.data`. The recorder also di
 
 #### `wx.media.createCameraContext()`
 
-Returns `CameraContext | undefined`. It returns `undefined` on wasm32, when `app.config.lifetime === 'cut'`, when no current app exists, or when the host provides no camera capability.
+Returns `CameraContext | undefined`. It returns `undefined` on wasm32, when `app.config.lifetime === 'cut'`, when no current app exists, or when camera capture is unavailable in the current environment.
 
 #### `CameraContext.takePhoto(options)`
 
-Must run during a valid user interaction while the host window is focused. Returns `Promise<{ data: ArrayBuffer, mimeType: string }>`.
+Must run during a valid user interaction while the AIUI application window is focused. Returns `Promise<{ data: ArrayBuffer, mimeType: string }>`.
 
 | Parameter | Type | Required | Description |
 | --- | --- | --- | --- |
 | `options.quality` | `'high' \| 'normal' \| 'low'` | Yes | Image quality. |
-| `options.mode` | `'default' \| 'wide' \| 'telephoto'` | No | Semantic capture mode mapped by the host to a device lens or capability. |
+| `options.mode` | `'default' \| 'wide' \| 'telephoto'` | No | Semantic capture mode. Defaults to `'default'`. See the table below for each mode's default output resolution and recommended use cases. |
 | `options.enableSystemPreview` | `boolean` | No | Whether to show the system camera preview first. Defaults to `true`. |
+
+`mode` selects an AIUI-defined capture capability. Each mode behaves as follows:
+
+| Mode | Default output resolution | Framing | Recommended use cases |
+| --- | --- | --- | --- |
+| `'default'` | `4032 × 3024` | Uses the full field of view (FOV) and full resolution to preserve the most scene and image detail. | General photography; used when `mode` is omitted. |
+| `'wide'` | `2688 × 2016` | Provides an image size suited to recognition in scanning workflows. | QR-code and barcode scanning, including payment scenarios. |
+| `'telephoto'` | `1512 × 2016` | Produces a portrait-oriented image suited to downstream agent analysis. | Reading agents, AI image understanding, and text or object recognition. |
 
 #### `wx.media.getRecorderManager()`
 
-Returns `RecorderManager | undefined`. It returns `undefined` on wasm32, when `app.config.lifetime === 'cut'`, when no current app exists, or when the host provides no recorder capability.
+Returns `RecorderManager | undefined`. It returns `undefined` on wasm32, when `app.config.lifetime === 'cut'`, when no current app exists, or when audio recording is unavailable in the current environment.
 
 #### `RecorderManager`
 
-`start(options)`, `pause()`, `resume()`, and `stop()` all return `Promise<void>`. `start()` and `resume()` require the host window to be focused.
+`start(options)`, `pause()`, `resume()`, and `stop()` all return `Promise<void>`. `start()` and `resume()` require the AIUI application window to be focused.
 
 | `start()` Parameter | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |

@@ -43,6 +43,25 @@ Use the existing directory that matches the reader's task. Do not reorganize
 the navigation or invent a new top-level section for a single page unless the
 request explicitly requires it.
 
+## Audience and Abstraction Boundary
+
+Official AIUI documentation is written for agent developers using AIUI,
+not for developers implementing the runtime integration.
+
+- Describe capabilities as unified AIUI contracts: supported inputs, defaults,
+  outputs, errors, lifecycle requirements, availability, and other behavior an
+  agent can observe.
+- Do not expose implementation delegation with phrases such as "the host
+  decides", "mapped by the host", or "when the host provides the capability".
+  Present the AIUI-defined behavior directly.
+- When behavior has a real platform or environment boundary, state that
+  boundary precisely in developer-facing terms, such as an unsupported target,
+  an unavailable capability, or a documented difference between platforms.
+  Do not use "host behavior" as a catch-all for an unspecified contract.
+- Keep internal adapters, device routing, lens mapping, and runtime integration
+  details out of public documentation unless an agent developer must act
+  on that detail to use the API correctly.
+
 ## Bilingual Files
 
 Chinese is stored in `<name>.md`; English is stored in `<name>.en-US.md` beside

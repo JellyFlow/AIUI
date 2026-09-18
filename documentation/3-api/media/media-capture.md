@@ -4,7 +4,7 @@ AIUI 提供 `navigator.mediaDevices`、`ImageCapture` 与 `MediaRecorder`，用�
 
 ## 获取摄像头和麦克风媒体流
 
-媒体采集必须在有效用户交互中发起，并且宿主窗口需要处于焦点状态：
+媒体采集必须在有效用户交互中发起，并且 AIUI 应用窗口需要处于焦点状态：
 
 ```javascript
 const stream = await navigator.mediaDevices.getUserMedia({
@@ -118,11 +118,11 @@ await recorder.start({
 
 ## 权限与当前限制
 
-- `getUserMedia()` 与 `MediaRecorder.start()` 必须在有效用户交互中调用，且宿主窗口必须处于焦点状态。
+- `getUserMedia()` 与 `MediaRecorder.start()` 必须在有效用户交互中调用，且 AIUI 应用窗口必须处于焦点状态。
 - `app.config.lifetime === 'cut'` 时，媒体采集不可用。
 - Agent Manifest 必须声明对应的摄像头或麦克风权限；拒绝权限时 Promise 会拒绝。
 - `MediaRecorder` 当前识别 `audio/wav`、`audio/ogg;codecs=opus`、`video/webm;codecs=vp8,opus` 与 `video/mp4`。
-- 约束是请求值，实际设备与宿主可以返回不同但兼容的设置；使用 `track.getSettings()` 读取最终结果。
+- 约束是请求值，实际设备可以返回不同但兼容的设置；使用 `track.getSettings()` 读取最终结果。
 
 ## API Reference
 
@@ -178,25 +178,33 @@ await recorder.start({
 
 #### `wx.media.createCameraContext()`
 
-返回 `CameraContext | undefined`。wasm32 目标、`app.config.lifetime === 'cut'`、没有当前应用实例或宿主未提供相机能力时返回 `undefined`。
+返回 `CameraContext | undefined`。wasm32 目标、`app.config.lifetime === 'cut'`、没有当前应用实例或当前运行环境不支持相机能力时返回 `undefined`。
 
 #### `CameraContext.takePhoto(options)`
 
-必须在有效用户交互中调用，且宿主窗口需要处于焦点状态。返回 `Promise<{ data: ArrayBuffer, mimeType: string }>`。
+必须在有效用户交互中调用，且 AIUI 应用窗口需要处于焦点状态。返回 `Promise<{ data: ArrayBuffer, mimeType: string }>`。
 
 | 参数 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- |
 | `options.quality` | `'high' \| 'normal' \| 'low'` | 是 | 图像质量。 |
-| `options.mode` | `'default' \| 'wide' \| 'telephoto'` | 否 | 由宿主映射到具体镜头或能力的语义化拍摄模式。 |
+| `options.mode` | `'default' \| 'wide' \| 'telephoto'` | 否 | 语义化拍摄模式，默认是 `'default'`。各模式的默认输出分辨率和推荐场景见下表。 |
 | `options.enableSystemPreview` | `boolean` | 否 | 是否先显示系统相机预览，默认是 `true`。 |
+
+`mode` 用于选择 AIUI 定义的拍摄能力。各模式的行为如下：
+
+| 模式 | 默认输出分辨率 | 取景特点 | 推荐场景 |
+| --- | --- | --- | --- |
+| `'default'` | `4032 × 3024` | 使用完整视场角（全 FOV）和完整分辨率，保留最多的画面与图像细节。 | 通用拍摄；未指定 `mode` 时使用此模式。 |
+| `'wide'` | `2688 × 2016` | 针对扫码任务提供适合识别处理的图像尺寸。 | 扫码、支付等需要捕获二维码或条码的场景。 |
+| `'telephoto'` | `1512 × 2016` | 使用竖向输出，适合将图像交给智能体继续分析。 | 阅读智能体、AI 识图以及文字或物体识别。 |
 
 #### `wx.media.getRecorderManager()`
 
-返回 `RecorderManager | undefined`。wasm32 目标、`app.config.lifetime === 'cut'`、没有当前应用实例或宿主未提供录音能力时返回 `undefined`。
+返回 `RecorderManager | undefined`。wasm32 目标、`app.config.lifetime === 'cut'`、没有当前应用实例或当前运行环境不支持录音能力时返回 `undefined`。
 
 #### `RecorderManager`
 
-`start(options)`、`pause()`、`resume()` 与 `stop()` 均返回 `Promise<void>`。`start()` 与 `resume()` 要求宿主窗口处于焦点状态。
+`start(options)`、`pause()`、`resume()` 与 `stop()` 均返回 `Promise<void>`。`start()` 与 `resume()` 要求 AIUI 应用窗口处于焦点状态。
 
 | `start()` 参数 | 类型 | 必填 | 默认值 | 说明 |
 | --- | --- | --- | --- | --- |
