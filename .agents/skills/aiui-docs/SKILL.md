@@ -61,6 +61,11 @@ not for developers implementing the runtime integration.
 - Keep internal adapters, device routing, lens mapping, and runtime integration
   details out of public documentation unless an agent developer must act
   on that detail to use the API correctly.
+- Do not name `Ink` in public AIUI documentation. Source code from that
+  implementation may be used to verify behavior, but the published text must
+  describe the product-level contract. When an implementation layer genuinely
+  needs to be named, use `运行时` or `AIUI 运行时` in Chinese and `runtime` or
+  `AIUI runtime` in English.
 
 ## Bilingual Files
 
@@ -305,3 +310,5 @@ Before finishing a documentation change:
    scenario sections precede the reference material, `## API Reference` is the
    final level-two section, and all concrete parameter definitions live inside
    it.
+8. Check changed public documentation for `Ink` references and replace them
+   with product-level wording or the locale-appropriate runtime term.
