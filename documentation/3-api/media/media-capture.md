@@ -26,6 +26,90 @@ for (const track of stream.getTracks()) {
 }
 ```
 
+## 拍摄扫码图像
+
+扫描二维码或条码时，使用 `wide` 模式拍摄默认分辨率为 `2688 × 2016` 的图像：
+
+<!-- aiui-api-style default=web -->
+
+**Web**
+
+```javascript api-style=web
+const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+const [videoTrack] = stream.getVideoTracks();
+const capture = new ImageCapture(videoTrack);
+
+const scanImage = await capture.takePhoto({
+  quality: 'high',
+  mode: 'wide',
+  enableSystemPreview: true,
+});
+
+console.log(scanImage.type, scanImage.size);
+videoTrack.stop();
+```
+
+**wx**
+
+```javascript api-style=wx
+const camera = wx.media.createCameraContext();
+if (!camera) throw new Error('当前环境不支持相机');
+
+const scanImage = await camera.takePhoto({
+  quality: 'high',
+  mode: 'wide',
+  enableSystemPreview: true,
+});
+
+console.log(scanImage.mimeType, scanImage.data.byteLength);
+```
+
+<!-- /aiui-api-style -->
+
+拍摄结果是编码后的图像，可以继续交给二维码或条码识别流程处理。
+
+## 为阅读智能体拍摄图像
+
+需要让阅读智能体分析文字、文档或物体时，使用 `telephoto` 模式拍摄默认分辨率为 `1512 × 2016` 的竖向图像：
+
+<!-- aiui-api-style default=web -->
+
+**Web**
+
+```javascript api-style=web
+const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+const [videoTrack] = stream.getVideoTracks();
+const capture = new ImageCapture(videoTrack);
+
+const readingImage = await capture.takePhoto({
+  quality: 'high',
+  mode: 'telephoto',
+  enableSystemPreview: true,
+});
+
+console.log(readingImage.type, readingImage.size);
+videoTrack.stop();
+```
+
+**wx**
+
+```javascript api-style=wx
+const camera = wx.media.createCameraContext();
+if (!camera) throw new Error('当前环境不支持相机');
+
+const readingImage = await camera.takePhoto({
+  quality: 'high',
+  mode: 'telephoto',
+  enableSystemPreview: true,
+});
+
+console.log(readingImage.mimeType, readingImage.data.byteLength);
+```
+
+<!-- /aiui-api-style -->
+
+拍摄结果可以作为阅读智能体或 AI 识图流程的图像输入。
+
 ## 拍摄照片
 
 拍摄照片时可以使用 Web `ImageCapture`，也可以使用 `wx.media` 提供的兼容接口：
@@ -128,65 +212,251 @@ await recorder.start({
 
 ### `navigator.mediaDevices`
 
-| 方法 | 返回值 | 说明 |
-| --- | --- | --- |
-| `getUserMedia(constraints)` | `Promise<MediaStream>` | 请求音频或视频媒体流。 |
-| `enumerateDevices()` | `Promise<MediaDeviceInfo[]>` | 枚举可用的音频输入与视频输入设备。 |
-| `getSupportedConstraints()` | `MediaTrackSupportedConstraints` | 返回运行时识别的约束字段。 |
+#### `getUserMedia(constraints)`
 
-`constraints.audio` 与 `constraints.video` 可以是 `boolean` 或约束对象。当前约束字段包括 `deviceId`、`sampleRate`、`channelCount`、`echoCancellation`、`facingMode`、`width`、`height` 与 `frameRate`。
+请求音频或视频媒体流，返回 `Promise<MediaStream>`。`constraints.audio` 与 `constraints.video` 可以是 `boolean` 或约束对象；至少启用一种媒体类型。当前约束字段包括 `deviceId`、`sampleRate`、`channelCount`、`echoCancellation`、`facingMode`、`width`、`height` 与 `frameRate`。
+
+必须在有效用户交互中调用，且 AIUI 应用窗口需要处于焦点状态。约束表示请求目标，最终采用的参数应通过轨道的 `getSettings()` 读取。权限被拒绝、设备不可用或约束无法满足时，Promise 会拒绝。
+
+#### `enumerateDevices()`
+
+枚举可用的音频输入与视频输入设备，返回 `Promise<MediaDeviceInfo[]>`。每个条目包含 `deviceId`、`groupId`、`kind` 与 `label`；`kind` 为 `'audioinput'` 或 `'videoinput'`。使用 `deviceId` 可以在后续 `getUserMedia()` 约束中选择特定设备。
+
+```javascript
+const devices = await navigator.mediaDevices.enumerateDevices();
+const cameras = devices.filter((device) => device.kind === 'videoinput');
+if (cameras.length === 0) throw new Error('没有可用摄像头');
+
+const stream = await navigator.mediaDevices.getUserMedia({
+  video: { deviceId: { exact: cameras[0].deviceId } },
+});
+```
+
+#### `getSupportedConstraints()`
+
+返回 `MediaTrackSupportedConstraints`。对象中值为 `true` 的字段可以出现在 `getUserMedia()` 的约束对象中；它只表示字段可识别，不保证当前设备能够满足任意取值。
 
 ### `MediaStream`
 
-| 成员 | 类型 | 说明 |
-| --- | --- | --- |
-| `id` | `string` | 媒体流标识。 |
-| `active` | `boolean` | 是否仍包含活动轨道。 |
-| `getTracks()` | `MediaStreamTrack[]` | 返回所有轨道。 |
-| `getAudioTracks()` | `MediaStreamTrack[]` | 返回音频轨道。 |
-| `getVideoTracks()` | `MediaStreamTrack[]` | 返回视频轨道。 |
-| `getTrackById(id)` | `MediaStreamTrack \| null` | 按标识查找轨道。 |
+#### `new MediaStream()`
+
+创建一个不包含任何轨道的空媒体流。新建流的 `active` 为 `false`，适合在需要先创建容器、再由其他流程提供轨道时使用。
+
+#### `id`
+
+类型为只读 `string`，在当前媒体流生命周期内保持不变。它用于区分多个流，不应被当作设备标识；设备选择应使用 `MediaDeviceInfo.deviceId`。
+
+#### `active`
+
+类型为只读 `boolean`。只要流中至少有一条 `readyState === 'live'` 的轨道就为 `true`；所有轨道结束后变为 `false`。读取该字段不会启动或停止采集。
+
+#### `getTracks()`
+
+返回一个新的 `MediaStreamTrack[]`，包含媒体流中的全部音频和视频轨道。修改返回的数组不会改变媒体流；需要结束采集时，应逐条调用轨道的 `stop()`。
+
+#### `getAudioTracks()`
+
+返回一个新的 `MediaStreamTrack[]`，只包含 `kind === 'audio'` 的轨道。没有音频轨道时返回空数组。
+
+#### `getVideoTracks()`
+
+返回一个新的 `MediaStreamTrack[]`，只包含 `kind === 'video'` 的轨道。没有视频轨道时返回空数组。
+
+#### `getTrackById(id)`
+
+按轨道的 `id` 精确查找轨道。找到时返回同一个 `MediaStreamTrack` 对象，否则返回 `null`；该方法不会按设备 `deviceId` 查找。
 
 ### `MediaStreamTrack`
 
-公开属性包括 `id`、`kind`、`label`、`enabled`、`muted` 与 `readyState`。`getConstraints()` 返回请求约束，`getSettings()` 返回最终设置，`stop()` 结束轨道。
+#### `id`
 
-### `new ImageCapture(videoTrack)`
+类型为只读 `string`，在轨道生命周期内保持不变。可与 `MediaStream.getTrackById()` 配合，在同一媒体流中重新取得该轨道。
 
-| 方法 | 返回值 | 说明 |
-| --- | --- | --- |
-| `takePhoto(settings?)` | `Promise<Blob>` | 拍摄编码后的图像；设置支持 `quality`、`mode` 与 `enableSystemPreview`。 |
-| `grabFrame()` | `Promise<ImageBitmap>` | 获取当前视频帧的内存位图。 |
+#### `kind`
 
-### `new MediaRecorder(stream, options?)`
+类型为只读 `'audio' | 'video'`，表示轨道承载的媒体类型。可在混合流中用于区分麦克风轨道和摄像头轨道。
 
-`options.mimeType` 用于指定输出格式；省略时默认使用 `audio/wav`。不支持的格式会抛出 `TypeError`。
+#### `label`
 
-| 成员 | 类型 | 说明 |
-| --- | --- | --- |
-| `state` | `'inactive' \| 'recording' \| 'paused'` | 当前录制状态。 |
-| `mimeType` | `string` | 当前输出 MIME type。 |
-| `start(timeslice?)` | `void` | 开始录制；`timeslice` 控制数据分片间隔，单位为毫秒。 |
-| `pause()` / `resume()` | `void` | 暂停或恢复录制。 |
-| `requestData()` | `void` | 请求立即输出当前数据分片。 |
-| `stop()` | `void` | 停止录制并完成输出。 |
-| `MediaRecorder.isTypeSupported(type)` | `boolean` | 检查 MIME type 是否受支持。 |
+类型为只读 `string`，用于向用户描述轨道对应的媒体来源。显示名称可能因设备和权限状态而不同；业务逻辑应使用 `id` 或设置中的 `deviceId`，不要依赖 `label` 文本。
 
-`dataavailable` 事件的 `event.data` 为 `Blob`。录制器还会分发 `start`、`pause`、`resume`、`stop` 与 `error` 事件。
+#### `enabled`
 
-### wx APIs
+类型为可写 `boolean`。设置为 `false` 会暂停该轨道向下游提供有效媒体数据，但不会结束轨道或释放设备；重新设为 `true` 可以继续使用。需要彻底结束采集时调用 `stop()`。
 
-#### `wx.media.createCameraContext()`
+```javascript
+const [microphone] = stream.getAudioTracks();
+microphone.enabled = false; // 临时静音。
+microphone.enabled = true;  // 恢复采集。
+```
 
-返回 `CameraContext | undefined`。wasm32 目标、`app.config.lifetime === 'cut'`、没有当前应用实例或当前运行环境不支持相机能力时返回 `undefined`。
+#### `muted`
 
-#### `CameraContext.takePhoto(options)`
+类型为只读 `boolean`。表示媒体来源当前无法提供数据，例如采集被系统暂时中断。它与 `enabled` 不同：`enabled` 由应用控制，`muted` 反映来源的当前状态。
 
-必须在有效用户交互中调用，且 AIUI 应用窗口需要处于焦点状态。返回 `Promise<{ data: ArrayBuffer, mimeType: string }>`。
+#### `readyState`
+
+类型为只读 `'live' | 'ended'`。`'live'` 表示轨道仍可继续提供数据；调用 `stop()` 或媒体来源永久结束后变为 `'ended'`。结束后的轨道不能重新启动，应重新调用 `getUserMedia()` 获取轨道。
+
+#### `getConstraints()`
+
+返回 `MediaTrackConstraints`，包含获取该轨道时请求的约束。这些值表示应用的请求，不一定等于设备最终采用的参数；读取实际结果应使用 `getSettings()`。
+
+#### `getSettings()`
+
+返回 `MediaTrackSettings`，包含轨道最终采用的设备与媒体设置，例如 `deviceId`、音频采样率、声道数，或视频宽高与帧率。字段取决于轨道类型和可用设备。
+
+```javascript
+const [videoTrack] = stream.getVideoTracks();
+const { deviceId, width, height, frameRate } = videoTrack.getSettings();
+console.log({ deviceId, width, height, frameRate });
+```
+
+#### `stop()`
+
+停止轨道并将 `readyState` 变为 `'ended'`。无返回值；对已经结束的轨道再次调用不会产生额外效果。同一设备的其他轨道不受影响，因此释放整个流时应停止所有轨道。
+
+```javascript
+for (const track of stream.getTracks()) {
+  track.stop();
+}
+```
+
+### `ImageCapture`
+
+#### `new ImageCapture(videoTrack)`
+
+使用仍处于 `'live'` 状态的视频 `MediaStreamTrack` 创建图像采集器。参数不是 `MediaStreamTrack` 或轨道的 `kind` 不是 `'video'` 时抛出 `TypeError`；轨道已经结束时抛出 `InvalidStateError`。
+
+#### `takePhoto(settings?)`
+
+拍摄编码后的图像，返回 `Promise<Blob>`。`Blob.type` 是实际图像 MIME type，`Blob.size` 是编码后的字节数。调用必须发生在有效用户交互中，且 AIUI 应用窗口需要处于焦点状态；视频轨道已经结束时抛出 `InvalidStateError`，拍摄失败时 Promise 会拒绝。
 
 | 参数 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- |
-| `options.quality` | `'high' \| 'normal' \| 'low'` | 是 | 图像质量。 |
+| `settings.quality` | `'high' \| 'normal' \| 'low'` | 否 | 图像质量，默认是 `'high'`。 |
+| `settings.mode` | `'default' \| 'wide' \| 'telephoto'` | 否 | 拍摄模式，默认是 `'default'`。 |
+| `settings.enableSystemPreview` | `boolean` | 否 | 是否先显示系统相机预览，默认是 `true`。 |
+
+#### `grabFrame()`
+
+获取当前视频帧，返回 `Promise<ImageBitmap>`。结果是已解码的内存位图，不保留原始 JPEG 或 PNG 字节；需要编码图像时应使用 `takePhoto()`。调用需要有效用户交互和处于焦点状态的 AIUI 应用窗口；视频轨道已经结束时抛出 `InvalidStateError`。
+
+```javascript
+const bitmap = await capture.grabFrame();
+const canvas = document.createElement('canvas');
+canvas.width = bitmap.width;
+canvas.height = bitmap.height;
+
+const context = canvas.getContext('2d');
+context.drawImage(bitmap, 0, 0);
+const pixels = context.getImageData(0, 0, bitmap.width, bitmap.height).data;
+
+console.log(pixels.length); // RGBA 字节数。
+bitmap.close();
+```
+
+### `MediaRecorder`
+
+#### `new MediaRecorder(stream, options?)`
+
+为指定 `MediaStream` 创建录制器。构造后 `state` 为 `'inactive'`。`options.mimeType` 用于选择输出格式；省略时默认使用 `audio/wav`。AIUI 当前支持 `audio/wav`、`audio/ogg;codecs=opus`、`video/webm;codecs=vp8,opus` 与 `video/mp4`，不支持的格式会抛出 `TypeError`。开始录制时，流中必须至少有一条音频或视频轨道。
+
+#### `state`
+
+类型为只读 `'inactive' | 'recording' | 'paused'`。新建或停止后的录制器为 `'inactive'`，录制期间为 `'recording'`，暂停后为 `'paused'`。调用控制方法前可检查该字段，避免 `InvalidStateError`。
+
+#### `mimeType`
+
+类型为只读 `string`，表示录制器实际使用的输出 MIME type。它可能来自构造参数，也可能是默认的 `audio/wav`；处理 `dataavailable` 的 `Blob` 时应以该值或 `event.data.type` 选择解码方式。
+
+#### `start(timeslice?)`
+
+开始录制。`timeslice` 是可选的分片间隔，单位为毫秒；设置后，录制器会按该节奏产生 `dataavailable` 事件。无返回值。调用必须发生在有效用户交互中，且 AIUI 应用窗口需要处于焦点状态。仅当 `state === 'inactive'` 时可以调用，否则抛出 `InvalidStateError`。
+
+#### `pause()`
+
+暂停正在进行的录制并将 `state` 变为 `'paused'`，无返回值。只有 `state === 'recording'` 时可以调用，否则抛出 `InvalidStateError`。暂停不会结束当前录制会话。
+
+#### `resume()`
+
+恢复已暂停的录制并将 `state` 变为 `'recording'`，无返回值。只有 `state === 'paused'` 时可以调用，否则抛出 `InvalidStateError`；调用时 AIUI 应用窗口需要处于焦点状态。
+
+#### `requestData()`
+
+请求立即通过 `dataavailable` 事件交付当前累计的数据分片，并继续当前录制会话。无返回值。录制器为 `'inactive'` 时调用会抛出 `InvalidStateError`。
+
+```javascript
+recorder.addEventListener('dataavailable', ({ data }) => {
+  console.log('立即取得分片', data.size);
+});
+
+recorder.start();
+recorder.requestData();
+```
+
+#### `stop()`
+
+停止录制并请求交付剩余数据，随后触发 `stop` 事件。`state` 会变为 `'inactive'`。无返回值；如果录制器已经是 `'inactive'`，调用不会产生额外效果。
+
+#### `MediaRecorder.isTypeSupported(type)`
+
+检查指定 MIME type 是否可用于录制，返回 `boolean`。应在创建 `MediaRecorder` 前调用，避免因格式不支持而得到 `TypeError`。
+
+```javascript
+const preferredType = 'audio/ogg;codecs=opus';
+const mimeType = MediaRecorder.isTypeSupported(preferredType)
+  ? preferredType
+  : 'audio/wav';
+
+const recorder = new MediaRecorder(stream, { mimeType });
+```
+
+#### `dataavailable` 事件
+
+有新的录制数据分片时触发。`event.data` 是包含编码数据的 `Blob`；分片可能由 `timeslice`、`requestData()` 或 `stop()` 产生。异步处理分片时应保留顺序，并根据 `Blob.type` 解释编码格式。
+
+#### `start` 事件
+
+`start()` 成功进入录制状态后触发，此时 `state === 'recording'`。
+
+#### `pause` 事件
+
+`pause()` 成功暂停录制后触发，此时 `state === 'paused'`。
+
+#### `resume` 事件
+
+`resume()` 成功恢复录制后触发，此时 `state === 'recording'`。
+
+#### `stop` 事件
+
+录制停止且剩余 `dataavailable` 数据完成交付后触发。适合在这里完成分片合并或释放媒体轨道。
+
+#### `error` 事件
+
+录制过程中发生错误时触发。错误会结束当前录制会话并使录制器回到 `'inactive'`；应用应停止不再使用的媒体轨道并向用户提供重试入口。
+
+### `wx.media`
+
+#### `wx.media.createCameraContext()`
+
+返回当前 AIUI 应用可用的 `CameraContext`。wasm32 目标、`app.config.lifetime === 'cut'`、没有当前应用实例或当前运行环境不支持相机能力时返回 `undefined`。调用方应在拍照前检查返回值；该对象不需要手动销毁。
+
+#### `wx.media.getRecorderManager()`
+
+返回当前 AIUI 应用可用的 `RecorderManager`。wasm32 目标、`app.config.lifetime === 'cut'`、没有当前应用实例或当前运行环境不支持录音能力时返回 `undefined`；开始录音前应检查返回值并先注册所需回调。
+
+### `CameraContext`
+
+#### `CameraContext.takePhoto(options)`
+
+拍摄编码后的图像，返回 `Promise<{ data: ArrayBuffer, mimeType: string }>`。`data` 是完整的编码图像字节，`mimeType` 表示实际编码格式；可以将两者直接交给文件上传、扫码识别或智能体图像输入流程。
+
+必须在有效用户交互中调用，且 AIUI 应用窗口需要处于焦点状态。交互校验失败时会立即抛出异常；拍摄过程失败时 Promise 会拒绝。
+
+| 参数 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `options.quality` | `'high' \| 'normal' \| 'low'` | 否 | 图像质量，默认是 `'high'`。 |
 | `options.mode` | `'default' \| 'wide' \| 'telephoto'` | 否 | 语义化拍摄模式，默认是 `'default'`。各模式的默认输出分辨率和推荐场景见下表。 |
 | `options.enableSystemPreview` | `boolean` | 否 | 是否先显示系统相机预览，默认是 `true`。 |
 
@@ -198,13 +468,11 @@ await recorder.start({
 | `'wide'` | `2688 × 2016` | 针对扫码任务提供适合识别处理的图像尺寸。 | 扫码、支付等需要捕获二维码或条码的场景。 |
 | `'telephoto'` | `1512 × 2016` | 使用竖向输出，适合将图像交给智能体继续分析。 | 阅读智能体、AI 识图以及文字或物体识别。 |
 
-#### `wx.media.getRecorderManager()`
+### `RecorderManager`
 
-返回 `RecorderManager | undefined`。wasm32 目标、`app.config.lifetime === 'cut'`、没有当前应用实例或当前运行环境不支持录音能力时返回 `undefined`。
+#### `start(options)`
 
-#### `RecorderManager`
-
-`start(options)`、`pause()`、`resume()` 与 `stop()` 均返回 `Promise<void>`。`start()` 与 `resume()` 要求 AIUI 应用窗口处于焦点状态。
+开始新的录音会话，返回 `Promise<void>`。必须在有效用户交互中调用，且 AIUI 应用窗口需要处于焦点状态。建议在调用前注册 `onFrameRecorded()`、`onError()` 和 `onStop()`，避免遗漏快速到达的首个事件。重复调用已在录音中的管理器不会创建第二个会话。
 
 | `start()` 参数 | 类型 | 必填 | 默认值 | 说明 |
 | --- | --- | --- | --- | --- |
@@ -213,13 +481,59 @@ await recorder.start({
 | `options.format` | `'pcm' \| 'opus'` | 否 | `'pcm'` | 请求的编码格式。 |
 | `options.frameSize` | `number` | 否 | `250` | 音频帧回调间隔，单位为毫秒；仅正数生效。 |
 
-| 事件注册方法 | 回调参数 |
-| --- | --- |
-| `onStart()`、`onPause()`、`onResume()` | 无 |
-| `onStop()` | `{ tempFilePath: '', duration: number, fileSize: number }` |
-| `onFrameRecorded()` | `{ frameBuffer: ArrayBuffer, isLastFrame: false }` |
-| `onHeader()` | `(format: 'opus', headerBuffer: ArrayBuffer)` |
-| `onError()` | `{ errMsg: string }` |
-| `onInterruptionBegin()`、`onInterruptionEnd()` | 无 |
+#### `pause()`
 
-PCM 模式下，帧回调返回去除 WAV 容器头的原始 PCM 分片。Opus 模式会先通过 `onHeader()` 返回初始化 header，再通过 `onFrameRecorded()` 交付有效载荷。当前不会生成临时文件。
+暂停当前录音并返回 `Promise<void>`。只有正在录音时才会发生状态变化；成功后触发通过 `onPause()` 注册的回调。暂停期间不会结束当前会话，之后可以调用 `resume()`。
+
+#### `resume()`
+
+恢复已暂停的录音并返回 `Promise<void>`。调用时 AIUI 应用窗口需要处于焦点状态；成功后通过 `onResume()` 通知。没有处于暂停状态时不会启动新的录音会话。
+
+#### `stop()`
+
+停止当前录音并返回 `Promise<void>`。剩余音频帧处理完成后触发 `onStop()`；相关媒体轨道随后被释放。尚未开始录音或已经停止时调用是安全的。
+
+#### `onStart(callback)`
+
+注册录音开始回调。回调不接收参数，在底层录制器实际开始产出数据后触发。再次调用会替换先前注册的开始回调。
+
+#### `onPause(callback)`
+
+注册录音暂停回调。回调不接收参数，在 `pause()` 完成状态切换后触发。再次调用会替换先前注册的暂停回调。
+
+#### `onResume(callback)`
+
+注册录音恢复回调。回调不接收参数，在 `resume()` 完成状态切换后触发。再次调用会替换先前注册的恢复回调。
+
+#### `onStop(callback)`
+
+注册录音停止回调。回调接收 `{ tempFilePath: '', duration: number, fileSize: number }`：`duration` 是本次录音的毫秒时长，`fileSize` 是通过音频帧交付的总字节数。当前不会生成临时文件，因此 `tempFilePath` 始终为空字符串。再次注册会替换先前的停止回调。
+
+#### `onFrameRecorded(callback)`
+
+注册音频帧回调。回调接收 `{ frameBuffer: ArrayBuffer, isLastFrame: false }`。`frameBuffer` 只在当前回调中表示这一分片，不包含之前已经交付的数据；当前实现不会用 `isLastFrame` 标记最后一帧，完成状态以 `onStop()` 为准。
+
+PCM 模式下，`frameBuffer` 是去除 WAV 容器头的原始 PCM 分片。Opus 模式下，它是 Opus 有效载荷。
+
+```javascript
+const audioChunks = [];
+recorder.onFrameRecorded(({ frameBuffer }) => {
+  audioChunks.push(frameBuffer.slice(0));
+});
+```
+
+#### `onHeader(callback)`
+
+注册 Opus 初始化 header 回调。回调接收两个位置参数：`format` 为 `'opus'`，`headerBuffer` 为包含初始化 header 的 `ArrayBuffer`。该回调先于第一个 Opus 有效载荷触发；流式保存或传输 Opus 时，应先处理 header，再按顺序处理 `onFrameRecorded()` 的分片。PCM 模式不会触发此回调。
+
+#### `onError(callback)`
+
+注册错误回调。回调接收 `{ errMsg: string }`，其中包含可用于日志和用户提示的错误信息。错误发生后，不应假设当前会话仍在录音；应用应先完成当前会话的清理，再决定是否重新调用 `start()`。
+
+#### `onInterruptionBegin(callback)`
+
+注册录音中断开始回调。回调不接收参数；收到通知后，可以暂停依赖实时音频的智能体交互并更新界面状态。
+
+#### `onInterruptionEnd(callback)`
+
+注册录音中断结束回调。回调不接收参数；收到通知后，可以更新界面或恢复业务流程。是否继续录音仍应由应用显式决定。

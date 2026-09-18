@@ -113,11 +113,24 @@ properties, methods, or events:
 
 Inside `## API Reference`:
 
-- Give each public API, constructor, object, property group, method group, or
-  event group a descriptive level-three heading.
+- Give each public API or object a descriptive level-three heading.
+- Give every public constructor, property, method, and event its own
+  level-four heading under the relevant API or object. Do not collapse multiple
+  members into a summary table or a prose list.
 - Document exact signatures, parameters, parameter fields, defaults, return
-  values, events, errors, and supported behavior as applicable.
-- Use tables for structured parameters and fields. Do not bury parameter
+  values, events, errors, and supported behavior in the corresponding member
+  section as applicable.
+- Do not leave member sections as one-line restatements of their names or
+  types. Explain the developer-relevant contract: mutability, state and
+  lifecycle effects, how related values differ, failure conditions, and when
+  the member should be used. Include only details supported by the current
+  implementation or declarations.
+- Add a short, focused call example to important, stateful, or easily misused
+  methods. Examples should demonstrate a meaningful operation or decision,
+  such as selecting a device, releasing resources, handling streamed data, or
+  choosing a supported format. Trivial accessors do not each need an example.
+- Use tables for the structured parameters or fields of one member, not as an
+  index that replaces individual member sections. Do not bury parameter
   definitions in the earlier scenario sections.
 - Keep short code fragments only when they clarify a signature or return shape;
   full workflows belong in the scenario sections above.
