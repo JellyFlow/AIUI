@@ -236,7 +236,7 @@ if (capabilities.segmentationModes.includes('vad')) {
       ),
     };
   } else {
-    // 使用宿主或识别服务的默认 VAD 静音阈值。
+    // 使用运行时或识别服务的默认 VAD 静音阈值。
     segmentation = 'vad';
   }
 } else if (capabilities.segmentationModes.includes('auto')) {
@@ -254,15 +254,15 @@ const session = new SpeechRecognitionSession({
 
 | 模式 | 分段依据 |
 | --- | --- |
-| `auto` | 使用当前宿主或识别服务的默认分段策略。 |
+| `auto` | 使用当前运行时或识别服务的默认分段策略。 |
 | `vad` | 优先使用语音活动检测（Voice Activity Detection）识别说话后的连续静音，并以此确定语音边界。 |
 | `semantic` | 优先根据识别内容的语义完整性确定句子边界。 |
 
-`vad` 中的时间指“检测到语音后持续静音的时长”，不是从会话开始计算的绝对时间，也不是 `MediaRecorder.start(250)` 中的音频分片间隔。需要自定义时，把 `segmentation` 写成 `{ mode: 'vad', silenceDurationMs }`；`silenceDurationMs` 的单位是毫秒，并且必须是宿主通过 `vadSilenceDuration.minMs` 和 `maxMs` 声明的闭区间内的非负整数。如果 `vadSilenceDuration.supported` 为 `false`，可以继续使用字符串形式的 `'vad'`，但静音阈值由宿主或识别服务决定。
+`vad` 中的时间指“检测到语音后持续静音的时长”，不是从会话开始计算的绝对时间，也不是 `MediaRecorder.start(250)` 中的音频分片间隔。需要自定义时，把 `segmentation` 写成 `{ mode: 'vad', silenceDurationMs }`；`silenceDurationMs` 的单位是毫秒，并且必须是运行时通过 `vadSilenceDuration.minMs` 和 `maxMs` 声明的闭区间内的非负整数。如果 `vadSilenceDuration.supported` 为 `false`，可以继续使用字符串形式的 `'vad'`，但静音阈值由运行时或识别服务决定。
 
-分段只决定识别结果何时成为一个最终句段，不会关闭 `audio` 流或结束会话。调用 `writer.close()` 仍然表示音频输入全部结束。省略 `segmentation` 时，运行时不会向宿主发送明确的分段模式；字符串形式仍然兼容，对象形式省略 `silenceDurationMs` 时也使用宿主默认阈值。
+分段只决定识别结果何时成为一个最终句段，不会关闭 `audio` 流或结束会话。调用 `writer.close()` 仍然表示音频输入全部结束。省略 `segmentation` 时，运行时不会发送明确的分段模式；字符串形式仍然兼容，对象形式省略 `silenceDurationMs` 时也使用运行时默认阈值。
 
-`silenceDurationMs` 只能与 `mode: 'vad'` 一起使用。值不是有限非负整数，或在其他模式中设置该字段时，构造函数会抛出 `RangeError` 或 `TypeError`。显式模式不在 `segmentationModes` 中、宿主不支持自定义 VAD 时间或没有声明有效范围时，首次 `writer.write()` 会以 `NotSupportedError` 拒绝；值超出宿主声明范围时则以 `RangeError` 拒绝。
+`silenceDurationMs` 只能与 `mode: 'vad'` 一起使用。值不是有限非负整数，或在其他模式中设置该字段时，构造函数会抛出 `RangeError` 或 `TypeError`。显式模式不在 `segmentationModes` 中、运行时不支持自定义 VAD 时间或没有声明有效范围时，首次 `writer.write()` 会以 `NotSupportedError` 拒绝；值超出运行时声明范围时则以 `RangeError` 拒绝。
 
 ## 更新 ASR 上下文
 
@@ -335,32 +335,67 @@ await writer.close();
 
 ## API Reference
 
-### 入口
+### `SpeechRecognition`
 
-语音识别基于 `SpeechRecognition`：
+面向麦克风的语音识别对象，继承自 `EventTarget`。每次调用 `start()` 都会开始一个新的识别会话。
 
-```javascript
-const recognition = new SpeechRecognition();
-```
+#### `new SpeechRecognition()`
 
-### 常用方法
+创建一个尚未开始识别的对象。
 
-#### `start()`
-- 开始一轮识别会话。
+#### `recognition.lang`
 
-#### `stop()`
-- 请求结束当前识别，并尽可能产出最终结果。
+可读写的 `string`，表示请求的识别语言。空字符串表示使用运行时默认语言。
 
-#### `abort()`
-- 立即中止当前识别，不等待正常结束结果。
+#### `recognition.continuous`
 
-### 事件处理建议
+可读写的 `boolean`，表示是否在一条结果后继续识别；默认为 `false`。
 
-- 用 `onresult` 接收识别结果。
-- 用 `onerror` 处理权限、设备或识别失败等异常情况。
-- 用 `onend` 感知本轮识别已经结束，及时更新界面状态。
+#### `recognition.interimResults`
 
-### `new SpeechRecognitionSession(options?)`
+可读写的 `boolean`，表示是否请求可被后续结果修订的中间结果；默认为 `false`。
+
+#### `recognition.maxAlternatives`
+
+可读写的 `number`，表示每条结果请求的最大候选数；默认且最小为 `1`。
+
+#### `recognition.start()`
+
+请求麦克风权限并开始一轮识别。同一对象已处于 active 状态时再次调用会抛出 `InvalidStateError`。该方法必须在用户交互中调用。
+
+#### `recognition.stop()`
+
+停止录音并写入最后一个音频片段。识别会话会继续等待最终结果，然后结束。
+
+#### `recognition.abort()`
+
+停止采集、释放麦克风轨道，并立即中止当前会话，不等待最终结果。
+
+#### `start` / `audiostart` / `soundstart` / `speechstart` 事件
+
+分别表示识别会话已开始、音频采集已开始、检测到声音和检测到语音。可通过同名 `on...` 属性或 `addEventListener()` 监听。
+
+#### `result` 事件
+
+传入 `SpeechRecognitionEvent`。`results` 是本轮会话的累计结果，`resultIndex` 指向本次事件中第一个变化的结果。
+
+#### `nomatch` 事件
+
+当识别音频无法匹配为可用结果时触发。
+
+#### `error` 事件
+
+传入 `SpeechRecognitionErrorEvent`，其 `error` 为稳定错误类别，`message` 为诊断信息，`sessionId` 用于关联当前会话。
+
+#### `speechend` / `soundend` / `audioend` / `end` 事件
+
+分别表示语音、声音、音频采集和整个识别会话结束。`end` 是恢复界面状态的最终生命周期信号。
+
+### `SpeechRecognitionSession`
+
+用于识别应用外部传入音频的一次性 ASR 会话，继承自 `EventTarget`。它不请求麦克风权限，也不创建录音器；每个识别任务应创建新实例。
+
+#### `new SpeechRecognitionSession(options?)`
 
 创建一个可写入音频的识别会话。常用选项包括：
 
@@ -382,7 +417,7 @@ const recognition = new SpeechRecognition();
 | 字段 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- |
 | `mode` | `SpeechRecognitionSegmentationMode` | 是 | 分段模式。使用前检查 `capabilities.segmentationModes`。 |
-| `silenceDurationMs` | `number` | 否 | VAD 检测到语音后，结束句段所需的连续静音毫秒数。只能用于 `vad`，并且必须在宿主声明的范围内。 |
+| `silenceDurationMs` | `number` | 否 | VAD 检测到语音后，结束句段所需的连续静音毫秒数。只能用于 `vad`，并且必须在运行时声明的范围内。 |
 
 **`SpeechRecognitionPhrase`**
 
@@ -400,9 +435,15 @@ const recognition = new SpeechRecognition();
 | `channelCount` | `number` | 声道数，例如单声道为 `1`。 |
 | `sampleFormat` | `'s16' \| 'f32'` | PCM 采样格式。 |
 
-实例提供只读的 `audio` 可写流和 `state`。当前实现中的 `state` 可能为 `idle`、`opening`、`streaming`、`closing`、`closed`、`aborted` 或 `errored`。实例还支持 `onstart`、`onaudiostart`、`onresult`、`onerror`、`onaudioend` 和 `onend` 事件。
+#### `session.audio`
 
-### `SpeechRecognitionSession.getCapabilities()`
+只读的 `WritableStream<Blob | ArrayBuffer | ArrayBufferView>`，用于按顺序写入音频。其 writer 会通过 Promise 提供背压。
+
+#### `session.state`
+
+只读生命周期状态：`idle | opening | streaming | closing | closed | aborted | errored`。
+
+#### `SpeechRecognitionSession.getCapabilities()`
 
 ```javascript
 const capabilities = await SpeechRecognitionSession.getCapabilities();
@@ -418,8 +459,8 @@ const capabilities = await SpeechRecognitionSession.getCapabilities();
 | `maxAlternatives` | `number` | 每个识别结果支持的最大候选数量。 |
 | `phrases` | `boolean` | 是否支持 `phrases` 自定义热词。 |
 | `contextUpdates` | `boolean` | 是否支持设置和更新 ASR 上下文。 |
-| `segmentationModes` | `SpeechRecognitionSegmentationMode[]` | 宿主能够执行的音频分段方式。 |
-| `vadSilenceDuration` | `{ supported: boolean; minMs?: number; maxMs?: number }` | 是否支持自定义 VAD 静音阈值及宿主接受的范围。 |
+| `segmentationModes` | `SpeechRecognitionSegmentationMode[]` | 运行时能够执行的音频分段方式。 |
+| `vadSilenceDuration` | `{ supported: boolean; minMs?: number; maxMs?: number }` | 是否支持自定义 VAD 静音阈值及运行时接受的范围。 |
 
 `vadSilenceDuration` 包含：
 
@@ -438,7 +479,7 @@ const capabilities = await SpeechRecognitionSession.getCapabilities();
 | `channelCounts` | `number[]` | 支持的声道数；空数组表示不限制。 |
 | `sampleFormats` | `Array<'s16' \| 'f32'>` | 支持的 PCM 采样格式；空数组表示不限制。 |
 
-### `session.updateContext(messages)`
+#### `session.updateContext(messages)`
 
 使用一组新的消息替换当前 ASR 上下文，返回 `Promise<void>`。
 
@@ -456,3 +497,55 @@ const capabilities = await SpeechRecognitionSession.getCapabilities();
 - `messages` 不是数组、角色不受支持或文本为空时，会抛出 `TypeError`。
 - 在会话开始前调用时，方法会先保存上下文；如果服务不支持上下文，首次 `writer.write()` 会拒绝。
 - 在识别过程中更新失败时，`updateContext()` 返回的 Promise 会拒绝。调用前应检查 `getCapabilities()` 返回的 `contextUpdates`。
+
+#### `writer.write(audio)`
+
+写入一个逻辑音频片段。输入可为 `Blob`、`ArrayBuffer` 或 `ArrayBufferView`。当该片段的所有传输部分都被运行时接收后，Promise 才会解析；会话或格式错误会使其拒绝。
+
+#### `writer.close()`
+
+结束输入，等待待完成的写入和最终结果，然后关闭会话。首次 `write()` 前调用会直接在本地结束，不启动识别任务。
+
+#### `writer.abort(reason?)`
+
+丢弃尚未发送的输入，中止识别任务，并拒绝尚未完成的操作。
+
+**事件**
+
+#### `start` / `audiostart` 事件
+
+识别任务就绪后、流式结果开始前触发。
+
+#### `result` 事件
+
+传入 `SpeechRecognitionEvent`，携带累计结果和第一个变化位置 `resultIndex`。
+
+#### `error` 事件
+
+传入 `SpeechRecognitionErrorEvent`。这是识别服务异步失败的通道，不能只依赖 `writer.write()` 的 Promise 判断识别是否成功。
+
+#### `audioend` / `end` 事件
+
+正常结束、中止或失败进入终态时各触发一次。
+
+### 结果与错误类型
+
+#### `SpeechRecognitionAlternative`
+
+一个候选结果，包含只读的 `transcript: string` 和 `confidence: number`。
+
+#### `SpeechRecognitionResult`
+
+类数组的候选列表，提供只读的 `length`、数字索引和 `isFinal`。`isFinal` 为 `true` 的结果不会再被修订。
+
+#### `SpeechRecognitionResultList`
+
+类数组的累计有序结果列表，提供只读的 `length` 和数字索引。
+
+#### `SpeechRecognitionEvent`
+
+继承自 `Event`，提供只读的 `resultIndex: number`、`results: SpeechRecognitionResultList` 和 `sessionId: string`。
+
+#### `SpeechRecognitionErrorEvent`
+
+继承自 `Event`，提供只读的 `error: string`、`message: string` 和 `sessionId: string`。

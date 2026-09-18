@@ -236,7 +236,7 @@ if (capabilities.segmentationModes.includes('vad')) {
       ),
     };
   } else {
-    // Use the host or recognition service's default VAD silence threshold.
+    // Use the runtime or recognition service's default VAD silence threshold.
     segmentation = 'vad';
   }
 } else if (capabilities.segmentationModes.includes('auto')) {
@@ -254,13 +254,13 @@ The modes have the following meanings:
 
 | Mode | Segmentation basis |
 | --- | --- |
-| `auto` | Uses the current host or recognition service's default segmentation strategy. |
+| `auto` | Uses the current runtime or recognition service's default segmentation strategy. |
 | `vad` | Prefers voice activity detection (VAD), which detects continuous silence after speech to determine a speech boundary. |
 | `semantic` | Prefers sentence boundaries based on whether the recognized content is semantically complete. |
 
-For `vad`, time means the duration of continuous silence after speech is detected. It is not an absolute time measured from the start of the session, nor is it the audio chunk interval in `MediaRecorder.start(250)`. To customize it, use `{ mode: 'vad', silenceDurationMs }`. `silenceDurationMs` is measured in milliseconds and must be a non-negative integer inside the inclusive range advertised by `vadSilenceDuration.minMs` and `maxMs`. When `vadSilenceDuration.supported` is `false`, the string form `'vad'` remains available, but the host or recognition service chooses the threshold.
+For `vad`, time means the duration of continuous silence after speech is detected. It is not an absolute time measured from the start of the session, nor is it the audio chunk interval in `MediaRecorder.start(250)`. To customize it, use `{ mode: 'vad', silenceDurationMs }`. `silenceDurationMs` is measured in milliseconds and must be a non-negative integer inside the inclusive range advertised by `vadSilenceDuration.minMs` and `maxMs`. When `vadSilenceDuration.supported` is `false`, the string form `'vad'` remains available, but the runtime or recognition service chooses the threshold.
 
-Segmentation only determines when a recognition result becomes a final segment. It does not close the `audio` stream or end the session; `writer.close()` still signals that all audio input has ended. When `segmentation` is omitted, the runtime sends no explicit segmentation mode to the host. The string form remains backwards compatible, and an object without `silenceDurationMs` also uses the host's default threshold.
+Segmentation only determines when a recognition result becomes a final segment. It does not close the `audio` stream or end the session; `writer.close()` still signals that all audio input has ended. When `segmentation` is omitted, the runtime sends no explicit segmentation mode. The string form remains backwards compatible, and an object without `silenceDurationMs` also uses the runtime's default threshold.
 
 `silenceDurationMs` is valid only with `mode: 'vad'`. A value that is not a finite non-negative integer, or using the field with another mode, makes the constructor throw `RangeError` or `TypeError`. On the first `writer.write()`, an explicit mode outside `segmentationModes`, lack of custom VAD timing support, or a missing or invalid advertised range rejects with `NotSupportedError`; a value outside the advertised range rejects with `RangeError`.
 
@@ -335,26 +335,67 @@ Each message must use `user` or `assistant` as its `role`, and `text` must not b
 
 ## API Reference
 
-### Entry Point
+### `SpeechRecognition`
 
-Speech recognition is based on `SpeechRecognition`:
+A microphone-oriented speech recognition object that inherits from `EventTarget`. Each `start()` call begins a new recognition session.
 
-```javascript
-const recognition = new SpeechRecognition();
-```
+#### `new SpeechRecognition()`
 
-### Common Methods
+Creates a recognition object that has not started listening.
 
-#### `start()`
-- Starts a recognition session.
+#### `recognition.lang`
 
-#### `stop()`
-- Requests the current recognition session to end and produce a final result if possible.
+A writable `string` containing the requested recognition language. An empty string uses the runtime's default language.
 
-#### `abort()`
-- Immediately aborts the current recognition session without waiting for a normal final result.
+#### `recognition.continuous`
 
-### `new SpeechRecognitionSession(options?)`
+A writable `boolean` that controls whether recognition continues after one result. It defaults to `false`.
+
+#### `recognition.interimResults`
+
+A writable `boolean` that controls whether revisable interim results are requested. It defaults to `false`.
+
+#### `recognition.maxAlternatives`
+
+A writable `number` containing the requested maximum alternatives per result. Its default and minimum are `1`.
+
+#### `recognition.start()`
+
+Requests microphone access and begins one recognition session. Calling it again while the same object is active throws `InvalidStateError`. This method must be called during a user interaction.
+
+#### `recognition.stop()`
+
+Stops recording and writes the final audio chunk. The recognition session continues until it delivers final results and ends.
+
+#### `recognition.abort()`
+
+Stops capture, releases the microphone tracks, and aborts the active session without waiting for a final result.
+
+#### `start` / `audiostart` / `soundstart` / `speechstart` events
+
+Indicate that the recognition session, audio capture, detected sound, and detected speech have started, respectively. Listen through the matching `on...` properties or `addEventListener()`.
+
+#### `result` event
+
+Provides a `SpeechRecognitionEvent`. `results` contains the cumulative results for this session, and `resultIndex` identifies the first result changed by this event.
+
+#### `nomatch` event
+
+Fires when recognized audio cannot be matched to a useful result.
+
+#### `error` event
+
+Provides a `SpeechRecognitionErrorEvent`. Its `error` is a stable error category, `message` contains diagnostic text, and `sessionId` correlates the failure with the current session.
+
+#### `speechend` / `soundend` / `audioend` / `end` events
+
+Indicate the end of speech, sound, audio capture, and the complete recognition session, respectively. Use `end` as the final lifecycle signal for restoring UI state.
+
+### `SpeechRecognitionSession`
+
+A one-shot ASR session for application-provided audio that inherits from `EventTarget`. It does not request microphone permission or create a recorder. Create a new instance for every recognition task.
+
+#### `new SpeechRecognitionSession(options?)`
 
 Creates a recognition session with a writable audio stream. Common options include:
 
@@ -376,7 +417,7 @@ The type is `'auto' | 'vad' | 'semantic'`.
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `mode` | `SpeechRecognitionSegmentationMode` | Yes | Segmentation mode. Check `capabilities.segmentationModes` first. |
-| `silenceDurationMs` | `number` | No | Milliseconds of continuous silence after detected speech that end a VAD segment. Valid only for `vad` and must be inside the host-advertised range. |
+| `silenceDurationMs` | `number` | No | Milliseconds of continuous silence after detected speech that end a VAD segment. Valid only for `vad` and must be inside the runtime-advertised range. |
 
 **`SpeechRecognitionPhrase`**
 
@@ -394,9 +435,15 @@ The type is `'auto' | 'vad' | 'semantic'`.
 | `channelCount` | `number` | Channel count; use `1` for mono. |
 | `sampleFormat` | `'s16' \| 'f32'` | PCM sample format. |
 
-The instance provides a read-only writable stream in `audio` and a read-only `state`. In the current implementation, `state` can be `idle`, `opening`, `streaming`, `closing`, `closed`, `aborted`, or `errored`. The instance also supports `onstart`, `onaudiostart`, `onresult`, `onerror`, `onaudioend`, and `onend`.
+#### `session.audio`
 
-### `SpeechRecognitionSession.getCapabilities()`
+A read-only `WritableStream<Blob | ArrayBuffer | ArrayBufferView>` for ordered audio input. Its writer exposes backpressure through Promises.
+
+#### `session.state`
+
+The read-only lifecycle state: `idle | opening | streaming | closing | closed | aborted | errored`.
+
+#### `SpeechRecognitionSession.getCapabilities()`
 
 ```javascript
 const capabilities = await SpeechRecognitionSession.getCapabilities();
@@ -412,8 +459,8 @@ Returns `Promise<SpeechRecognitionCapabilities>`. Call it before creating a sess
 | `maxAlternatives` | `number` | Maximum alternatives supported for each result. |
 | `phrases` | `boolean` | Whether custom `phrases` are supported. |
 | `contextUpdates` | `boolean` | Whether ASR context can be set and updated. |
-| `segmentationModes` | `SpeechRecognitionSegmentationMode[]` | Audio segmentation modes the host can honor. |
-| `vadSilenceDuration` | `{ supported: boolean; minMs?: number; maxMs?: number }` | Whether a custom VAD silence threshold is supported and the range accepted by the host. |
+| `segmentationModes` | `SpeechRecognitionSegmentationMode[]` | Audio segmentation modes the runtime can honor. |
+| `vadSilenceDuration` | `{ supported: boolean; minMs?: number; maxMs?: number }` | Whether a custom VAD silence threshold is supported and the range accepted by the runtime. |
 
 `vadSilenceDuration` contains:
 
@@ -432,7 +479,7 @@ Each item in `audioFormats` contains:
 | `channelCounts` | `number[]` | Supported channel counts; an empty array means unrestricted. |
 | `sampleFormats` | `Array<'s16' \| 'f32'>` | Supported PCM sample formats; an empty array means unrestricted. |
 
-### `session.updateContext(messages)`
+#### `session.updateContext(messages)`
 
 Replaces the current ASR context with a new list of messages and returns `Promise<void>`.
 
@@ -450,3 +497,55 @@ Replaces the current ASR context with a new list of messages and returns `Promis
 - A non-array value, unsupported role, or empty text throws a `TypeError`.
 - Before the session starts, the method stores the context first. If context is unsupported, the first `writer.write()` rejects.
 - During recognition, the Promise returned by `updateContext()` rejects when the update fails. Check `contextUpdates` from `getCapabilities()` first.
+
+#### `writer.write(audio)`
+
+Writes one logical audio segment. The input can be a `Blob`, `ArrayBuffer`, or `ArrayBufferView`. The Promise resolves only after every transmitted part of that segment has been accepted by the runtime; session and format failures reject it.
+
+#### `writer.close()`
+
+Finishes input, waits for pending writes and final results, and then closes the session. Calling it before the first `write()` ends locally without starting a recognition task.
+
+#### `writer.abort(reason?)`
+
+Discards unsent input, aborts the recognition task, and rejects pending operations.
+
+**Events**
+
+#### `start` / `audiostart` events
+
+Fire after the recognition task is ready and before streaming results begin.
+
+#### `result` event
+
+Provides a `SpeechRecognitionEvent` with cumulative results and the first changed position in `resultIndex`.
+
+#### `error` event
+
+Provides a `SpeechRecognitionErrorEvent`. This is the channel for asynchronous recognition-service failures; do not rely only on the Promise returned by `writer.write()` to determine whether recognition succeeded.
+
+#### `audioend` / `end` events
+
+Each fires once when normal completion, abort, or failure reaches its terminal path.
+
+### Result and error types
+
+#### `SpeechRecognitionAlternative`
+
+One candidate result with read-only `transcript: string` and `confidence: number` properties.
+
+#### `SpeechRecognitionResult`
+
+An array-like list of alternatives with read-only `length`, numeric indexes, and `isFinal`. A result whose `isFinal` is `true` is never revised.
+
+#### `SpeechRecognitionResultList`
+
+An array-like cumulative ordered result list with read-only `length` and numeric indexes.
+
+#### `SpeechRecognitionEvent`
+
+Extends `Event` and exposes read-only `resultIndex: number`, `results: SpeechRecognitionResultList`, and `sessionId: string` properties.
+
+#### `SpeechRecognitionErrorEvent`
+
+Extends `Event` and exposes read-only `error: string`, `message: string`, and `sessionId: string` properties.
