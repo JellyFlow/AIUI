@@ -44,8 +44,8 @@ barcodeDetector
 检测是通过 `detect()` 方法实现的，该方法接受一个图像对象。图像对象的支持情况如下：
 
 - [x] `ImageData`
-- [ ] `Blob`
-- [ ] `ImageBitmap`
+- [x] `Blob`
+- [x] `ImageBitmap`
 - [ ] `OffscreenCanvas`
 - [ ] `VideoFrame`
 - [ ] ~~`HTMLImageElement`~~ (当前环境不支持此类)

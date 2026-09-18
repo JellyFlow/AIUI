@@ -44,8 +44,8 @@ Through supported barcode formats, barcode recognition in Web applications unloc
 Detection is performed through the `detect()` method, which accepts an image object. Supported image object types are listed below:
 
 - [x] `ImageData`
-- [ ] `Blob`
-- [ ] `ImageBitmap`
+- [x] `Blob`
+- [x] `ImageBitmap`
 - [ ] `OffscreenCanvas`
 - [ ] `VideoFrame`
 - [ ] ~~`HTMLImageElement`~~ (not supported in the current environment)

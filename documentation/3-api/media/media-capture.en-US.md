@@ -1,19 +1,8 @@
 # Media Capture
 
-AIUI can use the camera and microphone so an agent can take photos, scan codes, read nearby text, or receive a continuous audio stream. This page starts with common tasks and then documents every field and method in the API Reference.
+AIUI can use the camera and microphone so an agent can take photos, scan codes, read nearby text, or record audio and video streams. This page starts with common tasks and then documents every field and method in the API Reference.
 
-## Choose an API Style
-
-The photo and recording examples provide two API styles:
-
-- **Web** uses `navigator.mediaDevices`, `ImageCapture`, and `MediaRecorder`. Choose it when you are familiar with browser media APIs.
-- **wx** uses `wx.media`. Choose it for existing `wx`-style code or when you want more direct photo and recording interfaces.
-
-The switch above each example changes only the API style; both options complete the same task. Choose one style for a feature. You do not need to call both APIs.
-
-The two styles return photos in different shapes. Web returns a `Blob`; `wx` returns an object containing an `ArrayBuffer` and a MIME type. Both contain an encoded image that can be uploaded, scanned, or passed to an agent as image input.
-
-## Acquire Camera and Microphone Streams
+## Turn On the Camera and Microphone
 
 The following code requests both the camera and microphone and returns a `MediaStream`. The stream contains video and audio tracks used by later photo, recording, and audio-analysis operations.
 
@@ -41,7 +30,7 @@ for (const track of stream.getTracks()) {
 }
 ```
 
-## Capture an Image for Scanning
+## Scan a Code
 
 Choose `wide` mode when scanning a QR code or barcode. It captures a landscape image with a default resolution of `2688 × 2016`, suitable for payment codes and barcode recognition. This example uses high quality and shows the system preview first so the user can align the target.
 
@@ -54,14 +43,25 @@ const stream = await navigator.mediaDevices.getUserMedia({ video: true });
 const [videoTrack] = stream.getVideoTracks();
 const capture = new ImageCapture(videoTrack);
 
-const scanImage = await capture.takePhoto({
-  quality: 'high',
-  mode: 'wide',
-  enableSystemPreview: true,
-});
+let scanImage;
+try {
+  scanImage = await capture.takePhoto({
+    quality: 'high',
+    mode: 'wide',
+    enableSystemPreview: true,
+  });
+} finally {
+  videoTrack.stop();
+}
 
-console.log(scanImage.type, scanImage.size);
-videoTrack.stop();
+const detector = new BarcodeDetector({
+  formats: ['qr_code', 'code_128'],
+});
+const barcodes = await detector.detect(scanImage);
+
+for (const barcode of barcodes) {
+  console.log(barcode.format, barcode.rawValue);
+}
 ```
 
 **wx**
@@ -76,12 +76,24 @@ const scanImage = await camera.takePhoto({
   enableSystemPreview: true,
 });
 
-console.log(scanImage.mimeType, scanImage.data.byteLength);
+const imageBlob = new Blob([scanImage.data], {
+  type: scanImage.mimeType,
+});
+const detector = new BarcodeDetector({
+  formats: ['qr_code', 'code_128'],
+});
+const barcodes = await detector.detect(imageBlob);
+
+for (const barcode of barcodes) {
+  console.log(barcode.format, barcode.rawValue);
+}
 ```
 
 <!-- /aiui-api-style -->
 
-In the Web example, `scanImage` is a `Blob`. In the `wx` example, `scanImage.data` is an `ArrayBuffer` and its encoding is available as `scanImage.mimeType`. Pass the corresponding result to the QR-code or barcode recognition workflow. The Web example calls `videoTrack.stop()` after capture to release the camera.
+In the Web example, `scanImage` is already a `Blob` and can be passed directly to `BarcodeDetector.detect()`. In the `wx` example, `scanImage.data` is an encoded `ArrayBuffer`; create a `Blob` with `scanImage.mimeType` before detection.
+
+`detect()` returns an array of recognized codes. Each result contains `format`, the barcode format, and `rawValue`, the decoded text, URL, or business data. An empty array means that no requested format was found in the image; prompt the user to align the code and try again. See [BarcodeDetector](/AIUI/api/device-barcode) for more formats and result fields.
 
 ## Capture an Image for a Reading Agent
 
@@ -167,7 +179,7 @@ console.log(photo.mimeType, photo.data.byteLength);
 
 The Web API first obtains a video track and uses it to create `ImageCapture`. `takePhoto()` returns an encoded `Blob`. Use `grabFrame()` when you only need pixels from the current frame rather than an encoded file. Always stop the video track after the Web flow finishes.
 
-## Record Audio
+## Record an Audio Stream
 
 Recording does not return one complete file immediately. It continuously produces audio chunks that an agent can upload, transcribe, or analyze while recording. The following example uses Opus and produces data every `250` milliseconds.
 
@@ -230,6 +242,62 @@ await recorder.start({
 <!-- /aiui-api-style -->
 
 Each Web `event.data` value is an encoded `Blob`. The `wx` `frameBuffer` is an `ArrayBuffer`; in Opus mode, `onHeader()` first provides an initialization header. Store or send the header and audio chunks in the order received when processing streaming audio.
+
+## Record a Video Stream
+
+To record video, request both the camera and microphone and pass the `MediaStream` containing both tracks to `MediaRecorder`. Run the following code from a user action such as clicking Start Recording. The example selects an available video format and produces one video chunk per second. After recording stops, it combines all chunks into a `Blob` that can be saved or uploaded.
+
+```javascript
+const stream = await navigator.mediaDevices.getUserMedia({
+  audio: true,
+  video: {
+    width: { ideal: 1280 },
+    height: { ideal: 720 },
+    frameRate: { ideal: 30 },
+  },
+});
+
+const mimeType = [
+  'video/mp4',
+  'video/webm;codecs=vp8,opus',
+].find((type) => MediaRecorder.isTypeSupported(type));
+if (!mimeType) throw new Error('No video recording format is available');
+
+const recorder = new MediaRecorder(stream, { mimeType });
+const chunks = [];
+
+function releaseDevices() {
+  for (const track of stream.getTracks()) {
+    track.stop();
+  }
+}
+
+recorder.addEventListener('dataavailable', (event) => {
+  if (event.data.size > 0) {
+    chunks.push(event.data);
+  }
+});
+
+recorder.addEventListener('stop', () => {
+  const video = new Blob(chunks, { type: recorder.mimeType });
+  console.log('Video recording complete', video.type, video.size);
+  releaseDevices();
+});
+
+recorder.addEventListener('error', (event) => {
+  console.error('Video recording failed', event);
+  releaseDevices();
+});
+
+recorder.start(1000);
+
+// Call after the user finishes recording:
+// recorder.stop();
+```
+
+Each `dataavailable` event provides an encoded video chunk. Combine the complete chunk list only after the `stop` event fires. The example also stops the camera and microphone tracks at that point to release the devices.
+
+`wx.media.getRecorderManager()` currently records audio streams. Use the Web `MediaRecorder` API to record a video stream.
 
 ## Permissions and Current Limits
 

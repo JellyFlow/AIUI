@@ -1,19 +1,8 @@
 # 媒体采集
 
-AIUI 可以调用摄像头和麦克风，让智能体拍照、扫码、读取眼前的文字，或持续接收音频。本文先从常见任务开始，再在 API Reference 中说明每个字段和方法。
+AIUI 可以调用摄像头和麦克风，让智能体拍照、扫码、读取眼前的文字，或录制音视频流。本文先从常见任务开始，再在 API Reference 中说明每个字段和方法。
 
-## 选择 API 写法
-
-页面中的拍照和录音示例提供两种写法：
-
-- **Web**：使用 `navigator.mediaDevices`、`ImageCapture` 和 `MediaRecorder`。熟悉浏览器媒体 API 时优先选择这种写法。
-- **wx**：使用 `wx.media`。已有 `wx` 风格代码，或者只需要更直接的拍照与录音接口时，可以选择这种写法。
-
-每组示例上方的切换项只是在两种 API 写法之间切换，完成的任务相同。一个功能选择其中一种写法即可，不需要同时调用两套 API。
-
-拍照成功后，两种写法返回的数据形式不同：Web 返回 `Blob`；`wx` 返回包含 `ArrayBuffer` 和 MIME type 的对象。它们都是已经编码好的图片，可以继续用于上传、扫码识别或智能体图像输入。
-
-## 获取摄像头和麦克风媒体流
+## 打开摄像头和麦克风
 
 下面的代码会同时请求摄像头和麦克风，并得到一个 `MediaStream`。流中包含视频轨道和音频轨道，后续拍照、录音和音频分析都从这些轨道开始。
 
@@ -41,7 +30,7 @@ for (const track of stream.getTracks()) {
 }
 ```
 
-## 拍摄扫码图像
+## 扫码
 
 扫描二维码或条码时选择 `wide` 模式。它默认拍摄 `2688 × 2016` 的横向图像，适合支付码和条码识别。示例使用 `high` 质量，并在拍摄前显示系统预览，方便用户对准目标。
 
@@ -54,14 +43,25 @@ const stream = await navigator.mediaDevices.getUserMedia({ video: true });
 const [videoTrack] = stream.getVideoTracks();
 const capture = new ImageCapture(videoTrack);
 
-const scanImage = await capture.takePhoto({
-  quality: 'high',
-  mode: 'wide',
-  enableSystemPreview: true,
-});
+let scanImage;
+try {
+  scanImage = await capture.takePhoto({
+    quality: 'high',
+    mode: 'wide',
+    enableSystemPreview: true,
+  });
+} finally {
+  videoTrack.stop();
+}
 
-console.log(scanImage.type, scanImage.size);
-videoTrack.stop();
+const detector = new BarcodeDetector({
+  formats: ['qr_code', 'code_128'],
+});
+const barcodes = await detector.detect(scanImage);
+
+for (const barcode of barcodes) {
+  console.log(barcode.format, barcode.rawValue);
+}
 ```
 
 **wx**
@@ -76,12 +76,24 @@ const scanImage = await camera.takePhoto({
   enableSystemPreview: true,
 });
 
-console.log(scanImage.mimeType, scanImage.data.byteLength);
+const imageBlob = new Blob([scanImage.data], {
+  type: scanImage.mimeType,
+});
+const detector = new BarcodeDetector({
+  formats: ['qr_code', 'code_128'],
+});
+const barcodes = await detector.detect(imageBlob);
+
+for (const barcode of barcodes) {
+  console.log(barcode.format, barcode.rawValue);
+}
 ```
 
 <!-- /aiui-api-style -->
 
-Web 写法中的 `scanImage` 是 `Blob`；`wx` 写法中的 `scanImage.data` 是 `ArrayBuffer`，编码格式保存在 `scanImage.mimeType`。将对应结果交给二维码或条码识别流程即可。Web 写法在拍摄结束后调用了 `videoTrack.stop()`，用于释放摄像头。
+Web 写法中的 `scanImage` 已经是 `Blob`，可以直接传给 `BarcodeDetector.detect()`。`wx` 写法中的 `scanImage.data` 是编码后的 `ArrayBuffer`，需要结合 `scanImage.mimeType` 创建 `Blob` 后再检测。
+
+`detect()` 返回识别结果数组。每一项的 `format` 是条码格式，`rawValue` 是扫码得到的文本、网址或业务数据。数组为空表示当前图像中没有识别到指定格式的码，可以提示用户重新对准后再拍一次。更多格式和返回字段见 [BarcodeDetector](/AIUI/api/device-barcode)。
 
 ## 为阅读智能体拍摄图像
 
@@ -167,7 +179,7 @@ console.log(photo.mimeType, photo.data.byteLength);
 
 Web 写法需要先取得视频轨道，再用它创建 `ImageCapture`。`takePhoto()` 返回编码后的 `Blob`；如果只想读取当前画面的像素而不需要编码文件，可以使用 `grabFrame()`。Web 写法使用完毕后必须停止视频轨道。
 
-## 录制音频
+## 录制音频流
 
 录音不是一次返回完整文件，而是持续产生一段段音频数据。智能体可以边录边上传、转写或分析这些分片。下面的示例使用 Opus 编码，每 `250` 毫秒产生一次数据。
 
@@ -230,6 +242,62 @@ await recorder.start({
 <!-- /aiui-api-style -->
 
 Web 的每个 `event.data` 都是编码后的 `Blob`。`wx` 的 `frameBuffer` 是 `ArrayBuffer`；Opus 模式还会先通过 `onHeader()` 提供初始化 header。处理流式音频时，应按收到的顺序保存或发送 header 和音频分片。
+
+## 录制视频流
+
+录制视频时，需要同时请求摄像头和麦克风，再把包含两种轨道的 `MediaStream` 交给 `MediaRecorder`。请从用户点击“开始录制”等交互事件中运行下面的代码。示例会选择当前可用的视频格式，每秒产生一个视频分片；停止后把所有分片合并为一个可保存或上传的 `Blob`。
+
+```javascript
+const stream = await navigator.mediaDevices.getUserMedia({
+  audio: true,
+  video: {
+    width: { ideal: 1280 },
+    height: { ideal: 720 },
+    frameRate: { ideal: 30 },
+  },
+});
+
+const mimeType = [
+  'video/mp4',
+  'video/webm;codecs=vp8,opus',
+].find((type) => MediaRecorder.isTypeSupported(type));
+if (!mimeType) throw new Error('当前环境不支持视频录制格式');
+
+const recorder = new MediaRecorder(stream, { mimeType });
+const chunks = [];
+
+function releaseDevices() {
+  for (const track of stream.getTracks()) {
+    track.stop();
+  }
+}
+
+recorder.addEventListener('dataavailable', (event) => {
+  if (event.data.size > 0) {
+    chunks.push(event.data);
+  }
+});
+
+recorder.addEventListener('stop', () => {
+  const video = new Blob(chunks, { type: recorder.mimeType });
+  console.log('视频录制完成', video.type, video.size);
+  releaseDevices();
+});
+
+recorder.addEventListener('error', (event) => {
+  console.error('视频录制失败', event);
+  releaseDevices();
+});
+
+recorder.start(1000);
+
+// 用户完成录制后调用：
+// recorder.stop();
+```
+
+`dataavailable` 会持续返回编码后的视频分片。只有在 `stop` 事件触发后，才应把完整的分片列表合并为最终视频。示例也在此时停止摄像头和麦克风轨道，释放设备。
+
+`wx.media.getRecorderManager()` 当前用于录制音频流；录制视频流请使用 Web `MediaRecorder`。
 
 ## 权限与当前限制
 
