@@ -66,6 +66,37 @@
 
 具体配置和示例请参阅 [Widget](/AIUI/framework/open-agent-format-widget) 与 [Agent Worker](/AIUI/framework/open-agent-format-agent-worker)。
 
+## 声明权限
+
+当应用需要访问定位、摄像头、麦克风或系统媒体库等敏感能力时，请在 `app.json` 的 `permissions` 数组中声明对应权限：
+
+```json
+{
+  "pages": ["pages/index/index"],
+  "permissions": [
+    "GEOLOCATION",
+    "CAMERA",
+    "RECORD_AUDIO"
+  ]
+}
+```
+
+权限名区分大小写。请只声明应用实际需要的权限；未声明运行时所要求的权限时，对应 API 会失败。无法识别的字符串不会授予任何能力。
+
+当前可声明的权限如下：
+
+| 权限 | 说明 | 当前行为 |
+| :--- | :--- | :--- |
+| `GEOLOCATION` | 获取当前位置或持续接收位置变化 | `navigator.geolocation` 会检查该权限；参阅[地理定位](/AIUI/api/geo-data-geolocation) |
+| `CAMERA` | 访问摄像头以及采集图片或视频 | 摄像头和视频采集 API 会检查该权限 |
+| `RECORD_AUDIO` | 访问麦克风并采集音频 | 麦克风和音频采集 API 会检查该权限；参阅[媒体采集](/AIUI/api/media-media-capture) |
+| `READ_MEDIA_IMAGES` | 列出和读取系统媒体库中的图片 | 媒体库的图片读取操作会检查该权限 |
+| `CREATE_MEDIA_IMAGES` | 向系统媒体库新增图片 | 媒体库的图片保存操作会检查该权限；不包含修改或覆盖已有资源 |
+| `READ_MEDIA_AUDIO` | 列出和读取系统媒体库中的音频 | 媒体库的音频读取操作会检查该权限 |
+| `CREATE_MEDIA_AUDIO` | 向系统媒体库新增音频 | 媒体库的音频保存操作会检查该权限；不包含修改或覆盖已有资源 |
+
+`permissions` 是应用清单中的能力声明，不能替代设备操作系统的授权。定位、摄像头、麦克风和媒体库等能力还可能要求用户授予系统权限；即使已在 `app.json` 中声明，系统拒绝授权或设备不支持时，API 仍会失败。应用应处理权限被拒绝和能力不可用的情况。
+
 ## 它和 `AGENTS.md` 的关系
 
 如果说 `AGENTS.md` 定义的是“这个智能体是谁、具备什么能力”，那么 `app.json` 定义的就是“这个智能体应用从哪里开始，以及界面如何组织”。

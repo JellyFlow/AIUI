@@ -66,6 +66,37 @@ In addition to Pages, `app.json` can declare Widgets and Agent Workers:
 
 For complete configuration and examples, see [Widget](/AIUI/framework/open-agent-format-widget) and [Agent Worker](/AIUI/framework/open-agent-format-agent-worker).
 
+## Declare Permissions
+
+When an application needs sensitive capabilities such as location, camera, microphone, or the system media library, declare the corresponding permissions in the `permissions` array in `app.json`:
+
+```json
+{
+  "pages": ["pages/index/index"],
+  "permissions": [
+    "GEOLOCATION",
+    "CAMERA",
+    "RECORD_AUDIO"
+  ]
+}
+```
+
+Permission names are case-sensitive. Declare only the permissions the application actually needs. An API fails when its required runtime permission is not declared. Unrecognized strings grant no capability.
+
+The following permissions can currently be declared:
+
+| Permission | Description | Current behavior |
+| :--- | :--- | :--- |
+| `GEOLOCATION` | Get the current location or receive location updates | `navigator.geolocation` checks this permission; see [Geolocation](/AIUI/api/geo-data-geolocation) |
+| `CAMERA` | Access cameras and capture images or video | Camera and video-capture APIs check this permission |
+| `RECORD_AUDIO` | Access microphones and capture audio | Microphone and audio-capture APIs check this permission; see [Media Capture](/AIUI/api/media-media-capture) |
+| `READ_MEDIA_IMAGES` | List and read images in the system media library | Media-library image read operations check this permission |
+| `CREATE_MEDIA_IMAGES` | Add images to the system media library | Media-library image save operations check this permission; it does not allow modifying or replacing existing assets |
+| `READ_MEDIA_AUDIO` | List and read audio in the system media library | Media-library audio read operations check this permission |
+| `CREATE_MEDIA_AUDIO` | Add audio to the system media library | Media-library audio save operations check this permission; it does not allow modifying or replacing existing assets |
+
+`permissions` is a capability declaration in the application manifest; it does not replace authorization from the device operating system. Location, camera, microphone, and media-library access may also require the user to grant system permission. Even when a permission is declared in `app.json`, the API can still fail if system authorization is denied or the device does not support the capability. Applications should handle permission denial and unavailable capabilities.
+
 ## Its Relationship With `AGENTS.md`
 
 If `AGENTS.md` defines "who this agent is and what capabilities it has," then `app.json` defines "where this agent application starts and how its UI is organized."
