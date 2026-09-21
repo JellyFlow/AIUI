@@ -4,7 +4,7 @@ A Widget is a small, independent interface provided by an agent. It works well f
 
 ## Declare a Widget
 
-Declare each Widget in the `widgets` array in `app.json`. The `path` omits the extension, and `family` currently supports `1x1` and `1x2`.
+Declare each Widget in the `widgets` array in `app.json`. The `path` omits the extension, and `family` currently supports `1x1` and `1x2`. `placement` declares the host display policy and accepts `persistent` or `stack`; it defaults to `persistent` when omitted.
 
 ```json
 {
@@ -20,7 +20,7 @@ Each path maps to an `.ink` file. For example, `widgets/weather/index` maps to `
 
 ## Create the Widget Interface
 
-Use `<widget>` as the interface root. The `family` in `<script def>` must match the value in `app.json`.
+Use `<widget>` as the interface root. For 0.18 compatibility, keep declaring `family` in `<script def>` and keep it equal to the value in `app.json`. `placement` and future host scheduling fields belong only in `app.json`, not in the `.ink` file.
 
 ```html
 <script def>

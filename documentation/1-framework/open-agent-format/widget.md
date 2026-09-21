@@ -4,7 +4,7 @@ Widget 是智能体提供的小尺寸独立界面，适合展示天气、播放�
 
 ## 声明 Widget
 
-先在 `app.json` 的 `widgets` 数组中声明 Widget。`path` 不包含扩展名，`family` 当前支持 `1x1` 和 `1x2`。
+先在 `app.json` 的 `widgets` 数组中声明 Widget。`path` 不包含扩展名，`family` 当前支持 `1x1` 和 `1x2`。`placement` 用于声明宿主展示策略，可选 `persistent` 或 `stack`，省略时默认为 `persistent`。
 
 ```json
 {
@@ -20,7 +20,7 @@ Widget 是智能体提供的小尺寸独立界面，适合展示天气、播放�
 
 ## 创建 Widget 界面
 
-Widget 文件使用 `<widget>` 作为界面根节点。`<script def>` 中声明的 `family` 必须与 `app.json` 保持一致。
+Widget 文件使用 `<widget>` 作为界面根节点。为兼容 0.18，`<script def>` 中仍需声明 `family`，并且必须与 `app.json` 保持一致。`placement` 以及后续宿主调度字段只在 `app.json` 中声明，不写入 `.ink`。
 
 ```html
 <script def>
