@@ -29,7 +29,7 @@ Declare each Widget in the `widgets` array in `app.json`. Each entry describes t
 | Field | Type | Required | Default | Description |
 | :--- | :--- | :--- | :--- | :--- |
 | `path` | `string` | Yes | - | Project-relative Widget path without the `.ink` extension. The path must resolve to an existing `.ink` file. |
-| `family` | `"1x1" \| "1x2"` | Yes | - | Size category occupied by the Widget. For 0.18 compatibility, the same value must also be declared in the Widget file's `<script def>`. |
+| `family` | `"1x1" \| "1x2"` | Yes | - | Size category occupied by the Widget. The same value must also be declared in the Widget file's `<script def>`. |
 | `placement` | `"persistent" \| "overlay"` | No | `"persistent"` | How the Widget is presented. Declare this field only in `app.json`, not in the Widget file. |
 
 For example, `widgets/weather/index` maps to `widgets/weather/index.ink`. Keep `path` unique; do not declare the same path more than once in the `widgets` array.
@@ -38,7 +38,7 @@ For example, `widgets/weather/index` maps to `widgets/weather/index.ink`. Keep `
 
 ## Choose a Placement
 
-`placement` determines whether a Widget stays in a fixed position or is presented as temporary content over the current window. It does not change the Widget file structure, data binding, or lifecycle API.
+`placement` determines whether a Widget stays in a fixed position or is presented as temporary content over Widgets configured by the user. It does not change the Widget file structure, data binding, or lifecycle API.
 
 ### Persistent Widgets
 
@@ -56,7 +56,7 @@ After a persistent Widget is added to the layout, it keeps its position and is n
 
 ### Overlay Widgets
 
-Set `placement` to `overlay` for a Widget that can be presented over the current window with `window.open(url, '_widget')`. The current Widget can call `window.close()` to close itself and leave the current overlay layer. This mode suits weather details, playback controls, temporary status, and quick actions.
+Set `placement` to `overlay` for a Widget that can be presented over the user's configured Widgets with `window.open(url, '_widget')`. Once opened, the Overlay Widget can call `window.close()` to close itself and leave the current overlay layer. This mode suits weather details, playback controls, temporary status, and quick actions.
 
 ```json
 {

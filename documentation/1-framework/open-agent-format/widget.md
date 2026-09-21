@@ -29,7 +29,7 @@ Widget 是智能体提供的小尺寸独立界面，适合展示天气、播放�
 | 字段 | 类型 | 必填 | 默认值 | 说明 |
 | :--- | :--- | :--- | :--- | :--- |
 | `path` | `string` | 是 | - | Widget 的项目相对路径，不包含 `.ink` 扩展名。路径必须对应实际存在的 `.ink` 文件。 |
-| `family` | `"1x1" \| "1x2"` | 是 | - | Widget 占用的尺寸类别。为兼容 0.18，还必须在 Widget 文件的 `<script def>` 中声明相同的值。 |
+| `family` | `"1x1" \| "1x2"` | 是 | - | Widget 占用的尺寸类别。还必须在 Widget 文件的 `<script def>` 中声明相同的值。 |
 | `placement` | `"persistent" \| "overlay"` | 否 | `"persistent"` | Widget 的展示方式。该字段只在 `app.json` 中声明，不写入 Widget 文件。 |
 
 例如，`widgets/weather/index` 对应 `widgets/weather/index.ink`。`path` 应保持唯一；同一路径不要在 `widgets` 数组中重复声明。
@@ -38,7 +38,7 @@ Widget 是智能体提供的小尺寸独立界面，适合展示天气、播放�
 
 ## 选择展示方式
 
-`placement` 决定 Widget 是保持在固定位置，还是作为临时内容叠加到当前窗口。它不改变 Widget 的文件结构、数据绑定或生命周期 API。
+`placement` 决定 Widget 是保持在固定位置，还是作为临时内容叠加在用户已配置的 Widget 之上。它不改变 Widget 的文件结构、数据绑定或生命周期 API。
 
 ### 常驻 Widget
 
@@ -56,7 +56,7 @@ Widget 是智能体提供的小尺寸独立界面，适合展示天气、播放�
 
 ### 可叠加 Widget
 
-将 `placement` 设置为 `overlay`，表示 Widget 可以通过 `window.open(url, '_widget')` 显示在当前窗口之上。当前 Widget 可以调用 `window.close()` 关闭自己并退出当前叠加层，适合天气详情、播放控制、临时状态和快捷操作等内容。
+将 `placement` 设置为 `overlay`，表示 Widget 可以通过 `window.open(url, '_widget')` 叠加在用户已配置的 Widget 之上。打开后的可叠加 Widget 可以调用 `window.close()` 关闭自己并退出当前叠加层，适合天气详情、播放控制、临时状态和快捷操作等内容。
 
 ```json
 {
