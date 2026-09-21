@@ -48,7 +48,7 @@ In addition to Pages, `app.json` can declare Widgets and Agent Workers:
 {
   "pages": ["pages/index/index"],
   "widgets": [
-    { "path": "widgets/weather/index", "family": "1x2" }
+    { "path": "widgets/weather/index", "family": "1x2", "placement": "stack" }
   ],
   "agentWorkers": [
     {
@@ -61,7 +61,7 @@ In addition to Pages, `app.json` can declare Widgets and Agent Workers:
 }
 ```
 
-- `widgets` declares independent Widget entries and their `1x1` or `1x2` size category.
+- `widgets` declares each independent Widget's entry point, size family, and presentation mode. `placement` accepts `persistent` for a fixed Widget or `stack` for smart-stack participation, and defaults to `persistent` when omitted.
 - `agentWorkers` declares the name, entry file, start condition, and lifetime of a background script.
 
 For complete configuration and examples, see [Widget](/AIUI/framework/open-agent-format-widget) and [Agent Worker](/AIUI/framework/open-agent-format-agent-worker).

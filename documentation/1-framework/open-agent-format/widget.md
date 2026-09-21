@@ -4,23 +4,75 @@ Widget 是智能体提供的小尺寸独立界面，适合展示天气、播放�
 
 ## 声明 Widget
 
-先在 `app.json` 的 `widgets` 数组中声明 Widget。`path` 不包含扩展名，`family` 当前支持 `1x1` 和 `1x2`。`placement` 用于声明宿主展示策略，可选 `persistent` 或 `stack`，省略时默认为 `persistent`。
+先在 `app.json` 的 `widgets` 数组中声明 Widget。每一项描述 Widget 的入口、尺寸类别和展示方式。
 
 ```json
 {
   "pages": ["pages/index/index"],
   "widgets": [
-    { "path": "widgets/clock/index", "family": "1x1" },
-    { "path": "widgets/weather/index", "family": "1x2" }
+    {
+      "path": "widgets/clock/index",
+      "family": "1x1",
+      "placement": "persistent"
+    },
+    {
+      "path": "widgets/weather/index",
+      "family": "1x2",
+      "placement": "stack"
+    }
   ]
 }
 ```
 
-每个路径都对应一个 `.ink` 文件。例如 `widgets/weather/index` 对应 `widgets/weather/index.ink`。
+### `app.json.widgets` 字段
+
+| 字段 | 类型 | 必填 | 默认值 | 说明 |
+| :--- | :--- | :--- | :--- | :--- |
+| `path` | `string` | 是 | - | Widget 的项目相对路径，不包含 `.ink` 扩展名。路径必须对应实际存在的 `.ink` 文件。 |
+| `family` | `"1x1" \| "1x2"` | 是 | - | Widget 占用的尺寸类别。为兼容 0.18，还必须在 Widget 文件的 `<script def>` 中声明相同的值。 |
+| `placement` | `"persistent" \| "stack"` | 否 | `"persistent"` | Widget 的展示方式。该字段只在 `app.json` 中声明，不写入 Widget 文件。 |
+
+例如，`widgets/weather/index` 对应 `widgets/weather/index.ink`。`path` 应保持唯一；同一路径不要在 `widgets` 数组中重复声明。
+
+`family` 是尺寸类别，而不是固定像素尺寸。Widget 应根据实际可用宽高进行自适应布局。
+
+## 选择展示方式
+
+`placement` 决定 Widget 是保持在固定位置，还是参与智能叠加。它不改变 Widget 的文件结构、数据绑定或生命周期 API。
+
+### 常驻 Widget
+
+将 `placement` 设置为 `persistent`，适合需要持续可见、位置稳定或由用户随时操作的内容，例如时钟、设备状态和固定快捷操作。
+
+```json
+{
+  "path": "widgets/clock/index",
+  "family": "1x1",
+  "placement": "persistent"
+}
+```
+
+常驻 Widget 添加到布局后会保留其位置，不会因为智能叠加内容的变化而被自动替换。省略 `placement` 时采用此行为，因此未声明该字段的现有 Widget 保持兼容。
+
+### 智能叠加 Widget
+
+将 `placement` 设置为 `stack`，表示 Widget 可以参与智能叠加。AIUI 可以根据当前场景和可用空间动态展示、隐藏或替换这类 Widget，适合天气提醒、播放状态、行程进度等阶段性信息。
+
+```json
+{
+  "path": "widgets/weather/index",
+  "family": "1x2",
+  "placement": "stack"
+}
+```
+
+`stack` 表示 Widget 可以参与动态展示，并不保证它始终可见。显示状态变化时，运行时会调用 `onAttach()` 或 `onDetach()`；不要用这两个回调保存只能初始化一次的状态，也不要假设两次展示之间 Widget 一定会被销毁。
+
+如果内容必须持续可见或不能被自动替换，请使用 `persistent`。如果内容只在特定阶段具有价值，并且能够正确处理重复显示和隐藏，请使用 `stack`。
 
 ## 创建 Widget 界面
 
-Widget 文件使用 `<widget>` 作为界面根节点。为兼容 0.18，`<script def>` 中仍需声明 `family`，并且必须与 `app.json` 保持一致。`placement` 以及后续宿主调度字段只在 `app.json` 中声明，不写入 `.ink`。
+Widget 文件使用 `<widget>` 作为界面根节点。为兼容 0.18，`<script def>` 中仍需声明 `family`，并且必须与 `app.json` 保持一致。`placement` 以及后续展示调度字段只在 `app.json` 中声明，不写入 `.ink`。
 
 ```html
 <script def>

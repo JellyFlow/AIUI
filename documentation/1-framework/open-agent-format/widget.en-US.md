@@ -4,23 +4,75 @@ A Widget is a small, independent interface provided by an agent. It works well f
 
 ## Declare a Widget
 
-Declare each Widget in the `widgets` array in `app.json`. The `path` omits the extension, and `family` currently supports `1x1` and `1x2`. `placement` declares the host display policy and accepts `persistent` or `stack`; it defaults to `persistent` when omitted.
+Declare each Widget in the `widgets` array in `app.json`. Each entry describes the Widget's entry point, size family, and presentation mode.
 
 ```json
 {
   "pages": ["pages/index/index"],
   "widgets": [
-    { "path": "widgets/clock/index", "family": "1x1" },
-    { "path": "widgets/weather/index", "family": "1x2" }
+    {
+      "path": "widgets/clock/index",
+      "family": "1x1",
+      "placement": "persistent"
+    },
+    {
+      "path": "widgets/weather/index",
+      "family": "1x2",
+      "placement": "stack"
+    }
   ]
 }
 ```
 
-Each path maps to an `.ink` file. For example, `widgets/weather/index` maps to `widgets/weather/index.ink`.
+### `app.json.widgets` Fields
+
+| Field | Type | Required | Default | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| `path` | `string` | Yes | - | Project-relative Widget path without the `.ink` extension. The path must resolve to an existing `.ink` file. |
+| `family` | `"1x1" \| "1x2"` | Yes | - | Size category occupied by the Widget. For 0.18 compatibility, the same value must also be declared in the Widget file's `<script def>`. |
+| `placement` | `"persistent" \| "stack"` | No | `"persistent"` | How the Widget is presented. Declare this field only in `app.json`, not in the Widget file. |
+
+For example, `widgets/weather/index` maps to `widgets/weather/index.ink`. Keep `path` unique; do not declare the same path more than once in the `widgets` array.
+
+`family` is a size category, not a fixed pixel size. Build the Widget layout to adapt to the actual available width and height.
+
+## Choose a Placement
+
+`placement` determines whether a Widget stays in a fixed position or participates in a smart stack. It does not change the Widget file structure, data binding, or lifecycle API.
+
+### Persistent Widgets
+
+Set `placement` to `persistent` for content that should remain visible, keep a stable position, or stay readily available for interaction, such as a clock, device status, or fixed quick action.
+
+```json
+{
+  "path": "widgets/clock/index",
+  "family": "1x1",
+  "placement": "persistent"
+}
+```
+
+After a persistent Widget is added to the layout, it keeps its position and is not automatically replaced as smart-stack content changes. Omitting `placement` selects this behavior, so existing Widget declarations remain compatible.
+
+### Smart-Stack Widgets
+
+Set `placement` to `stack` to let a Widget participate in a smart stack. AIUI can dynamically show, hide, or replace these Widgets based on the current context and available space. This mode suits timely content such as weather alerts, playback status, and trip progress.
+
+```json
+{
+  "path": "widgets/weather/index",
+  "family": "1x2",
+  "placement": "stack"
+}
+```
+
+`stack` makes the Widget eligible for dynamic presentation; it does not guarantee continuous visibility. The runtime calls `onAttach()` and `onDetach()` as visibility changes. Do not use these callbacks for state that must be initialized only once, and do not assume the Widget is destroyed between presentations.
+
+Use `persistent` when content must stay visible or must not be replaced automatically. Use `stack` when content is valuable only at certain times and can correctly handle repeated attachment and detachment.
 
 ## Create the Widget Interface
 
-Use `<widget>` as the interface root. For 0.18 compatibility, keep declaring `family` in `<script def>` and keep it equal to the value in `app.json`. `placement` and future host scheduling fields belong only in `app.json`, not in the `.ink` file.
+Use `<widget>` as the interface root. For 0.18 compatibility, keep declaring `family` in `<script def>` and keep it equal to the value in `app.json`. `placement` and future presentation scheduling fields belong only in `app.json`, not in the `.ink` file.
 
 ```html
 <script def>
