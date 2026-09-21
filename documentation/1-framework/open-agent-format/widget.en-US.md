@@ -1,6 +1,6 @@
 # Widget
 
-A Widget is a small, independent interface provided by an agent. It works well for weather, playback status, device data, and quick actions that should be understood at a glance. Widgets use the same `.ink` syntax, data binding, components, and styles as Pages, but have their own entry and a smaller set of lifecycle callbacks.
+A Widget is a small, independent interface provided by an agent. It works well for weather, playback status, device data, and order progress that should be understood at a glance. Widgets use the same `.ink` syntax, data binding, components, and styles as Pages, but have their own entry and a smaller set of lifecycle callbacks.
 
 ## Declare a Widget
 
@@ -42,7 +42,7 @@ For example, `widgets/weather/index` maps to `widgets/weather/index.ink`. Keep `
 
 ### Persistent Widgets
 
-Set `placement` to `persistent` for content that should remain visible, keep a stable position, or stay readily available for interaction, such as a clock, device status, or fixed quick action.
+Set `placement` to `persistent` for content that should remain visible or keep a stable position, such as a clock or device status.
 
 ```json
 {
@@ -56,7 +56,7 @@ After a persistent Widget is added to the layout, it keeps its position and is n
 
 ### Overlay Widgets
 
-Set `placement` to `overlay` for a Widget that can be presented over the user's configured Widgets with `window.open(url, '_widget')`. Once opened, the Overlay Widget can call `window.close()` to close itself and leave the current overlay layer. This mode suits weather details, playback controls, temporary status, and quick actions.
+Set `placement` to `overlay` for a Widget that can be presented over the user's configured Widgets with `window.open(url, '_widget')`. Overlay Widgets are intended for lifecycle status with a clear beginning and end, such as ride orders, food-delivery orders, and delivery progress. When the status ends, the Widget can call `window.close()` to leave the current overlay layer.
 
 ```json
 {
@@ -68,7 +68,7 @@ Set `placement` to `overlay` for a Widget that can be presented over the user's 
 
 `overlay` means that the Widget enters and leaves the overlay layer through open and close operations. The runtime calls `onAttach()` and `onDetach()` as the Widget is shown and hidden. Do not use these callbacks for state that must be initialized only once, and do not assume the current instance remains after the overlay is closed.
 
-Use `persistent` when content must stay visible or should not be opened temporarily with `window.open()`. Use `overlay` when content should be entered interactively and can correctly handle opening, closing, and repeated attachment and detachment.
+Use `persistent` when content must stay visible or should not be opened temporarily with `window.open()`. Use `overlay` when content has a clear beginning and end and can correctly handle opening, status updates, completion, closing, and repeated attachment and detachment.
 
 ## Create the Widget Interface
 
