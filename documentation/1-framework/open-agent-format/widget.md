@@ -18,7 +18,7 @@ Widget 是智能体提供的小尺寸独立界面，适合展示天气、播放�
     {
       "path": "widgets/weather/index",
       "family": "1x2",
-      "placement": "stack"
+      "placement": "overlay"
     }
   ]
 }
@@ -30,7 +30,7 @@ Widget 是智能体提供的小尺寸独立界面，适合展示天气、播放�
 | :--- | :--- | :--- | :--- | :--- |
 | `path` | `string` | 是 | - | Widget 的项目相对路径，不包含 `.ink` 扩展名。路径必须对应实际存在的 `.ink` 文件。 |
 | `family` | `"1x1" \| "1x2"` | 是 | - | Widget 占用的尺寸类别。为兼容 0.18，还必须在 Widget 文件的 `<script def>` 中声明相同的值。 |
-| `placement` | `"persistent" \| "stack"` | 否 | `"persistent"` | Widget 的展示方式。该字段只在 `app.json` 中声明，不写入 Widget 文件。 |
+| `placement` | `"persistent" \| "overlay"` | 否 | `"persistent"` | Widget 的展示方式。该字段只在 `app.json` 中声明，不写入 Widget 文件。 |
 
 例如，`widgets/weather/index` 对应 `widgets/weather/index.ink`。`path` 应保持唯一；同一路径不要在 `widgets` 数组中重复声明。
 
@@ -38,7 +38,7 @@ Widget 是智能体提供的小尺寸独立界面，适合展示天气、播放�
 
 ## 选择展示方式
 
-`placement` 决定 Widget 是保持在固定位置，还是参与智能叠加。它不改变 Widget 的文件结构、数据绑定或生命周期 API。
+`placement` 决定 Widget 是保持在固定位置，还是作为临时内容叠加到当前窗口。它不改变 Widget 的文件结构、数据绑定或生命周期 API。
 
 ### 常驻 Widget
 
@@ -52,23 +52,23 @@ Widget 是智能体提供的小尺寸独立界面，适合展示天气、播放�
 }
 ```
 
-常驻 Widget 添加到布局后会保留其位置，不会因为智能叠加内容的变化而被自动替换。省略 `placement` 时采用此行为，因此未声明该字段的现有 Widget 保持兼容。
+常驻 Widget 添加到布局后会保留其位置，不会因为可叠加 Widget 的打开或关闭而被移除。省略 `placement` 时采用此行为，因此未声明该字段的现有 Widget 保持兼容。
 
-### 智能叠加 Widget
+### 可叠加 Widget
 
-将 `placement` 设置为 `stack`，表示 Widget 可以参与智能叠加。AIUI 可以根据当前场景和可用空间动态展示、隐藏或替换这类 Widget，适合天气提醒、播放状态、行程进度等阶段性信息。
+将 `placement` 设置为 `overlay`，表示 Widget 可以通过 `window.open(url, '_widget')` 显示在当前窗口之上。当前 Widget 可以调用 `window.close()` 关闭自己并退出当前叠加层，适合天气详情、播放控制、临时状态和快捷操作等内容。
 
 ```json
 {
   "path": "widgets/weather/index",
   "family": "1x2",
-  "placement": "stack"
+  "placement": "overlay"
 }
 ```
 
-`stack` 表示 Widget 可以参与动态展示，并不保证它始终可见。显示状态变化时，运行时会调用 `onAttach()` 或 `onDetach()`；不要用这两个回调保存只能初始化一次的状态，也不要假设两次展示之间 Widget 一定会被销毁。
+`overlay` 表示 Widget 通过打开和关闭操作进入或退出叠加层。Widget 显示和隐藏时，运行时会调用 `onAttach()` 或 `onDetach()`；不要用这两个回调保存只能初始化一次的状态，也不要假设关闭叠加层后一定会保留当前实例。
 
-如果内容必须持续可见或不能被自动替换，请使用 `persistent`。如果内容只在特定阶段具有价值，并且能够正确处理重复显示和隐藏，请使用 `stack`。
+如果内容必须持续可见或不应由 `window.open()` 临时打开，请使用 `persistent`。如果内容需要由交互进入叠加层，并能正确处理打开、关闭和重复显示，请使用 `overlay`。
 
 ## 创建 Widget 界面
 

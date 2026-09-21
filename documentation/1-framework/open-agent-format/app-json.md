@@ -48,7 +48,7 @@
 {
   "pages": ["pages/index/index"],
   "widgets": [
-    { "path": "widgets/weather/index", "family": "1x2", "placement": "stack" }
+    { "path": "widgets/weather/index", "family": "1x2", "placement": "overlay" }
   ],
   "agentWorkers": [
     {
@@ -61,7 +61,7 @@
 }
 ```
 
-- `widgets`：声明独立 Widget 的入口、尺寸类别与展示方式。`placement` 可为常驻的 `persistent` 或参与智能叠加的 `stack`，省略时默认为 `persistent`。
+- `widgets`：声明独立 Widget 的入口、尺寸类别与展示方式。`placement` 可为常驻的 `persistent` 或可通过 `window.open(..., '_widget')` 打开的 `overlay`（可叠加 Widget），省略时默认为 `persistent`。
 - `agentWorkers`：声明后台脚本的名称、入口文件、启动条件和运行时长。
 
 具体配置和示例请参阅 [Widget](/AIUI/framework/open-agent-format-widget) 与 [Agent Worker](/AIUI/framework/open-agent-format-agent-worker)。
