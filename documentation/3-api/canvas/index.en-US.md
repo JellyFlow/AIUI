@@ -115,6 +115,25 @@ console.log(ctx.isPointInPath(40, 40));
 
 To reuse a path, create a `Path2D` and pass it to `fill()`, `stroke()`, `clip()`, `isPointInPath()`, or `isPointInStroke()`.
 
+## Export a Canvas Image
+
+```javascript
+const canvas = new Canvas(320, 200);
+const ctx = canvas.getContext('2d');
+ctx.fillStyle = '#40FF5E';
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+const blob = await canvas.convertToBlob({
+  type: 'image/jpeg',
+  quality: 0.9,
+});
+console.log(blob.type, blob.size);
+```
+
+`convertToBlob()` captures the current Canvas output and encodes it asynchronously.
+An omitted or unsupported `type` falls back to `image/png`; JPEG composites
+transparent pixels over black, while PNG preserves the alpha channel.
+
 ## API Reference
 
 ### Interface Description
@@ -194,6 +213,13 @@ This is the primary drawing context interface, providing a rich set of propertie
 - **`createImageData(w, h)`**: Creates a new blank `ImageData`.
 - **`getImageData(x, y, w, h)`**: Gets pixel data for the specified area.
 - **`putImageData(data, x, y)`**: Puts pixel data back onto the canvas.
+
+#### Canvas
+
+- **`convertToBlob(options?)`**: Captures a stable Canvas snapshot and asynchronously
+  encodes it as a `Blob`. `options.type` defaults to `image/png`; `image/jpeg` selects
+  JPEG. `options.quality` applies only to JPEG and accepts 0 through 1; missing,
+  non-finite, or out-of-range values use the encoder default.
 
 #### Gradients and Patterns
 

@@ -115,6 +115,25 @@ console.log(ctx.isPointInPath(40, 40));
 
 需要复用路径时，可以创建 `Path2D`，再传给 `fill()`、`stroke()`、`clip()`、`isPointInPath()` 或 `isPointInStroke()`。
 
+## 导出 Canvas 图像
+
+```javascript
+const canvas = new Canvas(320, 200);
+const ctx = canvas.getContext('2d');
+ctx.fillStyle = '#40FF5E';
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+const blob = await canvas.convertToBlob({
+  type: 'image/jpeg',
+  quality: 0.9,
+});
+console.log(blob.type, blob.size);
+```
+
+`convertToBlob()` 会捕获 Canvas 当前绘制结果并异步编码。未指定或不支持的
+`type` 会回落为 `image/png`；JPEG 会把透明像素合成到黑色背景，PNG 会保留
+alpha 通道。
+
 ## API Reference
 
 ### 接口说明
@@ -194,6 +213,12 @@ console.log(ctx.isPointInPath(40, 40));
 - **`createImageData(w, h)`**: 创建新的空白 ImageData。
 - **`getImageData(x, y, w, h)`**: 获取指定区域的像素数据。
 - **`putImageData(data, x, y)`**: 将像素数据放回画布。
+
+#### Canvas
+
+- **`convertToBlob(options?)`**: 捕获 Canvas 的稳定快照并异步编码为 `Blob`。
+  `options.type` 默认为 `image/png`，`image/jpeg` 选择 JPEG；`options.quality`
+  仅用于 JPEG，取值为 0 至 1，缺失、非有限或越界值使用编码器默认值。
 
 #### 渐变与模式
 

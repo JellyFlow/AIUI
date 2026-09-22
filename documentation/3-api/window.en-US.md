@@ -43,6 +43,24 @@ window.close();
 
 The method only sends a close request. The host controls when the Agent closes.
 
+## Encode an ImageBitmap Directly
+
+```javascript
+const imageData = new ImageData(2, 2);
+const bitmap = await createImageBitmap(imageData);
+try {
+  const blob = await createImageBlob(bitmap, { type: 'image/png' });
+  await upload(blob);
+} finally {
+  bitmap.close();
+}
+```
+
+`createImageBlob()` is a global function that asynchronously encodes an open
+`ImageBitmap` as a PNG or JPEG `Blob`. Use it directly when Canvas composition is
+not needed. Closing the bitmap after encoding starts does not cancel the operation;
+passing a bitmap that is already closed rejects with `InvalidStateError`.
+
 ## Global Access
 
 In a regular AIUI window, `window`, `self`, `globalThis`, and `global` refer to the same global object:
@@ -101,3 +119,17 @@ Encodes a binary string as Base64.
 
 - **Parameter**: `stringToEncode`, the binary `string` to encode.
 - **Return value**: The Base64-encoded `string`.
+
+### `createImageBlob(source, options?)`
+
+Asynchronously encodes an `ImageBitmap` as a PNG or JPEG `Blob`. `source` must be
+open when called. Native external/GPU images without stable readable pixels reject
+with `NotSupportedError`, and a full encoding queue rejects with `EncodingError`.
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `source` | `ImageBitmap` | Yes | The bitmap to read and encode. |
+| `options.type` | `string` | No | Output MIME type, defaulting to `image/png`; `image/jpeg` selects JPEG and other values fall back to PNG. |
+| `options.quality` | `number` | No | JPEG quality from 0 through 1; invalid values use the encoder default and PNG ignores it. |
+
+**Return value**: `Promise<Blob>` whose `type` reports the actual output format.

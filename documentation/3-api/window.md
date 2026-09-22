@@ -43,6 +43,23 @@ window.close();
 
 该方法只发送关闭请求，实际关闭时机由宿主管理。
 
+## 直接编码 ImageBitmap
+
+```javascript
+const imageData = new ImageData(2, 2);
+const bitmap = await createImageBitmap(imageData);
+try {
+  const blob = await createImageBlob(bitmap, { type: 'image/png' });
+  await upload(blob);
+} finally {
+  bitmap.close();
+}
+```
+
+`createImageBlob()` 是全局函数，用于将打开状态的 `ImageBitmap` 异步编码为
+PNG 或 JPEG `Blob`。不需要 Canvas 合成时可直接使用。调用开始后再关闭 bitmap
+不会取消编码；在调用时传入已关闭的 bitmap 会以 `InvalidStateError` reject。
+
 ## 全局访问
 
 在普通 AIUI 窗口中，`window`、`self`、`globalThis` 和 `global` 指向同一个全局对象：
@@ -101,3 +118,17 @@ Agent Worker 使用独立的全局作用域，不提供 `Window`。有关 Worker
 
 - **参数**：`stringToEncode`，`string`，要编码的二进制字符串。
 - **返回值**：Base64 编码后的 `string`。
+
+### `createImageBlob(source, options?)`
+
+将 `ImageBitmap` 异步编码为 PNG 或 JPEG `Blob`。`source` 必须在调用时处于打开
+状态；不支持稳定可读像素的 native external/GPU 图像会以 `NotSupportedError`
+reject，编码队列已满时会以 `EncodingError` reject。
+
+| 参数 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `source` | `ImageBitmap` | 是 | 待读取并编码的位图。 |
+| `options.type` | `string` | 否 | 输出 MIME type，默认为 `image/png`；`image/jpeg` 选择 JPEG，其他值回落为 PNG。 |
+| `options.quality` | `number` | 否 | JPEG 质量，取值 0 至 1；无效值使用编码器默认值，PNG 会忽略。 |
+
+**返回值**：`Promise<Blob>`，其 `type` 表示实际输出格式。
