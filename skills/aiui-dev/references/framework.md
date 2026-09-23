@@ -255,11 +255,18 @@ overlay with `window.close()`. Do not assume its instance survives closing.
 
 ## Permissions
 
-Declare only capabilities the agent uses in `app.json.permissions`. Current
-names are `GEOLOCATION`, `CAMERA`, `RECORD_AUDIO`, `READ_MEDIA_IMAGES`,
-`CREATE_MEDIA_IMAGES`, `READ_MEDIA_AUDIO`, and `CREATE_MEDIA_AUDIO`.
-Names are case-sensitive. A manifest declaration does not grant operating
-system permission; handle denial and unavailable hardware at the API call.
+Declare only capabilities the agent uses in `app.json.permissions`:
+
+| Permission | Purpose |
+| --- | --- |
+| `GEOLOCATION` | Get the current location or watch position changes. |
+| `CAMERA` | Access the camera and capture images or video. |
+| `RECORD_AUDIO` | Access the microphone and capture audio. |
+
+Names are case-sensitive. Unrecognized names grant no capability, and an API
+that requires an undeclared permission fails. A manifest declaration does not
+grant operating system permission; handle denial and unavailable hardware at
+the API call.
 
 ## Agent Worker Development
 
