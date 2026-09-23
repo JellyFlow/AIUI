@@ -16,4 +16,4 @@
 
 真机模拟用于快速迭代，最终体验仍应以真实设备为准；提审前需要在真机上重点验证语音、手势、网络、本地能力、启动耗时和连续操作场景。
 
-了解更多内容，请查看 [AIUI 智能体真机调试](../../0-guide/debug/real_device_debug.md)
+了解更多内容，请查看 [真机调试（AIUI Studio）](/AIUI/guide/debug-real_device_debug) 或 [真机调试（命令行）](/AIUI/guide/debug-cli_device_debug)。

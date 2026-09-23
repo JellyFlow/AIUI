@@ -18,4 +18,4 @@ After completing the simulation, verify at least the following:
 
 Real-device simulation is intended for rapid iteration. The final experience must still be evaluated on a physical device. Before submitting the agent for review, validate speech, gestures, network behavior, local capabilities, startup time, and continuous-use scenarios on the device.
 
-For more information, see [AIUI Agent Real-Device Debugging](../../0-guide/debug/real_device_debug.en-US.md).
+For more information, see [Real-Device Debugging (AIUI Studio)](/AIUI/guide/debug-real_device_debug) or [Real-Device Debugging (CLI)](/AIUI/guide/debug-cli_device_debug).

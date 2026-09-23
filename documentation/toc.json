@@ -190,7 +190,11 @@
           },
           {
             "id": "real_device_debug",
-            "label": "真机调试"
+            "label": "真机调试（AIUI Studio）"
+          },
+          {
+            "id": "cli_device_debug",
+            "label": "真机调试（命令行）"
           },
           {
             "id": "sourcemap",

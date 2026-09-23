@@ -190,7 +190,11 @@
           },
           {
             "id": "real_device_debug",
-            "label": "Real-Device Debugging"
+            "label": "Real-Device Debugging (AIUI Studio)"
+          },
+          {
+            "id": "cli_device_debug",
+            "label": "Real-Device Debugging (CLI)"
           },
           {
             "id": "sourcemap",

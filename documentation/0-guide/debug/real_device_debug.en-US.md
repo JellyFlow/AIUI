@@ -1,6 +1,8 @@
-# AIUI Agent Real-Device Debugging
+# Real-Device Debugging with AIUI Studio
 
 On-device debugging is a critical step in verifying the real user experience of AIUI agents. Compared with desktop or simulated environments, real devices can more accurately reflect device-side performance, interaction feedback, network conditions, and local capability invocation, Prioritize real-device results as the final basis for judging the user experience.
+
+This page covers packaging in AIUI Studio and updating the glasses resource package through the Rokid AI App. To install and launch a local project over ADB, see [Real-Device Debugging (CLI)](/AIUI/guide/debug-cli_device_debug).
 
 ## 1. Package and Save the AIX
 

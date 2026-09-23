@@ -1,6 +1,6 @@
 # 命令行工具
 
-`aix` 是处理 AIX（AI eXecutable）智能体包的命令行工具。它可以打包和检查 AIUI 工程、安装智能体到设备，以及在浏览器中预览页面。本页按 [AIX CLI README](https://github.com/yodaos-project/aix/blob/main/packages/cli/README.md) 的结构介绍全部命令。
+`aix` 是处理 AIX（AI eXecutable）智能体包的命令行工具。它可以打包和检查 AIUI 工程、安装智能体到设备，以及在浏览器中预览页面。
 
 下文的 `./my-agent` 是工程目录，`bundle.aix` 是已经打好的包，`<serial>` 是设备序列号。请换成自己的路径和序列号；尖括号只是占位符，不要原样输入。
 

@@ -1,6 +1,6 @@
 # Command Line Tool
 
-`aix` is a command line tool for AIX (AI eXecutable) agent packages. Use it to package and inspect AIUI projects, install agents on a device, and preview pages in a browser. This page follows the command groups in the [AIX CLI README](https://github.com/yodaos-project/aix/blob/main/packages/cli/README.md).
+`aix` is a command line tool for AIX (AI eXecutable) agent packages. Use it to package and inspect AIUI projects, install agents on a device, and preview pages in a browser.
 
 In the examples below, `./my-agent` is your project directory, `bundle.aix` is an existing package, and `<serial>` is a device serial number. Replace these with your own values; angle brackets mark placeholders and should not be typed literally.
 
