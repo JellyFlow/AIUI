@@ -4,26 +4,6 @@
 
 下文的 `./my-agent` 是工程目录，`bundle.aix` 是已经打好的包，`<serial>` 是设备序列号。请换成自己的路径和序列号；尖括号只是占位符，不要原样输入。
 
-## 目录
-
-- [安装](#安装)
-- [包管理命令](#包管理命令)
-  - [`aix pack`](#aix-pack-input_dir)
-  - [`aix show`](#aix-show-input)
-  - [`aix list`](#aix-list-aix_file)
-  - [`aix optimize`](#aix-optimize-aix_file)
-- [设备命令](#设备命令)
-  - [`aix device`](#aix-device-action)
-  - [`aix install`](#aix-install-input)
-  - [`aix launch-page`](#aix-launch-page-input-path)
-  - [`aix launch-widget`](#aix-launch-widget-input-path)
-  - [`aix widget-layout`](#aix-widget-layout-show)
-- [预览命令](#预览命令)
-  - [`aix preview`](#aix-preview-input)
-  - [`aix runtime`](#aix-runtime)
-- [开发](#开发)
-- [许可证](#许可证)
-
 ## 安装
 
 先安装 Node.js 20 或更新版本，再在终端运行：

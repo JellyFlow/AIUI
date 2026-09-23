@@ -4,26 +4,6 @@
 
 In the examples below, `./my-agent` is your project directory, `bundle.aix` is an existing package, and `<serial>` is a device serial number. Replace these with your own values; angle brackets mark placeholders and should not be typed literally.
 
-## Table of Contents
-
-- [Installation](#installation)
-- [Package Commands](#package-commands)
-  - [`aix pack`](#aix-pack-input_dir)
-  - [`aix show`](#aix-show-input)
-  - [`aix list`](#aix-list-aix_file)
-  - [`aix optimize`](#aix-optimize-aix_file)
-- [Device Commands](#device-commands)
-  - [`aix device`](#aix-device-action)
-  - [`aix install`](#aix-install-input)
-  - [`aix launch-page`](#aix-launch-page-input-path)
-  - [`aix launch-widget`](#aix-launch-widget-input-path)
-  - [`aix widget-layout`](#aix-widget-layout-show)
-- [Preview Commands](#preview-commands)
-  - [`aix preview`](#aix-preview-input)
-  - [`aix runtime`](#aix-runtime)
-- [Development](#development)
-- [License](#license)
-
 ## Installation
 
 Install Node.js 20 or later, then run these commands in a terminal:
