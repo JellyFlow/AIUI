@@ -196,7 +196,3 @@ node dist/cli.js --help
 ```
 
 The build compiles the Rust engine used by the CLI, then bundles the TypeScript program. Packaging, optimization, and reading logic are shared with other environments in that project.
-
-## License
-
-MIT.

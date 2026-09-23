@@ -196,7 +196,3 @@ node dist/cli.js --help
 ```
 
 构建过程会编译 CLI 使用的 Rust 引擎，再打包 TypeScript 程序。打包、优化和读取逻辑与该项目的其他运行环境共用。
-
-## 许可证
-
-MIT。
