@@ -15,6 +15,7 @@ Build AIUI agents from the current contracts in this skill. Do not assume an API
 - Read [wxss.md](./references/wxss.md) before writing styles, layout, selectors, animation, or custom fonts.
 - Read [monochrome-green.md](./references/design/monochrome-green.md) only for the monochrome-green Rokid Glasses visual language.
 - Read [APIs index](./references/apis/index.md), then its matching domain file, before using runtime APIs.
+- For Widget or Agent Worker instance methods, read [Widget API](./references/apis/widget.md) or [Agent Worker API](./references/apis/agent-worker.md).
 - Read and apply [delivery checklist](./references/checklist.md) before declaring a generated or modified AIUI agent complete.
 - Start from the matching scaffold when useful: [minimal Page](./assets/minimal-page.ink), [minimal Widget](./assets/minimal-widget.ink), or [minimal Agent Worker](./assets/minimal-agent-worker.js).
 
@@ -26,6 +27,7 @@ Do not load every reference for a narrow task. For example, a Bluetooth Agent Wo
 - Use either a multi-file Page or a single `.ink` Page for one route, never both.
 - A `.ink` Page uses `<script def>`, `<script setup>`, `<page>`, and `<style>`. A Widget replaces `<page>` with `<widget>`.
 - Declare every Page, Widget, Agent Worker, and custom component in the appropriate configuration before using it.
+- Declare required capabilities in `app.json.permissions`; handle device authorization failures separately.
 - Treat Widget `family` as a size category. Use relative layout and never hardcode the root to the current Glasses pixel size.
 - Use `agentWorkers`, not the removed `workers` field. Extend asynchronous `onOpen` work synchronously with `event.waitUntil(promise)`.
 - Use data binding for rendered state and `this.setData()` to update it.

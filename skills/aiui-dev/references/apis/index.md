@@ -8,12 +8,17 @@ Never infer full browser or WeChat compatibility from a familiar API name. If a 
 
 | Task or symbol | Read |
 | --- | --- |
-| App, Page, Widget, Agent Worker, `Navigator`, routing | [framework APIs](./framework.md) and [framework concepts](../framework.md) |
+| App, Page, Widget, Agent Worker, Page data | [framework APIs](./framework.md) and [framework concepts](../framework.md) |
+| Widget instance, `setData`, size, attachment lifecycle | [Widget API](./widget.md) |
+| Agent Worker instance, `onOpen`, `waitUntil`, global scope | [Agent Worker API](./agent-worker.md) |
+| `navigator` identity, language, device capabilities | [Navigator](./navigator.md) |
+| `window` viewport, Widget routing, closing, Base64 | [Window](./window.md) |
 | `fetch`, `Headers`, `Response`, Streams, `WebSocket`, `File`, `FormData`, URL, encoding, Crypto, Performance | [Web APIs](./web.md) |
 | `AudioPlayer`, `Sound`, Web Audio, microphone/camera streams, recording, video | [media APIs](./media.md) |
 | Language model, image input, speech synthesis, `SpeechRecognition`, `SpeechRecognitionSession` | [AI and speech APIs](./ai.md) |
 | BLE central/client, BLE peripheral/GATT Server, accelerometer, orientation, gyroscope | [device APIs](./device.md) |
-| Current position, location watching, GPX route parsing and creation | [geography APIs](./geo.md) |
+| `navigator.geolocation`, current position, location watching | [Geolocation API](./geo/geolocation.md) |
+| GPX route parsing, creation, and export | [GPXDocument API](./geo/gpx-document.md) |
 | `Canvas`, 2D drawing, `Path2D`, pixels, images, `BarcodeDetector` | [Canvas and barcode APIs](./canvas.md) |
 | `wx.request`, sockets, Event Source, storage, navigation, camera, recorder, speech | [wx APIs](./wx.md) |
 
@@ -22,6 +27,8 @@ Never infer full browser or WeChat compatibility from a familiar API name. If a 
 | API family | Entry point |
 | --- | --- |
 | Navigator capabilities | `navigator.*` |
+| Device location | `navigator.geolocation` |
+| Window and Widget routing | `window.*` |
 | Language model | global `LanguageModel` or `import { LanguageModel } from 'language-model'` |
 | Speech | globals or named imports from `'speech'` |
 | Audio | globals where documented or named imports from `'audio'` |

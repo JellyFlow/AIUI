@@ -31,4 +31,4 @@ ctx.fillRect(10, 10, 150, 75);
 
 The `canvas` component is controlled through the standard Web Canvas API. You can use `canvas.getContext('2d')` to get the drawing context.
 
-For a detailed API list, see the [Canvas API Specification](/AIUI/api/canvas).
+For API details, use the [Canvas runtime reference](../apis/canvas.md).

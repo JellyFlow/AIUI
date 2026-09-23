@@ -6,6 +6,14 @@ This file documents the verified Canvas and barcode APIs available to AIUI agent
 - Do not infer standard Web API behavior unless it is explicitly listed here or in the index file.
 - Do not add browser-compatible overloads or semantics that are not present in the source.
 
+## Encoded Canvas Output
+
+`canvas.convertToBlob({ type?, quality? })` asynchronously encodes a stable
+snapshot of the current Canvas pixels as a `Blob`. PNG is the default and
+fallback for unsupported types. PNG retains alpha; JPEG composites transparent
+pixels over black. Keep encoded image bytes distinct from `ImageBitmap` pixel
+data.
+
 ## `CanvasRenderingContext2D`
 
 `CanvasRenderingContext2D` cannot be constructed directly. Its constructor panics if called directly. Always obtain it from `canvas.getContext('2d')` or `wx.createCanvasContext(id)`.

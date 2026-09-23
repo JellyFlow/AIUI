@@ -2,6 +2,11 @@
 
 Load this reference when implementing lifecycle, user input, focus, voice wakeup, head gestures, or environment awareness.
 
+`onVoiceWakeup(event)` runs for voice or touch wakeup. Respond to the event
+without filtering `event.keyword` by default. When the source matters, known
+values include `乐奇`, `Hi Rokid`, and `clickAiAssist` for touch wakeup.
+Call `event.preventDefault()` only when replacing the host's default action.
+
 ## Page Lifecycle
 
 Common Page callbacks are:

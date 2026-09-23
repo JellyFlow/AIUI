@@ -182,12 +182,19 @@ AIUI supports two Widget families on Rokid Glasses:
 
 Rokid Glasses provide four Widget grid cells. `family` is a size category, not a fixed canvas contract. Use Flexbox, percentages, available space, padding, and content-driven sizing. Never hardcode a Widget root to `239px × 140px`.
 
-Declare the Widget in `app.json`:
+Declare the Widget in `app.json`. When using `assets/minimal-widget.ink`, add
+its matching `app.json.widgets` entry before packaging:
 
 ```json
 {
   "widgets": [
-    { "path": "widgets/weather/index", "family": "1x2" }
+    {
+      "path": "widgets/weather/index",
+      "family": "1x2",
+      "placement": "overlay",
+      "displayName": "Weather",
+      "description": "Shows current weather."
+    }
   ]
 }
 ```
@@ -227,13 +234,32 @@ export default {
 
 Widget callbacks are `onCreate()`, `onAttach()`, `onDetach()`, and `onDestroy()`. Attach and detach may repeat. Widgets do not use Page lifecycle callbacks or Page-only `enableWorldAwareness()` and `finish()`.
 
-Open a declared Widget with:
+`displayName` and `description` are required default metadata. `placement` is
+`persistent` by default; use `overlay` for a temporary Widget opened through
+`window.open()`. Keep `placement` in `app.json`, not the Widget `<script def>`.
+For localized metadata, add `app.<BCP-47-locale>.json` at the project root with
+`locale` and a `widgets` object keyed by Widget path. Override only
+`displayName` and `description`; missing translations fall back to `app.json`.
+`onAttach()` and `onDetach()` may run as overlays appear and disappear. Keep
+one-time initialization in `onCreate()`; do not rely on retaining an instance
+after closing the overlay.
+
+Open a declared `overlay` Widget with:
 
 ```javascript
 window.open('widgets/weather?city=hangzhou', '_widget');
 ```
 
-This API currently opens Widgets only, not other Pages.
+This API currently opens Widgets only, not other Pages. Close a completed
+overlay with `window.close()`. Do not assume its instance survives closing.
+
+## Permissions
+
+Declare only capabilities the agent uses in `app.json.permissions`. Current
+names are `GEOLOCATION`, `CAMERA`, `RECORD_AUDIO`, `READ_MEDIA_IMAGES`,
+`CREATE_MEDIA_IMAGES`, `READ_MEDIA_AUDIO`, and `CREATE_MEDIA_AUDIO`.
+Names are case-sensitive. A manifest declaration does not grant operating
+system permission; handle denial and unavailable hardware at the API call.
 
 ## Agent Worker Development
 

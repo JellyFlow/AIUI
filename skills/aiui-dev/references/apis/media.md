@@ -165,3 +165,16 @@ Supported media types currently include `audio/wav`, `audio/ogg;codecs=opus`, `v
 ### `ImageCapture`
 
 Construct with a video `MediaStreamTrack`. `takePhoto(options?)` returns an encoded `Blob`; `grabFrame()` returns an in-memory `ImageBitmap`.
+
+`takePhoto()` supports `mode: 'wide'` for barcode scanning, `telephoto` for
+reading distant text, and `default` for general photos, with `quality` and
+`enableSystemPreview` options. The documented default output orientations and
+sizes differ by mode; inspect the decoded image if dimensions matter. The Blob
+does not itself expose width or height. Decode it with `createImageBitmap()` and
+close the bitmap after use. `grabFrame()` provides pixels without encoding an
+image file. Stop the video track in a `finally` block. For wx capture, wrap
+the returned encoded `data` with its `mimeType` before barcode detection.
+The default encoded dimensions are `2016 × 2688` for `wide`, `2016 × 1512`
+for `telephoto`, and `3024 × 4032` for `default`. Read the selected video
+track's `getSettings()` for actual stream dimensions; photo dimensions may
+differ from the video stream.
