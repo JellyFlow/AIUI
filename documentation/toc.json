@@ -1165,8 +1165,12 @@
         "label": "AIUI Studio 平台"
       },
       {
-        "id": "craft",
-        "label": "Craft 平台"
+        "id": "editor",
+        "label": "AIUI Editor"
+      },
+      {
+        "id": "cli",
+        "label": "命令行工具"
       },
       {
         "id": "skills",

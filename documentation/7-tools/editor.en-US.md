@@ -1,13 +1,13 @@
-# Craft
+# AIUI Editor
 
-## I. What Is Craft
+## I. What Is AIUI Editor
 
-Craft is an integrated workspace for AIUI and Ink projects. It helps developers import projects, browse files, edit code, preview pages, and run simulations in one interface.
+AIUI Editor is an integrated workspace for AIUI projects. It helps developers import projects, browse files, edit code, preview pages, and run simulations in one interface.
 
-Craft is part of the AIUI development toolchain and does not replace the AIUI framework:
+AIUI Editor is part of the AIUI development toolchain and does not replace the AIUI framework:
 
 - AIUI provides page structure, the component system, and the development model for agent applications.
-- Craft connects project import, file editing, page discovery, and runtime preview.
+- AIUI Editor connects project import, file editing, page discovery, and runtime preview.
 
 Access: [https://js.rokid.com/craft](https://js.rokid.com/craft)
 
@@ -30,9 +30,9 @@ ls           # List files and subdirectories
 
 ![image.png](../image/craft.en-us/02.png)
 
-## III. Import an AIUI Project into Craft (AIUI Web IDE)
+## III. Import an AIUI Project into AIUI Editor
 
-1.Open Craft (AIUI Web IDE): [https://js.rokid.com/craft?lang=zh-CN](https://js.rokid.com/craft?lang=zh-CN)
+1.Open AIUI Editor: [https://js.rokid.com/craft?lang=zh-CN](https://js.rokid.com/craft?lang=zh-CN)
 
 ![image.png](../image/craft.en-us/03.png)
 
@@ -40,7 +40,7 @@ ls           # List files and subdirectories
 
 ![image.png](../image/craft.en-us/04.png)
 
-## IV. Debug on the Craft Web
+## IV. Debug in AIUI Editor
 
 1.Click **Run Agent** to start Web debugging.
 
@@ -51,9 +51,9 @@ ls           # List files and subdirectories
 
 ![image.png](../image/craft.en-us/06.png)
 
-## V. Develop with the AIUI Coding Agent in Craft
+## V. Develop with the AIUI Coding Agent in AIUI Editor
 
-1.Craft provides a free LLM (DeepSeek V4 Pro) by default. Download and enable a Skill to assist development.
+1.AIUI Editor provides a free LLM (DeepSeek V4 Pro) by default. Download and enable a Skill to assist development.
 
 ![image.png](../image/craft.en-us/07.png)
 
@@ -105,9 +105,9 @@ AIUI Sample project: [https://github.com/jsar-project/AIUI/tree/main/samples](ht
 
 ![image.png](../image/craft.en-us/14.png)
 
-## VII. Bind the Craft AIUI Project to an AIUI Agent
+## VII. Bind a Project in AIUI Editor to an AIUI Agent
 
-1.In the Craft editor, open **Settings > Local Management** and bind the corresponding AIUI agent.
+1.In AIUI Editor, open **Settings > Local Management** and bind the corresponding AIUI agent.
 
 ![image.png](../image/craft.en-us/15.png)
 

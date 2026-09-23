@@ -1,12 +1,12 @@
-# Craft 平台
+# AIUI Editor
 
-## 1.什么是 Craft 平台
-Craft 是面向 AIUI 与 Ink 工程的一体化工作台，帮助开发者在一个界面内完成项目导入、文件浏览、代码编辑与页面预览，模拟调试
+## 1.什么是 AIUI Editor
+AIUI Editor 是面向 AIUI 工程的一体化工作台，帮助开发者在一个界面内完成项目导入、文件浏览、代码编辑与页面预览，模拟调试
 
-Craft 属于 AIUI 开发工具链的一部分，不替代 AIUI 框架本身，
+AIUI Editor 属于 AIUI 开发工具链的一部分，不替代 AIUI 框架本身，
 
 - AIUI 负责页面结构、组件体系与智能体应用开发模型。
-- Craft 负责把工程导入、文件编辑、页面发现与运行预览串联起来。
+- AIUI Editor 负责把工程导入、文件编辑、页面发现与运行预览串联起来。
 
 访问地址：[https://js.rokid.com/craft](https://js.rokid.com/craft)
 
@@ -26,8 +26,8 @@ ls #列出当前文件夹里的文件和子文件夹
 2.文件所在文件位置
 ![image.png](../image/craft/02.png)
 
-## 3.使用 Craft（AIUI Web IDE）导入 AIUI 项目
-1.进入 Craft（AIUI Web IDE）：[https://js.rokid.com/craft?lang=zh-CN](https://js.rokid.com/craft?lang=zh-CN)
+## 3.使用 AIUI Editor 导入 AIUI 项目
+1.进入 AIUI Editor：[https://js.rokid.com/craft?lang=zh-CN](https://js.rokid.com/craft?lang=zh-CN)
 
 ![image.png](../image/craft/03.png)
 
@@ -35,14 +35,14 @@ ls #列出当前文件夹里的文件和子文件夹
 
 ![image.png](../image/craft/04.png)
 
-## 4.Craft Web 端调试
+## 4.AIUI Editor Web 端调试
 点击运行智能体进行 Web 端调试，
 ![image.png](../image/craft/05.png)
 在 Web IDE 中可模拟从唤醒、语言识别、大语言模型最后到语音播报到全过程，右侧有模拟眼镜的返回、单击、前后滑动的按钮
 ![image.png](../image/craft/06.png)
 
-## 5.在 Craft 中使用 AIUI Coding Agent 进行开发
-1.Craft 中默认免费提供了 LLM（DeepSeek V4 Pro），可以下载 Skill 进行辅助开发，下载完成记得点击启用
+## 5.在 AIUI Editor 中使用 AIUI Coding Agent 进行开发
+1.AIUI Editor 中默认免费提供了 LLM（DeepSeek V4 Pro），可以下载 Skill 进行辅助开发，下载完成记得点击启用
 ![image.png](../image/craft/07.png)
 
 2.也可替换自己的模型进行开发
@@ -98,8 +98,8 @@ AIUI Sample项目：[https://github.com/jsar-project/AIUI/tree/main/samples](htt
 
 ![image.png](../image/craft/14.png)
 
-## 7.将 Craft 中的 AIUI 项目绑定到 AIUI 智能体上
-1.Craft 编辑器设置——本地管理——绑定对应 AIUI 智能体
+## 7.将 AIUI Editor 中的 AIUI 项目绑定到 AIUI 智能体上
+1.AIUI Editor 设置——本地管理——绑定对应 AIUI 智能体
 ![image.png](../image/craft/15.png)
 
 ![image.png](../image/craft/16.png)

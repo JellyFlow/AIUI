@@ -973,8 +973,12 @@
         "label": "AIUI Studio Platform"
       },
       {
-        "id": "craft",
-        "label": "Craft Platform"
+        "id": "editor",
+        "label": "AIUI Editor"
+      },
+      {
+        "id": "cli",
+        "label": "Command Line Tool"
       },
       {
         "id": "skills",
