@@ -75,7 +75,6 @@ Apply only the rows used by the agent:
 | Web Audio microphone analysis | Do not connect to `context.destination` unless playback is intended; disconnect nodes and close the context. |
 | Location | Declare `GEOLOCATION`; handle permission and timeout errors; clear every watch ID. |
 | BLE client | Check availability; stop scans; remove listeners; disconnect GATT when finished. |
-| BLE peripheral | Run in a `foreground` Agent Worker with `bluetooth-peripheral`; respond to requests; stop advertising and close the server. |
 | Speech recognition | Check supported formats and optional capabilities; serialize audio writes; close the writer for a final result; stop captured tracks. |
 | Language model image input | Use a supported `image_url` value and reject empty URLs; keep text and image parts in the documented message shape. |
 | Canvas or images | Verify dimensions and pixel-buffer lengths; avoid recreating large buffers or bitmaps on every render; release references when no longer needed. |

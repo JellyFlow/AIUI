@@ -270,7 +270,7 @@ the API call.
 
 ## Agent Worker Development
 
-Agent Workers are non-visual scripts for temporary shared state, one-time work, or a long-lived capability such as a Bluetooth GATT Server. They are not Web Workers.
+Agent Workers are non-visual scripts for temporary shared state or one-time work. They are not Web Workers.
 
 ```json
 {
@@ -289,7 +289,6 @@ Agent Workers are non-visual scripts for temporary shared state, one-time work, 
 | `script` | Required project-relative `.js` or `.ts`; no URL, absolute path, `..`, or backslash. |
 | `trigger` | Required; currently only `{ "type": "open" }`. Only one open-trigger Worker is allowed. |
 | `lifetime` | Required: `instant` or `foreground`. `background` is reserved and invalid. |
-| `capabilities` | Optional. Currently supports `bluetooth-peripheral`, only with `foreground`. |
 
 Opening a Page or Widget invokes `onOpen(event)`. Register async work before the callback returns:
 

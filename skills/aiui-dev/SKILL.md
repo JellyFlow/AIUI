@@ -19,7 +19,7 @@ Build AIUI agents from the current contracts in this skill. Do not assume an API
 - Read and apply [delivery checklist](./references/checklist.md) before declaring a generated or modified AIUI agent complete.
 - Start from the matching scaffold when useful: [minimal Page](./assets/minimal-page.ink), [minimal Widget](./assets/minimal-widget.ink), or [minimal Agent Worker](./assets/minimal-agent-worker.js).
 
-Do not load every reference for a narrow task. For example, a Bluetooth Agent Worker normally needs `framework.md`, `events.md`, `apis/index.md`, and `apis/device.md`, but not Canvas or the full component catalog.
+Do not load every reference for a narrow task. For example, an Agent Worker normally needs `framework.md`, `events.md`, and `apis/agent-worker.md`, but not Canvas or the full component catalog.
 
 ## Core Authoring Rules
 

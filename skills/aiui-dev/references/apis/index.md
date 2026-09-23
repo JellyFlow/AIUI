@@ -16,7 +16,7 @@ Never infer full browser or WeChat compatibility from a familiar API name. If a 
 | `fetch`, `Headers`, `Response`, Streams, `WebSocket`, `File`, `FormData`, URL, encoding, Crypto, Performance | [Web APIs](./web.md) |
 | `AudioPlayer`, `Sound`, Web Audio, microphone/camera streams, recording, video | [media APIs](./media.md) |
 | Language model, image input, speech synthesis, `SpeechRecognition`, `SpeechRecognitionSession` | [AI and speech APIs](./ai.md) |
-| BLE central/client, BLE peripheral/GATT Server, accelerometer, orientation, gyroscope | [device APIs](./device.md) |
+| BLE client, accelerometer, orientation, gyroscope | [device APIs](./device.md) |
 | `navigator.geolocation`, current position, location watching | [Geolocation API](./geo/geolocation.md) |
 | GPX route parsing, creation, and export | [GPXDocument API](./geo/gpx-document.md) |
 | `Canvas`, 2D drawing, `Path2D`, pixels, images, `BarcodeDetector` | [Canvas and barcode APIs](./canvas.md) |
@@ -42,7 +42,6 @@ Never infer full browser or WeChat compatibility from a familiar API name. If a 
 
 - Microphone: declare `RECORD_AUDIO`, start capture from a valid user interaction, stop every media track, and release recorder/audio resources.
 - Location: declare `GEOLOCATION`; clear every active `watchPosition()` ID.
-- Bluetooth peripheral: declare `bluetooth-peripheral` on a foreground Agent Worker; stop advertising and close the GATT Server.
 - BLE client scan: stop the scan and disconnect GATT connections when finished.
 - Audio: disconnect nodes and close `AudioContext`; call `destroy()` where the API exposes it.
 - Events and timers: remove listeners and clear timers in the matching Page, Widget, or Worker cleanup.

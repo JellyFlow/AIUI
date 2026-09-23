@@ -56,7 +56,5 @@ export default {
 
 `this.navigator` is the global Worker `navigator`. `WorkerNavigator` provides
 `id`, `renderingEnabled`, `versions`, `userAgent`, `language`, `languages`, and
-`region`; declared Worker capabilities may add device APIs. Do not assume a
-Page's `window`, `document`, `fetch`, routing, rendering, or media capture exists
-in the Worker. Use [device APIs](./device.md) for the optional BLE peripheral
-capability.
+`region`. Do not assume a Page's `window`, `document`, `fetch`, routing,
+rendering, or media capture exists in the Worker.
