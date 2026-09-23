@@ -50,7 +50,42 @@ Interactive elements can receive focus. Style focus visibly and do not remove al
 
 ## Key Events
 
-Implement key handlers on the Page logic object using the exact callback names supported by the target. Avoid depending on desktop keyboard codes when the agent targets glasses controls. Keep the UI operable through focus and the device's primary confirmation/back actions.
+Define `onKeyDown(event)` and `onKeyUp(event)` on the Page logic object and inspect `event.code`. Use `onKeyDown` for immediate feedback. Host default actions generally run after `onKeyUp`; call `event.preventDefault()` there when the Page takes over one of those actions.
+
+### Rokid Glasses
+
+Keep focus and the primary confirmation/back actions usable when handling these `event.code` values.
+
+#### `Backspace`
+
+Back action. On `onKeyUp`, the default behavior returns to the previous level or requests to close the agent when there is no page to return to. Call `event.preventDefault()` in `onKeyUp` if the Page handles back itself.
+
+#### `ArrowUp`
+
+Up direction. On `onKeyUp`, the default behavior moves within the current navigation path or scrolls the root view upward. Use `onKeyDown` for immediate feedback; prevent the `onKeyUp` default behavior when the Page handles navigation or scrolling itself.
+
+#### `ArrowDown`
+
+Down direction. On `onKeyUp`, the default behavior moves within the current navigation path or scrolls the root view downward. Use `onKeyDown` for immediate feedback; prevent the `onKeyUp` default behavior when the Page handles navigation or scrolling itself.
+
+#### `Enter`
+
+Confirm or activate. On `onKeyUp`, the default behavior enters navigation mode or activates the current target. Use `onKeyDown` for immediate feedback; prevent the `onKeyUp` default behavior when the Page handles confirmation itself.
+
+#### `GlobalHook`
+
+A device-specific signal for a touch on the glasses temple button; it is not a standard Web key value. Some host integrations report it through `onKeyDown` or `onKeyUp`. No default action is specified for `GlobalHook`.
+
+> [!NOTE]
+> Use `GlobalHook` on `onKeyDown` only for fast responses that do not distinguish button actions. To distinguish back from confirm, use `Backspace` or `Enter` instead.
+
+### Rokid Glasses 2
+
+The `event.code` mapping and default key actions for this device remain unverified. Confirm them against its host integration before implementing device-specific handlers; do not assume the Rokid Glasses mappings apply.
+
+### First-generation full-color glasses
+
+The `event.code` mapping and default key actions for this device remain unverified. Confirm them against its host integration before implementing device-specific handlers; do not assume the Rokid Glasses mappings apply.
 
 ## Voice Wakeup and World Awareness
 
