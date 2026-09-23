@@ -6,6 +6,8 @@ AIUI can use the camera and microphone so an agent can take photos, scan codes, 
 
 The following code requests both the camera and microphone and returns a `MediaStream`. The stream contains video and audio tracks used by later photo, recording, and audio-analysis operations.
 
+When taking a photo, you can choose a capture mode through the photo setting `mode`. See [`mode`](#mode) below for the available values and their effects.
+
 ```javascript
 const stream = await navigator.mediaDevices.getUserMedia({
   audio: true,
@@ -35,7 +37,7 @@ for (const track of stream.getTracks()) {
 
 ## Scan a Code
 
-Choose `wide` mode when scanning a QR code or barcode. It captures a landscape image with a default resolution of `2688 × 2016`, suitable for payment codes and barcode recognition. This example uses high quality and shows the system preview first so the user can align the target.
+Choose `wide` mode when scanning a QR code or barcode. It captures a portrait image with a default resolution of `2016 × 2688` (width × height), suitable for payment codes and barcode recognition. This example uses high quality and shows the system preview first so the user can align the target.
 
 <!-- aiui-api-style default=web -->
 
@@ -110,7 +112,7 @@ In the Web example, `scanImage` is already a `Blob` and can be passed directly t
 
 ## Capture an Image for a Reading Agent
 
-Choose `telephoto` mode when a reading agent needs to analyze text, a document, or an object. It captures a portrait image with a default resolution of `1512 × 2016`, suited to sending the subject to a vision model for further analysis.
+Choose `telephoto` mode when a reading agent needs to analyze text, a document, or an object. It captures a landscape image with a default resolution of `2016 × 1512` (width × height), suited to sending the subject to a vision model for further analysis.
 
 <!-- aiui-api-style default=web -->
 
@@ -163,7 +165,7 @@ The result is already encoded and can be used directly as input for a reading ag
 
 ## Capture a General Photo
 
-Use `default` mode for photos that are not specifically intended for scanning or reading. It provides the full FOV and a default full resolution of `4032 × 3024`, making it suitable for general photography and scenes where preserving more content matters.
+Use `default` mode for photos that are not specifically intended for scanning or reading. It provides the full FOV and a default portrait resolution of `3024 × 4032` (width × height), making it suitable for general photography and scenes where preserving more content matters.
 
 <!-- aiui-api-style default=web -->
 
@@ -478,11 +480,11 @@ Prefer `'high'` for OCR, reading agents, and other vision models that depend on 
 
 Type: `'default' | 'wide' | 'telephoto'`. Default: `'default'`. This selects an AIUI-defined capture capability and determines the default orientation, resolution, and primary use case. `mode` and `quality` are independent: first use `mode` to choose the capture scenario, then use `quality` to adjust the quality tier within that mode.
 
-| Value | Default output resolution | Framing | Recommended use cases |
+| Value | Default output resolution (width × height) | Framing | Recommended use cases |
 | --- | --- | --- | --- |
-| `'default'` | `4032 × 3024` | Uses the full field of view (FOV) and full resolution to preserve the most scene and image detail. | General photography; used when `mode` is omitted. |
-| `'wide'` | `2688 × 2016` | Produces a landscape image suited to recognition in scanning workflows. | QR-code, barcode, and payment scanning. |
-| `'telephoto'` | `1512 × 2016` | Produces a portrait image suited to subject-content analysis. | Reading agents, AI image understanding, and text or object recognition. |
+| `'default'` | `3024 × 4032` | Uses the full field of view (FOV) and portrait resolution to preserve the most scene and image detail. | General photography; used when `mode` is omitted. |
+| `'wide'` | `2016 × 2688` | Produces a portrait image suited to recognition in scanning workflows. | QR-code, barcode, and payment scanning. |
+| `'telephoto'` | `2016 × 1512` | Produces a landscape image suited to subject-content analysis. | Reading agents, AI image understanding, and text or object recognition. |
 
 Use `'wide'` for scanning and `'telephoto'` for reading agents or AI image understanding. Omit the field or explicitly use `'default'` when no specialized capability is required.
 
