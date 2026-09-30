@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "id": "053-design-button",
+  "category": "design",
+  "difficulty": "medium",
+  "description": "Restyle the Toggle control and its status text in pages/index/index.ink for RokidGlasses1 and RokidGlasses2. Make the action easy to identify and operate without dominating the display. Preserve the initially false enabled state and repeated toggling in both directions.",
+  "aiuiVersion": "current",
+  "workspace": "./workspace",
+  "grading": {
+    "required": [
+      {
+        "id": "outlined-action",
+        "type": "style",
+        "path": "pages/index/index.ink",
+        "className": "action",
+        "tag": "button",
+        "declarations": {
+          "min-height": "32px",
+          "background-color": "transparent",
+          "border-width": "1px",
+          "border-style": "solid",
+          "border-color": "rgba(64,255,94,0.48)",
+          "border-radius": "4px",
+          "color": "rgba(64,255,94,0.72)",
+          "font-family": "sans-serif",
+          "font-size": "11px",
+          "font-weight": "500",
+          "text-transform": "uppercase"
+        },
+        "text": "Toggle"
+      },
+      {
+        "id": "status-copy",
+        "type": "style",
+        "path": "pages/index/index.ink",
+        "className": "status",
+        "tag": "text",
+        "declarations": {
+          "font-family": "sans-serif",
+          "font-size": "14px",
+          "font-weight": "400",
+          "color": "rgba(64,255,94,0.72)"
+        },
+        "binding": "enabled"
+      }
+    ],
+    "regression": [
+      {
+        "id": "route",
+        "type": "route",
+        "value": "pages/index/index"
+      },
+      {
+        "id": "initial-state",
+        "type": "behavior",
+        "path": "pages/index/index.ink",
+        "expect": {
+          "enabled": false
+        },
+        "calls": []
+      },
+      {
+        "id": "existing-action",
+        "type": "behavior",
+        "path": "pages/index/index.ink",
+        "expect": {
+          "enabled": true
+        },
+        "calls": [
+          {
+            "button": "Toggle"
+          }
+        ]
+      },
+      {
+        "id": "toggle-back",
+        "type": "behavior",
+        "path": "pages/index/index.ink",
+        "expect": {
+          "enabled": false
+        },
+        "calls": [
+          {
+            "button": "Toggle"
+          },
+          {
+            "button": "Toggle"
+          }
+        ]
+      },
+      {
+        "id": "bound-enabled",
+        "type": "template",
+        "path": "pages/index/index.ink",
+        "binding": "enabled"
+      }
+    ],
+    "constraints": [
+      {
+        "id": "no-dom",
+        "type": "noDom"
+      }
+    ]
+  }
+}

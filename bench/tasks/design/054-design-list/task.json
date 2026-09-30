@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "id": "054-design-list",
+  "category": "design",
+  "difficulty": "medium",
+  "description": "Improve the two device rows in pages/index/index.ink for RokidGlasses1 and RokidGlasses2. Make the list easy to scan while keeping the surrounding real-world view unobstructed. Preserve the bound Glasses and Phone names and the Scan button that increments scans from 0.",
+  "aiuiVersion": "current",
+  "workspace": "./workspace",
+  "grading": {
+    "required": [
+      {
+        "id": "open-rows",
+        "type": "style",
+        "path": "pages/index/index.ink",
+        "className": "device-row",
+        "tag": "view",
+        "declarations": {
+          "background-color": "transparent",
+          "min-height": "40px",
+          "padding-top": "8px",
+          "padding-bottom": "8px",
+          "padding-left": "0px",
+          "padding-right": "0px",
+          "border-bottom-width": "1px",
+          "border-bottom-style": "solid",
+          "border-bottom-color": "rgba(64,255,94,0.24)",
+          "border-radius": "0px"
+        },
+        "minCount": 2
+      },
+      {
+        "id": "first-title",
+        "type": "style",
+        "path": "pages/index/index.ink",
+        "className": "first-title",
+        "tag": "text",
+        "binding": "first",
+        "declarations": {
+          "font-family": "sans-serif",
+          "font-size": "14px",
+          "font-weight": "400",
+          "color": "rgba(64,255,94,0.72)"
+        }
+      },
+      {
+        "id": "second-title",
+        "type": "style",
+        "path": "pages/index/index.ink",
+        "className": "second-title",
+        "tag": "text",
+        "binding": "second",
+        "declarations": {
+          "font-family": "sans-serif",
+          "font-size": "14px",
+          "font-weight": "400",
+          "color": "rgba(64,255,94,0.72)"
+        }
+      }
+    ],
+    "regression": [
+      {
+        "id": "route",
+        "type": "route",
+        "value": "pages/index/index"
+      },
+      {
+        "id": "initial-state",
+        "type": "behavior",
+        "path": "pages/index/index.ink",
+        "expect": {
+          "first": "Glasses",
+          "second": "Phone",
+          "scans": 0
+        },
+        "calls": []
+      },
+      {
+        "id": "existing-action",
+        "type": "behavior",
+        "path": "pages/index/index.ink",
+        "expect": {
+          "first": "Glasses",
+          "second": "Phone",
+          "scans": 1
+        },
+        "calls": [
+          {
+            "button": "Scan"
+          }
+        ]
+      },
+      {
+        "id": "bound-first",
+        "type": "template",
+        "path": "pages/index/index.ink",
+        "binding": "first"
+      },
+      {
+        "id": "bound-second",
+        "type": "template",
+        "path": "pages/index/index.ink",
+        "binding": "second"
+      },
+      {
+        "id": "bound-scans",
+        "type": "template",
+        "path": "pages/index/index.ink",
+        "binding": "scans"
+      }
+    ],
+    "constraints": [
+      {
+        "id": "no-dom",
+        "type": "noDom"
+      }
+    ]
+  }
+}
