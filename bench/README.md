@@ -58,25 +58,23 @@ npm run --silent bench -- grade-all \
   --workspaces /tmp/aiui-bench-manual --output-dir bench/results/manual
 ```
 
-The built-in DeepSeek driver has no `infer-all` command. This shell loop runs each task in a fresh workspace and writes one result per task:
+For DeepSeek, the batch runner invokes `infer` once per task in a fresh workspace, then writes `summary.json`, `report.md`, individual infer traces, and the generated workspaces. Set `DEEPSEEK_API_KEY` in the environment before running it:
 
 ```sh
-workspaces=$(mktemp -d /tmp/aiui-bench.XXXXXX)
-results=bench/results/local-$(date -u +%Y%m%dT%H%M%SZ)
-mkdir -p "$results"
-for task_file in bench/tasks/*/*/task.json; do
-  id=$(basename "$(dirname "$task_file")")
-  npm run --silent bench -- infer "$id" \
-    --workspace "$workspaces/$id" \
-    --api-key-file /path/to/deepseek.key \
-    --output "$results/$id.infer.json" || printf 'Check %s\n' "$id" >&2
-done
-npm run --silent bench -- summary "$results"/*.infer.json
+node bench/scripts/run-all.js \
+  --model deepseek-flash --max-steps 30 \
+  --output-dir bench/results/local-run
 ```
 
-Check that the summary `total` equals the catalog size; a CLI error before result creation leaves no JSON to summarize. `summary` accepts plain `grade` and `infer` result files, counting an infer run as resolved only when its status is `completed` and its grading resolved. For stronger local package checks, run `aix check <workspace> --format json` and `aix pack <workspace> --output <file.aix>` when the AIX CLI is available.
+Choose a new output directory for each run. The batch runner continues after an unresolved task or CLI error, records every catalog entry in `summary.json`, and exits nonzero if any task is unresolved. The ordinary `summary` command accepts plain `grade` and `infer` result files, counting an infer run as resolved only when its status is `completed` and its grading resolved. For stronger local package checks, run `aix check <workspace> --format json` and `aix pack <workspace> --output <file.aix>` when the AIX CLI is available.
 
 Exit codes: `grade` and `infer` return 0 for a resolved result, 1 for an unresolved or unfinished result, and 2 for a command/provider error. `grade-all` returns 1 if any task is unresolved. An `infer` result uses `status: completed`, `max_steps`, or `error`; grading can be `null` if the grader itself failed.
+
+### Run the complete suite in GitHub Actions
+
+Add a repository Actions secret named `DEEPSEEK_API_KEY`. In the repository's **Actions** tab, select **AIUI Coding Benchmark**, click **Run workflow**, check one or both model boxes, and set the maximum steps. GitHub's `choice` input supports only one selection, so each supported model has its own checkbox. The workflow runs only when manually dispatched, executes the harness tests, then runs every task once per selected model. The workflow file must be on the repository's default branch for the **Run workflow** button to appear.
+
+The workflow run's **Summary** page shows a separate resolved count and per-task table for each selected model. Download the `aiui-bench-<run-id>-<attempt>` artifact for each model's `summary.json`, `report.md`, infer traces, and generated workspaces. The job fails when any model has an unresolved or errored task; the artifact is still uploaded. Results do not include the API key. The workflow name and report format are provider-neutral; the current inference CLI supports DeepSeek models only.
 
 ## Add a new task
 
