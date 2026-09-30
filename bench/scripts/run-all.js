@@ -11,6 +11,26 @@ import { root, tasks } from '../src/schema.js';
 const repository = path.resolve(root, '..');
 const cli = path.join(root, 'src/cli.js');
 
+/** Limit simultaneous infer processes while retaining catalog order in reports. */
+export async function runConcurrent(catalog, concurrency, run) {
+  if (!Number.isInteger(concurrency) || concurrency < 1 || concurrency > 32) {
+    throw new Error('--concurrency must be an integer from 1 to 32');
+  }
+  const results = new Array(catalog.length);
+  let next = 0;
+  const workers = Array.from({ length: Math.min(concurrency, catalog.length) }, async () => {
+    while (next < catalog.length) {
+      const index = next++;
+      results[index] = await run(catalog[index]);
+    }
+  });
+  // Let all running tasks settle before the caller removes their workspaces.
+  const settled = await Promise.allSettled(workers);
+  const failure = settled.find(result => result.status === 'rejected');
+  if (failure) throw failure.reason;
+  return results;
+}
+
 /** Reduce a full infer record to fields useful in the aggregate report. */
 function resultFor(task, infer, exitCode, stderr) {
   if (!infer) {
@@ -151,6 +171,10 @@ async function main(args) {
 
   const model = optionValue(args, '--model') || 'deepseek-flash';
   const maxSteps = parseMaxSteps(optionValue(args, '--max-steps'));
+  const concurrency = Number(optionValue(args, '--concurrency') ?? 4);
+  if (!Number.isInteger(concurrency) || concurrency < 1 || concurrency > 32) {
+    throw new Error('--concurrency must be an integer from 1 to 32');
+  }
   const outputDir = path.resolve(optionValue(args, '--output-dir') || path.join(root, 'results', `run-${Date.now()}`));
   const catalog = await tasks();
   if (catalog.length === 0) throw new Error('no benchmark tasks found');
@@ -159,14 +183,14 @@ async function main(args) {
   await mkdir(outputDir);
   const workspaceRoot = await mkdtemp(path.join(process.env.RUNNER_TEMP || os.tmpdir(), 'aiui-bench-'));
   const startedAt = new Date().toISOString();
-  const results = [];
+  let results;
 
   try {
-    for (const task of catalog) {
+    results = await runConcurrent(catalog, concurrency, async task => {
       const result = await runTask(task, workspaceRoot, outputDir, model, maxSteps);
-      results.push(result);
       process.stdout.write(`${task.id}: ${result.status}, resolved=${result.resolved}\n`);
-    }
+      return result;
+    });
 
     await cp(workspaceRoot, path.join(outputDir, 'workspaces'), { recursive: true });
   } finally {

@@ -58,13 +58,15 @@ npm run --silent bench -- grade-all \
   --workspaces /tmp/aiui-bench-manual --output-dir bench/results/manual
 ```
 
-使用 DeepSeek 时，批量脚本会在独立工作区逐个调用 `infer`，生成 `summary.json`、`report.md`、每个任务的 infer 轨迹和工作区。先在环境变量中设置 `DEEPSEEK_API_KEY`：
+使用 DeepSeek 时，批量脚本会在独立工作区并行调用 `infer`，生成 `summary.json`、`report.md`、每个任务的 infer 轨迹和工作区。先在环境变量中设置 `DEEPSEEK_API_KEY`：
 
 ```sh
 node bench/scripts/run-all.js \
-  --model deepseek-flash --max-steps 30 \
+  --model deepseek-flash --max-steps 30 --concurrency 4 \
   --output-dir bench/results/local-run
 ```
+
+`--concurrency` 默认 4，范围为 1–32；设为 1 时串行执行。报告保持任务目录顺序，每个任务的模型轮次仍依次执行。并发会增加同时发出的 API 请求数，遇到限流或资源不足时可降低并发数。
 
 每轮使用新的输出目录。某个任务未通过或 CLI 出错时，批量脚本仍继续执行，并在 `summary.json` 中记录全部任务；只要有未通过的任务，脚本就以非零状态退出。普通的 `summary` 命令可汇总 `grade` 和 `infer` 结果；只有状态为 `completed` 且评分通过的 infer 才计为 resolved。有 AIX CLI 时，还可以对工作区执行 `aix check <workspace> --format json` 和 `aix pack <workspace> --output <file.aix>`，检查源码与打包。
 
@@ -72,7 +74,7 @@ node bench/scripts/run-all.js \
 
 ### 在 GitHub Actions 跑完整任务集
 
-在仓库的 Actions secrets 中添加名为 `DEEPSEEK_API_KEY` 的密钥。进入仓库 **Actions** 页面，选择 **AIUI Coding Benchmark**，点击 **Run workflow**，勾选一个或两个模型，并设置最大步数。GitHub 的 `choice` 输入只能单选，因此每个支持的模型使用独立的勾选框。该 workflow 仅手动触发，先运行测试框架的测试，再对每个选中模型执行全部任务。要在页面看到 **Run workflow** 按钮，workflow 文件须位于仓库默认分支。
+在仓库的 Actions secrets 中添加名为 `DEEPSEEK_API_KEY` 的密钥。进入仓库 **Actions** 页面，选择 **AIUI Coding Benchmark**，点击 **Run workflow**，勾选一个或两个模型，并设置最大步数和任务并发数（默认 4）。所选模型依次运行，每个模型内部并行执行任务。GitHub 的 `choice` 输入只能单选，因此每个支持的模型使用独立的勾选框。该 workflow 仅手动触发，先运行测试框架的测试，再对每个选中模型执行全部任务。要在页面看到 **Run workflow** 按钮，workflow 文件须位于仓库默认分支。
 
 对应 workflow 运行页面的 **Summary** 首先用表格汇总所选模型的 resolved 分数和预估平均美元费用（总费用除以全部任务数）。展开各模型的 **Details** 可查看每个任务的结果与费用。如果有任务缺少费用估算，该模型的平均费用显示为 `N/A`。下载 `aiui-bench-<run-id>-<attempt>` artifact，可获得各模型的 `summary.json`、`report.md`、infer 轨迹和生成的工作区。只要所有选中模型都生成了完整报告，即使有任务未通过或单个任务出错，Actions job 仍视为成功；缺少报告或批量运行未完成仍会失败。结果中不包含 API key。workflow 名称和报告格式不限定 Provider；目前 infer CLI 仅支持 DeepSeek 模型。
 

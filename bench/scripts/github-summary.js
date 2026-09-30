@@ -23,11 +23,12 @@ export function markdownActionSummary(reports) {
     return '# AIUI Coding Benchmark\n\nNo benchmark reports were produced. Check the preceding steps.\n';
   }
 
-  const rows = reports.map(({ summary }) => {
-    const score = `${summary.resolved}/${summary.total} (${Math.round(summary.resolvedRate * 100)}%)`;
+  const sortedReports = [...reports].sort((a, b) => b.summary.resolvedRate - a.summary.resolvedRate);
+  const rows = sortedReports.map(({ summary }) => {
+    const score = (summary.resolvedRate * 100).toFixed(1);
     return `| \`${displayModel(summary.model)}\` | ${score} | ${averageCost(summary)} |`;
   });
-  const details = reports.flatMap(({ summary, report }) => [
+  const details = sortedReports.flatMap(({ summary, report }) => [
     '<details>',
     `<summary>${displayModel(summary.model)} — ${summary.resolved}/${summary.total} resolved</summary>`,
     '',

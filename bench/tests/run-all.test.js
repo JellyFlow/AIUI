@@ -5,9 +5,56 @@ import { mkdtemp, rm } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { markdownReport, summarizeRuns } from '../scripts/run-all.js';
+import { markdownReport, runConcurrent, summarizeRuns } from '../scripts/run-all.js';
 
 const runner = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../scripts/run-all.js');
+
+test('concurrent runner caps active tasks and preserves catalog order', async () => {
+  const releases = new Map();
+  const started = [];
+  const pending = runConcurrent([0, 1, 2, 3], 2, async id => {
+    started.push(id);
+    await new Promise(resolve => releases.set(id, resolve));
+    return id;
+  });
+  assert.deepEqual(started, [0, 1]);
+  releases.get(1)();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.deepEqual(started, [0, 1, 2]);
+  releases.get(2)();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.deepEqual(started, [0, 1, 2, 3]);
+  releases.get(3)();
+  releases.get(0)();
+  assert.deepEqual(await pending, [0, 1, 2, 3]);
+});
+
+test('concurrent runner supports serial execution and validates limits', async () => {
+  let active = 0;
+  await runConcurrent([0, 1, 2], 1, async () => {
+    assert.equal(++active, 1);
+    await new Promise(resolve => setImmediate(resolve));
+    active--;
+  });
+  for (const value of [0, -1, 1.5, 33, NaN]) {
+    await assert.rejects(runConcurrent([], value, () => {}), /--concurrency/);
+  }
+});
+
+test('concurrent runner waits for active tasks before propagating an error', async () => {
+  let release;
+  let finished = false;
+  const pending = runConcurrent([0, 1], 2, async id => {
+    if (id === 0) throw new Error('failed');
+    await new Promise(resolve => { release = resolve; });
+    finished = true;
+  });
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(finished, false);
+  release();
+  await assert.rejects(pending, /failed/);
+  assert.equal(finished, true);
+});
 
 test('run-all counts unresolved and missing records and renders the report', () => {
   const results = [

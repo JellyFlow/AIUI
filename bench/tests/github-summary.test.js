@@ -19,11 +19,12 @@ test('Actions summary compares selected models before their detailed reports', (
       summary: { model: 'model-b', resolved: 17, total: 19, resolvedRate: 17 / 19, cost: { complete: false, estimatedUsd: null } },
       report: '# AIUI Coding Benchmark\n\nModel: `model-b`\n\n| Task | Status |\n| --- | --- |\n| 002-create-counter | max_steps |\n',
     },
-  ]);
+  ].reverse());
 
   assert.match(output, /^# AIUI Coding Benchmark\n\n\| Model \| Resolved \| Avg\. cost/);
-  assert.match(output, /\| `model-a` \| 18\/19 \(95%\) \| \$0\.100000 \|/);
-  assert.match(output, /\| `model-b` \| 17\/19 \(89%\) \| N\/A \|/);
+  assert.match(output, /\| `model-a` \| 94\.7 \| \$0\.100000 \|/);
+  assert.match(output, /\| `model-b` \| 89\.5 \| N\/A \|/);
+  assert.ok(output.indexOf('| `model-a`') < output.indexOf('| `model-b`'));
   assert.equal(output.match(/<details>/g)?.length, 2);
   assert.ok(output.indexOf('## Details') < output.indexOf('001-create-page'));
   assert.ok(output.indexOf('001-create-page') < output.indexOf('002-create-counter'));
@@ -48,8 +49,8 @@ test('Actions summary command reads one row per completed model report', async (
     }
     const run = spawnSync(process.execPath, [script, directory], { encoding: 'utf8' });
     assert.equal(run.status, 0, run.stderr);
-    assert.match(run.stdout, /\| `model-a` \| 1\/2 \(50%\) \| \$0\.200000 \|/);
-    assert.match(run.stdout, /\| `model-b` \| 1\/2 \(50%\) \| \$0\.400000 \|/);
+    assert.match(run.stdout, /\| `model-a` \| 50\.0 \| \$0\.200000 \|/);
+    assert.match(run.stdout, /\| `model-b` \| 50\.0 \| \$0\.400000 \|/);
     assert.equal(run.stdout.match(/<details>/g)?.length, 2);
   } finally {
     await rm(directory, { recursive: true, force: true });

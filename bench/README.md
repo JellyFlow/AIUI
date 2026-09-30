@@ -62,9 +62,11 @@ For DeepSeek, the batch runner invokes `infer` once per task in a fresh workspac
 
 ```sh
 node bench/scripts/run-all.js \
-  --model deepseek-flash --max-steps 30 \
+  --model deepseek-flash --max-steps 30 --concurrency 4 \
   --output-dir bench/results/local-run
 ```
+
+`--concurrency` defaults to 4 and accepts 1–32; set it to 1 for serial execution. Reports retain catalog order, and model turns within each task remain sequential. Concurrency increases simultaneous API requests; lower it if you encounter rate limits or resource pressure.
 
 Choose a new output directory for each run. The batch runner continues after an unresolved task or CLI error, records every catalog entry in `summary.json`, and exits nonzero if any task is unresolved. The ordinary `summary` command accepts plain `grade` and `infer` result files, counting an infer run as resolved only when its status is `completed` and its grading resolved. For stronger local package checks, run `aix check <workspace> --format json` and `aix pack <workspace> --output <file.aix>` when the AIX CLI is available.
 
@@ -72,7 +74,7 @@ Exit codes: `grade` and `infer` return 0 for a resolved result, 1 for an unresol
 
 ### Run the complete suite in GitHub Actions
 
-Add a repository Actions secret named `DEEPSEEK_API_KEY`. In the repository's **Actions** tab, select **AIUI Coding Benchmark**, click **Run workflow**, check one or both model boxes, and set the maximum steps. GitHub's `choice` input supports only one selection, so each supported model has its own checkbox. The workflow runs only when manually dispatched, executes the harness tests, then runs every task once per selected model. The workflow file must be on the repository's default branch for the **Run workflow** button to appear.
+Add a repository Actions secret named `DEEPSEEK_API_KEY`. In the repository's **Actions** tab, select **AIUI Coding Benchmark**, click **Run workflow**, check one or both model boxes, and set the maximum steps and task concurrency (default 4). Selected models run sequentially, with parallel tasks within each model. GitHub's `choice` input supports only one selection, so each supported model has its own checkbox. The workflow runs only when manually dispatched, executes the harness tests, then runs every task once per selected model. The workflow file must be on the repository's default branch for the **Run workflow** button to appear.
 
 The workflow run's **Summary** page starts with a table comparing the selected models' resolved scores and estimated average USD cost per task (total cost divided by all tasks). Expand **Details** to see each model's per-task results and costs. If any task lacks a cost estimate, that model's average is `N/A`. Download the `aiui-bench-<run-id>-<attempt>` artifact for each model's `summary.json`, `report.md`, infer traces, and generated workspaces. The Actions job succeeds once every selected model has produced complete reports, even when some tasks are unresolved or have per-task errors. A missing report or a batch setup failure still fails the job. Results do not include the API key. The workflow name and report format are provider-neutral; the current inference CLI supports DeepSeek models only.
 

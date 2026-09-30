@@ -16,6 +16,11 @@ on:
         type: number
         required: true
         default: 30
+      concurrency:
+        description: Concurrent tasks per model (1-32; 1 runs serially)
+        type: number
+        required: true
+        default: 4
 
 permissions:
   contents: read
@@ -55,6 +60,7 @@ jobs:
           MODEL_DEEPSEEK_FLASH: ${{ inputs.model_deepseek_flash }}
           MODEL_DEEPSEEK_V4_PRO: ${{ inputs.model_deepseek_v4_pro }}
           BENCH_MAX_STEPS: ${{ inputs.max_steps }}
+          BENCH_CONCURRENCY: ${{ inputs.concurrency }}
         run: |
           models=()
           if [[ "$MODEL_DEEPSEEK_FLASH" == 'true' ]]; then models+=(deepseek-flash); fi
@@ -71,6 +77,7 @@ jobs:
             node bench/scripts/run-all.js \
               --model "$model" \
               --max-steps "$BENCH_MAX_STEPS" \
+              --concurrency "$BENCH_CONCURRENCY" \
               --output-dir "$output_dir" || status=$?
             if (( status > 1 )) || [[ ! -s "$output_dir/summary.json" || ! -s "$output_dir/report.md" ]]; then
               echo "::error::Benchmark run for $model did not complete (exit $status)."
