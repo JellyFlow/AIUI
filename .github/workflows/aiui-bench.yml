@@ -66,26 +66,23 @@ jobs:
 
           failed=0
           for model in "${models[@]}"; do
+            output_dir="bench/results/github-actions/$model"
+            status=0
             node bench/scripts/run-all.js \
               --model "$model" \
               --max-steps "$BENCH_MAX_STEPS" \
-              --output-dir "bench/results/github-actions/$model" || failed=1
+              --output-dir "$output_dir" || status=$?
+            if (( status > 1 )) || [[ ! -s "$output_dir/summary.json" || ! -s "$output_dir/report.md" ]]; then
+              echo "::error::Benchmark run for $model did not complete (exit $status)."
+              failed=1
+            fi
           done
           exit "$failed"
 
       - name: Publish benchmark summary
         if: ${{ always() }}
         run: |
-          shopt -s nullglob
-          reports=(bench/results/github-actions/*/report.md)
-          if (( ${#reports[@]} == 0 )); then
-            echo '## AIUI Coding Benchmark' >> "$GITHUB_STEP_SUMMARY"
-            echo 'No benchmark reports were produced. Check the preceding steps.' >> "$GITHUB_STEP_SUMMARY"
-          else
-            for report in "${reports[@]}"; do
-              cat "$report" >> "$GITHUB_STEP_SUMMARY"
-            done
-          fi
+          node bench/scripts/github-summary.js bench/results/github-actions >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload benchmark results
         if: ${{ always() && steps.bench.outcome != 'skipped' }}
