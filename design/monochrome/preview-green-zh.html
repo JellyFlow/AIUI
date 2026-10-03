@@ -1,0 +1,248 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Rokid AIUI 单色绿色科学界面</title>
+<style>
+  *{box-sizing:border-box;}
+  :root{
+    --g:#40ff5e;
+    --g-72:rgba(64,255,94,0.72);
+    --g-48:rgba(64,255,94,0.48);
+    --g-24:rgba(64,255,94,0.24);
+    --g-12:rgba(64,255,94,0.12);
+    --g-06:rgba(64,255,94,0.06);
+    --ink:var(--g);
+    --ink-primary:var(--g-72);
+    --ink-secondary:var(--g-48);
+    --ink-disabled:var(--g-24);
+    --line-strong:var(--g-72);
+    --line-default:var(--g-48);
+    --line-muted:var(--g-24);
+    --line-trace:var(--g-12);
+    --surface-active:var(--g-12);
+    --surface-subtle:var(--g-06);
+    --black:#000;
+    --sans:system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace;
+  }
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:var(--sans);background:var(--black);color:var(--ink-primary);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.45;}
+  .checker{background-image:linear-gradient(45deg,#0a0a0a 25%,transparent 25%),linear-gradient(-45deg,#0a0a0a 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#0a0a0a 75%),linear-gradient(-45deg,transparent 75%,#0a0a0a 75%);background-size:14px 14px;background-position:0 0,0 7px,7px -7px,-7px 0;}
+
+  .nav{padding:0 32px;height:48px;background:var(--black);border-bottom:1px solid var(--line-muted);position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;}
+  .nav-brand{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:0.04em;color:var(--ink);text-transform:uppercase;}
+  .nav-brand .dot{display:inline-block;width:6px;height:6px;border-radius:9999px;background:var(--g);margin-right:8px;vertical-align:1px;}
+  .nav-links{list-style:none;display:flex;gap:24px;margin:0;padding:0;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;}
+  .nav-links li{color:var(--ink-secondary);cursor:pointer;}
+  .nav-links li:hover{color:var(--ink);}
+
+  .hero{padding:72px 32px 56px;max-width:1080px;margin:0 auto;}
+  .hero .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:0.04em;color:var(--ink-secondary);margin:0 0 16px;text-transform:uppercase;}
+  .hero h1{font-family:var(--sans);font-size:32px;font-weight:500;line-height:1.15;color:var(--ink);margin:0 0 16px;letter-spacing:0.01em;}
+  .hero p{font-size:14px;color:var(--ink-primary);max-width:640px;margin:0 0 24px;line-height:1.5;}
+  .hero .primitives{display:flex;flex-wrap:wrap;gap:8px 20px;font-family:var(--mono);font-size:11px;color:var(--ink-secondary);letter-spacing:0.04em;margin-top:24px;}
+  .hero .primitives span::before{content:'+ ';color:var(--g);}
+
+  section{padding:56px 32px;max-width:1080px;margin:0 auto;}
+  .section-eyebrow{font-family:var(--mono);font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-secondary);margin-bottom:6px;display:block;}
+  .section-heading{font-family:var(--sans);font-size:20px;font-weight:500;letter-spacing:0.01em;margin:0 0 8px;color:var(--ink);}
+  .section-desc{color:var(--ink-secondary);max-width:640px;margin:0 0 28px;font-size:13px;line-height:1.5;}
+
+  /* Color */
+  .palette{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;}
+  .sw{border:1px solid var(--line-muted);border-radius:4px;overflow:hidden;background:var(--black);}
+  .sw-fill{height:56px;}
+  .sw-meta{padding:8px 10px;}
+  .sw-name{font-family:var(--mono);font-size:11px;color:var(--ink);margin:0;font-weight:500;}
+  .sw-val{font-family:var(--mono);font-size:10px;color:var(--ink-secondary);margin:2px 0 0;}
+  .token-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:20px;}
+  .token-table th,.token-table td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line-trace);}
+  .token-table th{font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-secondary);font-weight:500;}
+  .token-table td{color:var(--ink-primary);}
+  .token-table td:first-child{font-family:var(--mono);color:var(--ink);font-size:11px;}
+
+  /* Typography */
+  .type-row{display:grid;grid-template-columns:200px 1fr;gap:20px;padding:14px 0;border-top:1px solid var(--line-trace);align-items:baseline;}
+  .type-row:first-of-type{border-top:1px solid var(--line-muted);}
+  .type-meta{font-family:var(--mono);font-size:10px;color:var(--ink-secondary);line-height:1.5;}
+  .type-meta .lbl{color:var(--ink);}
+
+  /* Layout canvas */
+  .canvas-frame{width:480px;height:352px;border:1px solid var(--line-default);background:var(--black);position:relative;margin:0 auto 20px;max-width:100%;}
+  .canvas-safe{position:absolute;inset:12px 16px;border:1px dashed var(--line-trace);}
+  .canvas-label{position:absolute;font-family:var(--mono);font-size:10px;color:var(--ink-secondary);}
+  .spacing-row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-top:16px;}
+  .sp-bar{background:var(--g);width:24px;border-radius:2px;}
+  .sp-label{font-family:var(--mono);font-size:10px;color:var(--ink-secondary);text-align:center;margin-top:6px;}
+
+  /* Shapes & lines */
+  .radius-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px;}
+  .rb{width:72px;height:72px;border:1px solid var(--line-default);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--ink-secondary);}
+  .bw-row{display:flex;flex-direction:column;gap:12px;}
+  .bw-sample{padding:12px;background:var(--black);}
+  .bw-sample .lbl{font-family:var(--mono);font-size:10px;color:var(--ink-secondary);margin-bottom:6px;display:block;}
+
+  /* Components */
+  .comp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;}
+  .comp-card{border:1px solid var(--line-muted);border-radius:6px;padding:16px;background:var(--black);}
+  .comp-label{font-family:var(--mono);font-size:10px;color:var(--ink-secondary);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px;display:block;}
+  .demo-panel{background:var(--black);border:1px solid var(--line-muted);border-radius:6px;padding:12px;font-size:12px;color:var(--ink-primary);}
+  .demo-btn{font-family:var(--sans);font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-primary);background:transparent;border:1px solid var(--line-default);border-radius:4px;padding:0 12px;height:32px;cursor:pointer;}
+  .demo-btn.active{background:var(--surface-active);border-color:var(--line-strong);color:var(--ink);}
+  .demo-btn.disabled{color:var(--ink-disabled);border-color:var(--line-trace);cursor:not-allowed;}
+  .demo-chip{display:inline-flex;align-items:center;height:22px;padding:0 8px;font-size:10px;color:var(--ink-secondary);border:1px solid var(--line-muted);border-radius:4px;letter-spacing:0.05em;}
+  .demo-input{width:100%;height:36px;background:var(--surface-subtle);border:1px solid var(--line-default);border-radius:4px;color:var(--ink-primary);padding:0 10px;font-family:var(--sans);font-size:13px;}
+  .demo-input::placeholder{color:var(--ink-secondary);}
+  .demo-input.focus{border-color:var(--line-strong);}
+  .demo-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line-trace);font-size:12px;}
+  .demo-row:last-child{border-bottom:none;}
+  .demo-row .v{font-family:var(--mono);font-size:11px;color:var(--ink);}
+  .status{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:var(--ink-primary);border:1px dashed var(--line-strong);padding:4px 8px;border-radius:4px;letter-spacing:0.04em;}
+  .status::before{content:'▲';color:var(--ink);}
+  .demo-progress{height:1px;background:var(--line-muted);position:relative;margin:8px 0;}
+  .demo-progress .fill{position:absolute;left:0;top:0;height:1px;background:var(--line-strong);width:62%;}
+  .demo-progress .marker{position:absolute;left:62%;top:-2px;width:5px;height:5px;border-radius:9999px;background:var(--g);transform:translateX(-2.5px);}
+
+  /* Depth */
+  .depth-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+  .depth-card{padding:16px;border-radius:6px;font-size:11px;color:var(--ink-primary);min-height:80px;}
+  .depth-0{background:var(--black);}
+  .depth-1{background:var(--surface-subtle);border:1px solid var(--line-muted);}
+  .depth-2{background:var(--surface-active);border:1px solid var(--line-strong);}
+  .depth-card .lvl{font-family:var(--mono);font-size:10px;color:var(--ink);display:block;margin-bottom:6px;}
+
+  .footer{padding:24px 32px;border-top:1px solid var(--line-trace);font-family:var(--mono);font-size:10px;color:var(--ink-disabled);text-align:center;letter-spacing:0.04em;}
+
+  @media (max-width:720px){.nav-links{display:none;}.hero h1{font-size:24px;}section{padding:40px 20px;}.type-row{grid-template-columns:1fr;gap:4px;}.depth-grid{grid-template-columns:1fr;}.canvas-frame{transform:scale(0.72);transform-origin:top left;}}
+</style></head><body>
+
+<nav class="nav">
+  <div class="nav-brand"><span class="dot"></span>AIUI · 单色绿色</div>
+  <ul class="nav-links">
+    <li>亮度</li><li>排版</li><li>组件</li><li>应做 / 避免</li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <p class="eyebrow">单色绿色 · 科学界面 · 测试版</p>
+  <h1>Rokid AIUI —— 亮度与线条系统</h1>
+  <p>面向 <strong>480 × 352 px</strong> 单绿色透明 AR 显示屏（RokidGlasses1 / RokidGlasses2）的一套视觉语言。通过受控亮度的单一绿色通道，以细结构线、稀疏填充、紧凑的技术排版和空间关系呈现，更接近科学仪器，而不是一叠应用卡片。</p>
+  <div class="primitives"><span>亮度</span><span>排版</span><span>线条</span><span>留白</span></div>
+</div>
+
+<section>
+  <span class="section-eyebrow">01 — 颜色与亮度</span>
+  <h2 class="section-heading">一种绿色，六级亮度</h2>
+  <p class="section-desc">满亮度绿色是一种稀缺资源。将它留给焦点和屏幕上最重要的数值；其他内容依次降低亮度。</p>
+  <div class="palette">
+    <div class="sw"><div class="sw-fill checker" style="background:#40ff5e;"></div><div class="sw-meta"><p class="sw-name">primary</p><p class="sw-val">#40ff5e · 100%</p></div></div>
+    <div class="sw"><div class="sw-fill checker" style="background:rgba(64,255,94,0.72);"></div><div class="sw-meta"><p class="sw-name">primary-72</p><p class="sw-val">rgba · 72%</p></div></div>
+    <div class="sw"><div class="sw-fill checker" style="background:rgba(64,255,94,0.48);"></div><div class="sw-meta"><p class="sw-name">primary-48</p><p class="sw-val">rgba · 48%</p></div></div>
+    <div class="sw"><div class="sw-fill checker" style="background:rgba(64,255,94,0.24);"></div><div class="sw-meta"><p class="sw-name">primary-24</p><p class="sw-val">rgba · 24%</p></div></div>
+    <div class="sw"><div class="sw-fill checker" style="background:rgba(64,255,94,0.12);"></div><div class="sw-meta"><p class="sw-name">primary-12</p><p class="sw-val">rgba · 12%</p></div></div>
+    <div class="sw"><div class="sw-fill checker" style="background:rgba(64,255,94,0.06);"></div><div class="sw-meta"><p class="sw-name">primary-06</p><p class="sw-val">rgba · 06%</p></div></div>
+  </div>
+  <table class="token-table">
+    <thead><tr><th>语义 token</th><th>映射至</th><th>用途</th></tr></thead>
+    <tbody>
+      <tr><td>ink</td><td>primary</td><td>最高强调级别的文本 / 数值</td></tr>
+      <tr><td>ink-primary</td><td>primary-72</td><td>普通可读文本</td></tr>
+      <tr><td>ink-secondary</td><td>primary-48</td><td>描述 / 元数据</td></tr>
+      <tr><td>line-strong</td><td>primary-72</td><td>焦点边框 / 活跃结构线</td></tr>
+      <tr><td>line-default</td><td>primary-48</td><td>普通交互边界</td></tr>
+      <tr><td>line-muted</td><td>primary-24</td><td>分隔线 / 装饰辅助线</td></tr>
+      <tr><td>line-trace</td><td>primary-12</td><td>氛围辅助线</td></tr>
+      <tr><td>surface-active</td><td>primary-12</td><td>选中局部区域的色调</td></tr>
+      <tr><td>surface-subtle</td><td>primary-06</td><td>氛围分组色调</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <span class="section-eyebrow">02 — 排版</span>
+  <h2 class="section-heading">紧凑、技术化、低字重</h2>
+  <p class="section-desc">无衬线字体以 500 字重承载界面层级；等宽字体专用于数据、日志、坐标和 ID。避免默认使用 700 / 粗体作为层级手段。</p>
+  <div class="type-row"><div class="type-meta"><span class="lbl">display</span><br>sans · 22px / 500<br>tracking 0.01em</div><div style="font-size:22px;font-weight:500;letter-spacing:0.01em;color:var(--ink);">智能体概览</div></div>
+  <div class="type-row"><div class="type-meta"><span class="lbl">heading</span><br>sans · 16px / 500<br>tracking 0.01em</div><div style="font-size:16px;font-weight:500;letter-spacing:0.01em;color:var(--ink-primary);">章节标题</div></div>
+  <div class="type-row"><div class="type-meta"><span class="lbl">body</span><br>sans · 14px / 400</div><div style="font-size:14px;color:var(--ink-primary);">主要可读正文 —— 针对 480px 画布和 AR 眼镜阅读距离校准。</div></div>
+  <div class="type-row"><div class="type-meta"><span class="lbl">body-sm</span><br>sans · 12px / 400<br>tracking 0.01em</div><div style="font-size:12px;letter-spacing:0.01em;color:var(--ink-secondary);">用于表格单元格和描述的紧凑次要文本。</div></div>
+  <div class="type-row"><div class="type-meta"><span class="lbl">label</span><br>sans · 11px / 500<br>tracking 0.08em · UPPER</div><div style="font-size:11px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink);">操作标签</div></div>
+  <div class="type-row"><div class="type-meta"><span class="lbl">caption</span><br>sans · 10px / 400<br>tracking 0.05em</div><div style="font-size:10px;letter-spacing:0.05em;color:var(--ink-secondary);">元数据 · 时间戳 · 小字说明</div></div>
+  <div class="type-row"><div class="type-meta"><span class="lbl">data</span><br>mono · 13px / 500<br>tracking 0.03em</div><div style="font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:0.03em;color:var(--ink);">42.3187°N · 71.0924°W</div></div>
+  <div class="type-row"><div class="type-meta"><span class="lbl">mono</span><br>mono · 11px / 400<br>tracking 0.04em</div><div style="font-family:var(--mono);font-size:11px;letter-spacing:0.04em;color:var(--ink-secondary);">agent.id = a2ui-7f3c · status=ACTIVE</div></div>
+</section>
+
+<section>
+  <span class="section-eyebrow">03 — 布局</span>
+  <h2 class="section-heading">480 × 352 参考画布</h2>
+  <p class="section-desc">固定的全屏参考画布。安全内边距将关键内容保持在舒适的中央区域内；默认有效内容宽度为 448px。</p>
+  <div class="canvas-frame">
+    <div class="canvas-safe"></div>
+    <span class="canvas-label" style="top:6px;left:8px;">480 × 352</span>
+    <span class="canvas-label" style="bottom:6px;right:8px;">内边距 16 / 12</span>
+  </div>
+  <div class="spacing-row">
+    <div><div class="sp-bar" style="height:2px;"></div><div class="sp-label">xxs<br>2</div></div>
+    <div><div class="sp-bar" style="height:4px;"></div><div class="sp-label">xs<br>4</div></div>
+    <div><div class="sp-bar" style="height:8px;"></div><div class="sp-label">sm<br>8</div></div>
+    <div><div class="sp-bar" style="height:12px;"></div><div class="sp-label">md<br>12</div></div>
+    <div><div class="sp-bar" style="height:16px;"></div><div class="sp-label">lg<br>16</div></div>
+    <div><div class="sp-bar" style="height:24px;"></div><div class="sp-label">xl<br>24</div></div>
+    <div><div class="sp-bar" style="height:32px;"></div><div class="sp-label">xxl<br>32</div></div>
+  </div>
+</section>
+
+<section>
+  <span class="section-eyebrow">04 — 形状与线条</span>
+  <h2 class="section-heading">功能性圆角 · 默认细线</h2>
+  <p class="section-desc">不再统一使用 12px 圆角。圆角服务于功能：数据框为 0，科学视口为 2，控件为 4，面板为 6。1px 是普通结构线；2px 仅用于强焦点状态。</p>
+  <div class="radius-row">
+    <div class="rb" style="border-radius:0;">0<br>无</div>
+    <div class="rb" style="border-radius:2px;">2<br>超小</div>
+    <div class="rb" style="border-radius:4px;">4<br>小</div>
+    <div class="rb" style="border-radius:6px;">6<br>中</div>
+    <div class="rb" style="border-radius:9999px;border-color:var(--line-strong);color:var(--ink);">∞<br>完整</div>
+  </div>
+  <div class="bw-row">
+    <div class="bw-sample"><span class="lbl">细线 · 1px（默认结构线）</span><div style="height:1px;background:var(--line-default);"></div></div>
+    <div class="bw-sample"><span class="lbl">强线 · 2px（焦点 / 活跃）</span><div style="height:2px;background:var(--line-strong);"></div></div>
+    <div class="bw-sample"><span class="lbl">虚线（临时 / 错误）</span><div style="height:1px;border-top:1px dashed var(--line-strong);"></div></div>
+  </div>
+</section>
+
+<section>
+  <span class="section-eyebrow">05 — 组件</span>
+  <h2 class="section-heading">开放式面板，而非包裹式卡片</h2>
+  <p class="section-desc">默认使用开放行和稀疏边框。只有在分组能明显提升理解时，才将内容包裹在面板中。</p>
+  <div class="comp-grid">
+    <div class="comp-card"><span class="comp-label">面板</span><div class="demo-panel">围绕相关内容的稀疏边框。1px 弱边界、6px 圆角、12px 内边距。</div></div>
+    <div class="comp-card"><span class="comp-label">按钮</span><button class="demo-btn">默认</button>&nbsp;&nbsp;<button class="demo-btn active">活跃</button>&nbsp;&nbsp;<button class="demo-btn disabled">禁用</button></div>
+    <div class="comp-card"><span class="comp-label">芯片 / 标签</span><span class="demo-chip">筛选 · 在线</span>&nbsp;&nbsp;<span class="demo-chip">来源 · 智能体</span></div>
+    <div class="comp-card"><span class="comp-label">输入框</span><input class="demo-input" placeholder="搜索…"/>&nbsp;&nbsp;<input class="demo-input focus" value="focus"/></div>
+    <div class="comp-card"><span class="comp-label">列表行</span><div class="demo-row"><span>遥测流</span><span class="v">12.4 kbit</span></div><div class="demo-row"><span>活跃智能体</span><span class="v">3</span></div><div class="demo-row"><span>延迟</span><span class="v">42 ms</span></div></div>
+    <div class="comp-card"><span class="comp-label">状态</span><span class="status">错误 · 边界</span></div>
+    <div class="comp-card"><span class="comp-label">进度</span><div class="demo-progress"><div class="fill"></div><div class="marker"></div></div><span style="font-family:var(--mono);font-size:10px;color:var(--ink-secondary);">62% · 标记当前位置</span></div>
+    <div class="comp-card"><span class="comp-label">图标 · 单线</span><svg width="48" height="20" viewBox="0 0 48 20" fill="none" stroke="var(--ink-primary)" stroke-width="1"><circle cx="10" cy="10" r="5"/><path d="M22 5 L28 10 L22 15 M22 10 H34"/></svg></div>
+  </div>
+</section>
+
+<section>
+  <span class="section-eyebrow">06 — 深度</span>
+  <h2 class="section-heading">三种克制的层级</h2>
+  <p class="section-desc">不使用通用投影。深度来自透明层级、局部色调和边框强度。</p>
+  <div class="depth-grid">
+    <div class="depth-card depth-0"><span class="lvl">0 · 开放区域</span>透明 / 黑色，无边界。默认画布。</div>
+    <div class="depth-card depth-1"><span class="lvl">1 · 局部分组</span>06% 色调或 24% 边框。次级面板、输入框分组。</div>
+    <div class="depth-card depth-2"><span class="lvl">2 · 活跃分组</span>12% 色调 + 72% 边框。选中 / 聚焦区域。</div>
+  </div>
+</section>
+
+<section>
+  <span class="section-eyebrow">07 — 应做与避免</span>
+  <h2 class="section-heading">规范</h2>
+  <div class="comp-grid">
+    <div class="comp-card"><span class="comp-label" style="color:var(--ink);">应做</span><ul style="margin:0;padding-left:16px;font-size:12px;line-height:1.6;color:var(--ink-primary);"><li>将满亮度绿色留给焦点和关键数值。</li><li>使用 1px 线条，保持低视觉重量。</li><li>优先使用开放式列表行，而不是重复卡片。</li><li>每种状态都配合文本和几何提示。</li><li>日志、ID 和坐标使用等宽字体。</li></ul></div>
+    <div class="comp-card"><span class="comp-label" style="color:var(--ink-disabled);">避免</span><ul style="margin:0;padding-left:16px;font-size:12px;line-height:1.6;color:var(--ink-secondary);"><li>不要将界面重构成一叠发光卡片。</li><li>不要让每个容器默认使用 12px 圆角。</li><li>不要将 2–4px 边框作为常规界面装饰。</li><li>不要只通过亮度表达状态。</li><li>不要引入第二种色相。</li></ul></div>
+  </div>
+</section>
+
+<div class="footer">Rokid AIUI · 单色绿色科学界面 · 参考画布 480 × 352 · 透明黑色上的单绿色通道</div>
+
+</body></html>
