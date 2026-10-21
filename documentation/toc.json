@@ -1199,7 +1199,11 @@
     "children": [
       {
         "id": "latest",
-        "label": "最新版本"
+        "label": "AIUI 运行时"
+      },
+      {
+        "id": "studio",
+        "label": "AIUI Studio"
       }
     ],
     "slug": "changelog"

@@ -1007,7 +1007,11 @@
     "children": [
       {
         "id": "latest",
-        "label": "Latest Version"
+        "label": "AIUI Runtime"
+      },
+      {
+        "id": "studio",
+        "label": "AIUI Studio"
       }
     ],
     "slug": "changelog"
