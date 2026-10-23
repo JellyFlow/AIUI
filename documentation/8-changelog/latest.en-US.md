@@ -1,15 +1,13 @@
 # v0.19.0
 
-AIUI 0.19.0 adds WebRTC audio and data communication and network state awareness, while expanding streaming data processing, cryptography, drawing, styles, and animation. It also improves data updates, resource loading, and memory use on complex pages, and fixes navigation, lifecycle, template, and core API behavior.
+AIUI 0.19.0 adds network state awareness, while expanding streaming data processing, cryptography, drawing, styles, and animation. It also improves data updates, resource loading, and memory use on complex pages, and fixes navigation, lifecycle, template, and core API behavior.
 
 ## Development Capabilities
 
-- **Widget Open Parameters**: URL query parameters supplied when opening a Widget with `window.open()` now reach `onCreate(options)`, so a Widget can display a specific city, record, or task.
 - **Clearer Component Loading**: Missing components now report path errors directly instead of misleading default-export errors. Resource loading is unified, and nested component path resolution is more consistent. Directory entry references should explicitly include `index`.
 
 ## APIs, Networking, and Speech
 
-- **WebRTC Audio and Data Communication**: Added `RTCPeerConnection` and `RTCDataChannel` for audio, text, and binary data between Android, desktop, and Web environments that support WebRTC, with STUN and TURN support. This capability requires device network connectivity, and applications provide their own signaling. It supports audio tracks only and is unavailable in Agent Workers.
 - **More Complete Streams**: Added `tee()`, BYOB byte stream readers, `ReadableStream.from()`, and asynchronous iteration. Improved backpressure, cancellation, and error propagation in `pipeTo()` and `pipeThrough()` for processing response streams.
 - **Streaming Text Encoding**: Added `TextEncoderStream` and `TextDecoderStream` for continuous encoding and decoding across chunks. `TextEncoder.encodeInto()` writes into a supplied buffer and reports how much input it read and how many bytes it wrote.
 
