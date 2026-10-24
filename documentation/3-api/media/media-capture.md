@@ -278,6 +278,78 @@ await recorder.start({
 
 Web 的每个 `event.data` 都是编码后的 `Blob`。`wx` 的 `frameBuffer` 是 `ArrayBuffer`；Opus 模式还会先通过 `onHeader()` 提供初始化 header。处理流式音频时，应按收到的顺序保存或发送 header 和音频分片。
 
+## 选择录音音源
+
+默认录音采集麦克风，并使用针对设备佩戴者本人声音优化的拾音模式。需要采集远处的声音或系统正在播放的音频时，应在 `getUserMedia()` 中选择音源和拾音模式，再把返回的流交给 `MediaRecorder`。
+
+下面的示例请求远场麦克风录音，并读取轨道实际采用的设置：
+
+```javascript
+const stream = await navigator.mediaDevices.getUserMedia({
+  audio: {
+    captureSource: 'microphone',
+    microphoneMode: 'far-field',
+    echoCancellation: true,
+  },
+});
+const [audioTrack] = stream.getAudioTracks();
+console.log('实际采集设置', audioTrack.getSettings());
+
+function releaseTracks() {
+  stream.getTracks().forEach((track) => track.stop());
+}
+
+let recorder;
+try {
+  recorder = new MediaRecorder(stream, { mimeType: 'audio/wav' });
+  recorder.addEventListener('dataavailable', ({ data }) => {
+    console.log('收到音频分片', data.size);
+  });
+  recorder.addEventListener('stop', releaseTracks);
+  recorder.addEventListener('error', releaseTracks);
+  recorder.start(250);
+} catch (error) {
+  releaseTracks();
+  throw error;
+}
+// 用户完成录音后调用 recorder.stop()。
+```
+
+支持的拾音模式及默认值见[音频采集约束](#音频采集约束)。不同设备支持的模式可能不同；请求不可用的音源或模式时，`getUserMedia()` 会以 `OverconstrainedError` 拒绝，应向用户提供可用的录音方式或错误提示。
+
+### 录制系统播放音频
+
+需要录制设备正在播放的混音时，将音源设为 `system-audio`。此时不要设置麦克风拾音模式或开启回声消除：
+
+```javascript
+const stream = await navigator.mediaDevices.getUserMedia({
+  audio: { captureSource: 'system-audio' },
+});
+
+function releaseTracks() {
+  stream.getTracks().forEach((track) => track.stop());
+}
+
+let recorder;
+try {
+  recorder = new MediaRecorder(stream, { mimeType: 'audio/wav' });
+  recorder.addEventListener('dataavailable', ({ data }) => {
+    console.log('收到系统音频分片', data.size);
+  });
+  recorder.addEventListener('stop', releaseTracks);
+  recorder.addEventListener('error', releaseTracks);
+  recorder.start(250);
+} catch (error) {
+  releaseTracks();
+  throw error;
+}
+// 用户完成录音后调用 recorder.stop()。
+```
+
+系统音频采集依赖当前设备支持，不会自动改为录制麦克风。`MediaRecorder` 保留输入轨道已选定的音源和拾音模式；需要切换时，应结束当前录制、停止旧轨道，再按新约束请求媒体流。
+
+`wx.media.getRecorderManager().start()` 当前使用默认麦克风，不提供音源或拾音模式选择参数。需要选择音源时使用以上 Web API。
+
 ## 录制视频流
 
 录制视频时，需要同时请求摄像头和麦克风，再把包含两种轨道的 `MediaStream` 交给 `MediaRecorder`。示例会选择当前可用的视频格式，每秒产生一个视频分片；停止后把所有分片合并为一个可保存或上传的 `Blob`。
@@ -352,7 +424,7 @@ recorder.start(1000);
 
 #### `getUserMedia(constraints)`
 
-请求音频或视频媒体流，返回 `Promise<MediaStream>`。`constraints.audio` 与 `constraints.video` 可以是 `boolean` 或约束对象；至少启用一种媒体类型。当前约束字段包括 `deviceId`、`sampleRate`、`channelCount`、`echoCancellation`、`facingMode`、`width`、`height` 与 `frameRate`。
+请求音频或视频媒体流，返回 `Promise<MediaStream>`。`constraints.audio` 与 `constraints.video` 可以是 `boolean` 或约束对象；至少启用一种媒体类型。当前约束字段包括 `deviceId`、`captureSource`、`microphoneMode`、`sampleRate`、`channelCount`、`echoCancellation`、`facingMode`、`width`、`height` 与 `frameRate`。音源与拾音模式的字段定义见[音频采集约束](#音频采集约束)。
 
 约束表示请求目标，最终采用的参数应通过轨道的 `getSettings()` 读取。权限被拒绝、设备不可用或约束无法满足时，Promise 会拒绝。
 
@@ -373,6 +445,38 @@ const stream = await navigator.mediaDevices.getUserMedia({
 #### `getSupportedConstraints()`
 
 返回 `MediaTrackSupportedConstraints`。对象中值为 `true` 的字段可以出现在 `getUserMedia()` 的约束对象中；它只表示字段可识别，不保证当前设备能够满足任意取值。
+
+### 音频采集约束
+
+以下字段放在 `getUserMedia({ audio: { ... } })` 中。它们选择输入音频，`MediaRecorder` 的 `options.mimeType` 则选择输出编码格式。
+
+#### `captureSource`
+
+可选的 `'microphone' | 'system-audio'`，也接受 `{ exact?: AudioCaptureSource, ideal?: AudioCaptureSource }`，默认 `'microphone'`。
+
+- `'microphone'`：采集麦克风声音，可通过 `microphoneMode` 选择拾音模式。
+- `'system-audio'`：采集设备正在播放的系统混音，不采集环境声音。
+
+无效或当前设备不支持的音源会使请求以 `OverconstrainedError` 拒绝。`deviceId` 用于选择具体输入设备，与音源类型不同。
+
+#### `microphoneMode`
+
+可选的 `MicrophoneCaptureMode`，也接受 `{ exact?: MicrophoneCaptureMode, ideal?: MicrophoneCaptureMode }`。只适用于麦克风音源；省略时使用 `'wearer'`。
+
+| 值 | 拾音用途 |
+| --- | --- |
+| `'wearer'` | 优先采集设备佩戴者本人的声音。 |
+| `'far-field'` | 采集远距离的语音或声音。 |
+| `'near-field'` | 采集近距离的语音或声音。 |
+| `'omnidirectional'` | 不偏向特定方向的全向采集。 |
+
+无效或当前设备不支持的模式会使请求以 `OverconstrainedError` 拒绝。与 `captureSource: 'system-audio'` 组合也会拒绝。
+
+#### `echoCancellation`
+
+可选的 `boolean`，请求是否对麦克风输入进行回声消除。省略时不指定此约束。不能将 `true` 与 `captureSource: 'system-audio'` 组合，否则请求以 `OverconstrainedError` 拒绝。
+
+使用音频轨道的 `getSettings()` 读取实际的 `captureSource`、`microphoneMode` 和 `echoCancellation`。`getSupportedConstraints()` 只表明字段可识别，不枚举设备支持的音源或模式。
 
 ### `MediaStream`
 
@@ -533,6 +637,8 @@ bitmap.close();
 #### `new MediaRecorder(stream, options?)`
 
 为指定 `MediaStream` 创建录制器。构造后 `state` 为 `'inactive'`。`options.mimeType` 用于选择输出格式；省略时默认使用 `audio/wav`。AIUI 当前支持 `audio/wav`、`audio/ogg;codecs=opus`、`video/webm;codecs=vp8,opus` 与 `video/mp4`，不支持的格式会抛出 `TypeError`。开始录制时，流中必须至少有一条音频或视频轨道。
+
+音源和麦克风拾音模式由输入轨道决定，应在 `getUserMedia()` 中设置，不能通过此构造函数切换。
 
 #### `state`
 

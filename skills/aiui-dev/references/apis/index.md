@@ -11,15 +11,15 @@ Never infer full browser or WeChat compatibility from a familiar API name. If a 
 | App, Page, Widget, Agent Worker, Page data | [framework APIs](./framework.md) and [framework concepts](../framework.md) |
 | Widget instance, `setData`, size, attachment lifecycle | [Widget API](./widget.md) |
 | Agent Worker instance, `onOpen`, `waitUntil`, global scope | [Agent Worker API](./agent-worker.md) |
-| `navigator` identity, language, device capabilities | [Navigator](./navigator.md) |
+| `navigator` identity, language, network status, device capabilities | [Navigator](./navigator.md) |
 | `window` viewport, Widget routing, closing, Base64 | [Window](./window.md) |
 | `fetch`, `Headers`, `Response`, Streams, `WebSocket`, `File`, `FormData`, URL, encoding, Crypto, Performance | [Web APIs](./web.md) |
-| `AudioPlayer`, `Sound`, Web Audio, microphone/camera streams, recording, video | [media APIs](./media.md) |
+| `AudioPlayer`, text tracks, `Sound`, Web Audio, microphone/camera streams, recording sources (`captureSource`, `microphoneMode`), video | [media APIs](./media.md) |
 | Language model, image input, speech synthesis, `SpeechRecognition`, `SpeechRecognitionSession` | [AI and speech APIs](./ai.md) |
 | BLE client, accelerometer, orientation, gyroscope | [device APIs](./device.md) |
 | `navigator.geolocation`, current position, location watching | [Geolocation API](./geo/geolocation.md) |
 | GPX route parsing, creation, and export | [GPXDocument API](./geo/gpx-document.md) |
-| `Canvas`, 2D drawing, `Path2D`, pixels, images, `BarcodeDetector` | [Canvas and barcode APIs](./canvas.md) |
+| `Canvas`, 2D drawing, `Path2D`, text metrics, image export, `BarcodeDetector` | [Canvas and barcode APIs](./canvas.md) |
 | `wx.request`, sockets, Event Source, storage, navigation, camera, recorder, speech | [wx APIs](./wx.md) |
 
 ## Entry-point Summary

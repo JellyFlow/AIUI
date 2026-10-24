@@ -412,7 +412,7 @@
           {
             "id": "pseudo-element",
             "label": "伪元素",
-            "status": "unsupported"
+            "status": "partial"
           },
           {
             "id": "property",
@@ -430,6 +430,10 @@
             "id": "at-rule",
             "label": "@规则",
             "status": "partial"
+          },
+          {
+            "id": "animation",
+            "label": "动画与变换"
           }
         ],
         "hasIndex": true
@@ -1189,7 +1193,11 @@
     "children": [
       {
         "id": "latest",
-        "label": "最新版本"
+        "label": "AIUI 运行时"
+      },
+      {
+        "id": "studio",
+        "label": "AIUI Studio"
       }
     ],
     "slug": "changelog"

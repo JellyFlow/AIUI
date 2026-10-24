@@ -36,6 +36,7 @@ AIUI 积极拥护并主要支持 **WinterCG (Web-interoperable Runtimes Communit
 - **[数据流](/AIUI/api/network-streams)**：分段读取、写入和转换数据。
 - **[BarcodeDetector](/AIUI/api/device-barcode)**：条码检测接口。
 
+
 ## 核心设计理念
 
 AIUI 的 Web API 实现遵循以下原则：

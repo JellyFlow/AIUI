@@ -11,6 +11,7 @@ AIUI 提供音频播放、短音效、音频处理、视频播放和媒体采集
 | 生成声音、播放 PCM 数据，或者分析麦克风音量、波形和频率 | [音频处理](/AIUI/api/media-web-audio) |
 | 在页面中播放视频并控制播放状态 | [视频播放](/AIUI/api/media-video) |
 | 使用麦克风或相机完成拍照、录音和录像 | [媒体采集](/AIUI/api/media-media-capture) |
+| 选择麦克风拾音模式，或录制设备正在播放的系统音频 | [选择录音音源](/AIUI/api/media-media-capture#选择录音音源) |
 
 ## 继续阅读
 

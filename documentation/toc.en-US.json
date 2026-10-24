@@ -412,7 +412,7 @@
           {
             "id": "pseudo-element",
             "label": "Pseudo Elements",
-            "status": "unsupported"
+            "status": "partial"
           },
           {
             "id": "property",
@@ -430,6 +430,10 @@
             "id": "at-rule",
             "label": "At-rules",
             "status": "partial"
+          },
+          {
+            "id": "animation",
+            "label": "Animations and Transforms"
           }
         ],
         "hasIndex": true
@@ -997,7 +1001,11 @@
     "children": [
       {
         "id": "latest",
-        "label": "Latest Version"
+        "label": "AIUI Runtime"
+      },
+      {
+        "id": "studio",
+        "label": "AIUI Studio"
       }
     ],
     "slug": "changelog"

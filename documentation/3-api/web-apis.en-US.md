@@ -36,6 +36,7 @@ To help developers find documentation faster by usage scenario, Web-standard cap
 - **[Streams](/AIUI/api/network-streams)**: Read, write, and transform data in chunks.
 - **[BarcodeDetector](/AIUI/api/device-barcode)**: Barcode detection API.
 
+
 ## Core Design Principles
 
 AIUI's Web API implementation follows these principles:

@@ -278,6 +278,78 @@ await recorder.start({
 
 Each Web `event.data` value is an encoded `Blob`. The `wx` `frameBuffer` is an `ArrayBuffer`; in Opus mode, `onHeader()` first provides an initialization header. Store or send the header and audio chunks in the order received when processing streaming audio.
 
+## Select a Recording Source
+
+By default, recording captures the microphone in a mode optimized for the device wearer. To capture distant sounds or audio playing on the device, select the source and microphone mode in `getUserMedia()`, then pass the returned stream to `MediaRecorder`.
+
+This example requests far-field microphone recording and reads the settings actually applied to the track:
+
+```javascript
+const stream = await navigator.mediaDevices.getUserMedia({
+  audio: {
+    captureSource: 'microphone',
+    microphoneMode: 'far-field',
+    echoCancellation: true,
+  },
+});
+const [audioTrack] = stream.getAudioTracks();
+console.log('Actual capture settings', audioTrack.getSettings());
+
+function releaseTracks() {
+  stream.getTracks().forEach((track) => track.stop());
+}
+
+let recorder;
+try {
+  recorder = new MediaRecorder(stream, { mimeType: 'audio/wav' });
+  recorder.addEventListener('dataavailable', ({ data }) => {
+    console.log('Received audio chunk', data.size);
+  });
+  recorder.addEventListener('stop', releaseTracks);
+  recorder.addEventListener('error', releaseTracks);
+  recorder.start(250);
+} catch (error) {
+  releaseTracks();
+  throw error;
+}
+// Call recorder.stop() when the user finishes recording.
+```
+
+See [Audio Capture Constraints](#audio-capture-constraints) for microphone modes and defaults. Supported modes vary by device. `getUserMedia()` rejects with `OverconstrainedError` when a requested source or mode is unavailable; offer an available recording option or display an error.
+
+### Record System Playback Audio
+
+To record the mix playing on the device, set the source to `system-audio`. Omit the microphone mode and do not enable echo cancellation:
+
+```javascript
+const stream = await navigator.mediaDevices.getUserMedia({
+  audio: { captureSource: 'system-audio' },
+});
+
+function releaseTracks() {
+  stream.getTracks().forEach((track) => track.stop());
+}
+
+let recorder;
+try {
+  recorder = new MediaRecorder(stream, { mimeType: 'audio/wav' });
+  recorder.addEventListener('dataavailable', ({ data }) => {
+    console.log('Received system audio chunk', data.size);
+  });
+  recorder.addEventListener('stop', releaseTracks);
+  recorder.addEventListener('error', releaseTracks);
+  recorder.start(250);
+} catch (error) {
+  releaseTracks();
+  throw error;
+}
+// Call recorder.stop() when the user finishes recording.
+```
+
+System audio capture requires device support and does not automatically fall back to the microphone. `MediaRecorder` preserves the source and microphone mode of its input tracks. To change them, end the recording, stop the old tracks, and request a new stream with the new constraints.
+
+`wx.media.getRecorderManager().start()` currently uses the default microphone and has no source or microphone mode selection parameters. Use the Web APIs above when source selection is required.
+
 ## Record a Video Stream
 
 To record video, request both the camera and microphone and pass the `MediaStream` containing both tracks to `MediaRecorder`. The example selects an available video format and produces one video chunk per second. After recording stops, it combines all chunks into a `Blob` that can be saved or uploaded.
@@ -352,7 +424,7 @@ Each `dataavailable` event provides an encoded video chunk. Combine the complete
 
 #### `getUserMedia(constraints)`
 
-Requests an audio or video media stream and returns `Promise<MediaStream>`. `constraints.audio` and `constraints.video` can be booleans or constraint objects; enable at least one media type. Current fields include `deviceId`, `sampleRate`, `channelCount`, `echoCancellation`, `facingMode`, `width`, `height`, and `frameRate`.
+Requests an audio or video media stream and returns `Promise<MediaStream>`. `constraints.audio` and `constraints.video` can be booleans or constraint objects; enable at least one media type. Current fields include `deviceId`, `captureSource`, `microphoneMode`, `sampleRate`, `channelCount`, `echoCancellation`, `facingMode`, `width`, `height`, and `frameRate`. See [Audio Capture Constraints](#audio-capture-constraints) for source and microphone mode definitions.
 
 Constraints express requested targets; read the settings ultimately selected for each track with `getSettings()`. The promise rejects when permission is denied, a device is unavailable, or the constraints cannot be satisfied.
 
@@ -373,6 +445,38 @@ const stream = await navigator.mediaDevices.getUserMedia({
 #### `getSupportedConstraints()`
 
 Returns `MediaTrackSupportedConstraints`. A field whose value is `true` can be used in a `getUserMedia()` constraint object; this only means that AIUI recognizes the field, not that the current device can satisfy every possible value.
+
+### Audio Capture Constraints
+
+Pass these fields in `getUserMedia({ audio: { ... } })`. They select the audio input; `MediaRecorder`'s `options.mimeType` selects the output encoding.
+
+#### `captureSource`
+
+Optional `'microphone' | 'system-audio'`, also accepting `{ exact?: AudioCaptureSource, ideal?: AudioCaptureSource }`. Defaults to `'microphone'`.
+
+- `'microphone'`: captures microphone audio, with an optional `microphoneMode`.
+- `'system-audio'`: captures the system playback mix rather than environmental sound.
+
+An invalid source or one unsupported by the current device rejects the request with `OverconstrainedError`. `deviceId` selects a specific input device and is separate from the source type.
+
+#### `microphoneMode`
+
+Optional `MicrophoneCaptureMode`, also accepting `{ exact?: MicrophoneCaptureMode, ideal?: MicrophoneCaptureMode }`. Applies only to microphone capture and defaults to `'wearer'`.
+
+| Value | Capture purpose |
+| --- | --- |
+| `'wearer'` | Prioritizes the device wearer's voice. |
+| `'far-field'` | Captures distant speech or sounds. |
+| `'near-field'` | Captures nearby speech or sounds. |
+| `'omnidirectional'` | Captures sound without favoring a particular direction. |
+
+An invalid or unsupported mode rejects the request with `OverconstrainedError`. Combining it with `captureSource: 'system-audio'` also rejects.
+
+#### `echoCancellation`
+
+Optional `boolean` requesting whether echo cancellation is applied to microphone input. Omitting it leaves the constraint unspecified. Combining `true` with `captureSource: 'system-audio'` rejects the request with `OverconstrainedError`.
+
+Read the audio track's `getSettings()` for the actual `captureSource`, `microphoneMode`, and `echoCancellation`. `getSupportedConstraints()` only indicates recognized fields; it does not enumerate device-supported sources or modes.
 
 ### `MediaStream`
 
@@ -533,6 +637,8 @@ bitmap.close();
 #### `new MediaRecorder(stream, options?)`
 
 Creates a recorder for the specified `MediaStream`. Its initial `state` is `'inactive'`. `options.mimeType` selects the output format and defaults to `audio/wav`. AIUI currently supports `audio/wav`, `audio/ogg;codecs=opus`, `video/webm;codecs=vp8,opus`, and `video/mp4`; an unsupported value throws a `TypeError`. The stream must contain at least one audio or video track when recording starts.
+
+The input tracks determine the source and microphone mode. Set them in `getUserMedia()`; this constructor cannot switch them.
 
 #### `state`
 

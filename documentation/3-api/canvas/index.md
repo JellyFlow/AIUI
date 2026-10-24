@@ -1,16 +1,17 @@
 # 画布 (Canvas)
 
-AIUI 提供了一套遵循 Web 标准的 Canvas 2D 绘图接口。你可以通过 `canvas` 组件的 `getContext('2d')` 方法获取绘图上下文。
+AIUI 提供了一套遵循 Web 标准的 Canvas 2D 绘图接口。绘制页面中的 `<canvas>` 时，在组件挂载后通过 `wx.createCanvasContext('myCanvas')` 获取绘图上下文，绘制后调用 `ctx.flush()` 提交。参数是元素 ID，不带 `#` 前缀。
+
+下方页面绘图示例使用以下组件：
+
+```xml
+<canvas id="myCanvas" width="400" height="300"></canvas>
+```
 
 ## 绘制基本图形
 
-<!-- aiui-api-style default=web -->
-
-**Web**
-
-```javascript api-style=web
-const canvas = this.selectComponent('#myCanvas');
-const ctx = canvas.getContext('2d');
+```javascript
+const ctx = wx.createCanvasContext('myCanvas');
 
 // 绘制红色矩形
 ctx.fillStyle = 'red';
@@ -28,35 +29,14 @@ ctx.beginPath();
 ctx.ellipse(350, 60, 50, 30, Math.PI / 4, 0, Math.PI * 2);
 ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
 ctx.fill();
+
+ctx.flush();
 ```
-
-**wx**
-
-```javascript api-style=wx
-const ctx = wx.createCanvasContext('myCanvas');
-
-ctx.fillStyle = 'red';
-ctx.fillRect(10, 10, 100, 100);
-
-ctx.beginPath();
-ctx.arc(200, 60, 50, 0, Math.PI * 2);
-ctx.strokeStyle = 'blue';
-ctx.lineWidth = 5;
-ctx.stroke();
-
-ctx.beginPath();
-ctx.ellipse(350, 60, 50, 30, Math.PI / 4, 0, Math.PI * 2);
-ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
-ctx.fill();
-```
-
-<!-- /aiui-api-style -->
 
 ## 使用渐变
 
 ```javascript
-const canvas = this.selectComponent('#myCanvas');
-const ctx = canvas.getContext('2d');
+const ctx = wx.createCanvasContext('myCanvas');
 
 // 创建线性渐变
 const gradient = ctx.createLinearGradient(0, 0, 300, 0);
@@ -66,13 +46,14 @@ gradient.addColorStop(1, 'green');
 
 ctx.fillStyle = gradient;
 ctx.fillRect(10, 150, 300, 50);
+
+ctx.flush();
 ```
 
 ## 绘制文本
 
 ```javascript
-const canvas = this.selectComponent('#myCanvas');
-const ctx = canvas.getContext('2d');
+const ctx = wx.createCanvasContext('myCanvas');
 
 ctx.font = '30px sans-serif';
 ctx.textAlign = 'center';
@@ -83,13 +64,14 @@ ctx.fillText('Hello AIUI Canvas', 200, 250);
 
 ctx.strokeStyle = '#40FF5E';
 ctx.strokeText('Hello AIUI Canvas', 200, 250);
+
+ctx.flush();
 ```
 
 ## 图像变换与保存状态
 
 ```javascript
-const canvas = this.selectComponent('#myCanvas');
-const ctx = canvas.getContext('2d');
+const ctx = wx.createCanvasContext('myCanvas');
 
 ctx.save(); // 保存当前状态
 
@@ -101,21 +83,29 @@ ctx.fillStyle = 'orange';
 ctx.fillRect(-25, -25, 50, 50);
 
 ctx.restore(); // 恢复到平移/旋转/缩放之前的状态
+
+ctx.flush();
 ```
 
 ## 绘制圆角路径并检查位置
 
 ```javascript
+const ctx = wx.createCanvasContext('myCanvas');
+
 ctx.beginPath();
 ctx.roundRect(20, 20, 180, 80, 12);
 ctx.fill();
 
 console.log(ctx.isPointInPath(40, 40));
+
+ctx.flush();
 ```
 
 需要复用路径时，可以创建 `Path2D`，再传给 `fill()`、`stroke()`、`clip()`、`isPointInPath()` 或 `isPointInStroke()`。
 
 ## 导出 Canvas 图像
+
+使用 `new Canvas(width, height)` 创建离屏画布，再通过 `getContext('2d')` 获取上下文。
 
 ```javascript
 const canvas = new Canvas(320, 200);
@@ -134,7 +124,42 @@ console.log(blob.type, blob.size);
 `type` 会回落为 `image/png`；JPEG 会把透明像素合成到黑色背景，PNG 会保留
 alpha 通道。
 
+## 测量文字与设置圆角
+
+```javascript
+const canvas = new Canvas(240, 120);
+const ctx = canvas.getContext('2d');
+ctx.font = '20px sans-serif';
+const metrics = ctx.measureText('你好 AIUI');
+console.log(metrics.width, metrics.actualBoundingBoxAscent, metrics.actualBoundingBoxDescent);
+ctx.beginPath();
+ctx.roundRect(10, 10, 200, 80, [{ x: 16, y: 8 }, 4]);
+ctx.stroke();
+```
+
+`measureText()` 的指标与文字布局相对应，包含边界与基线信息。圆角可使用数字、`{ x, y }` 椭圆半径或包含 1–4 项的可迭代对象。`roundRect()` 只加入路径，仍需 `fill()` / `stroke()`。
+
+已调用 `close()` 的 `ImageBitmap` 不能继续传给 `drawImage()`，会抛出 `InvalidStateError`。
+
 ## API Reference
+
+### 页面画布
+
+#### `wx.createCanvasContext(canvasId: string)`
+
+返回已挂载的页面 `<canvas>` 的 `CanvasRenderingContext2D`。`canvasId` 是元素 ID，不带 `#` 前缀。找不到对应画布时返回 `null`。
+
+### 提交页面绘图
+
+#### `ctx.flush()`
+
+提交待处理的绘制操作。通过 `wx.createCanvasContext()` 获取上下文后，在一批绘制操作结束时调用：
+
+```javascript
+const ctx = wx.createCanvasContext('myCanvas');
+ctx.fillRect(10, 10, 100, 50);
+ctx.flush();
+```
 
 ### 接口说明
 
@@ -250,3 +275,17 @@ alpha 通道。
 #### Path2D
 
 `new Path2D(path?)` 可以创建空路径、复制现有路径或解析 SVG path 字符串。支持常用路径方法和 `addPath(path, transform?)`。
+
+### `CanvasRenderingContext2D`
+
+#### `ctx.measureText(text)`
+
+返回 `TextMetrics`，包含 `width`、实际文字边界、字体边界、em 高度与基线指标。指标受当前字体、对齐与文字方向影响。
+
+#### `ctx.roundRect(x, y, width, height, radii?)`
+
+加入圆角矩形路径，默认半径为 `0`。半径可为数字、`{ x, y }` 或 1–4 项可迭代对象；负半径、空集合或超过四项抛出 `RangeError`。`Path2D.roundRect()` 使用相同规则。
+
+#### `ctx.drawImage(image, ...args)`
+
+绘制图像，支持 3、5、9 参数形式。已关闭的 `ImageBitmap` 抛出 `InvalidStateError`，应重新创建图像后再绘制。
