@@ -36,11 +36,25 @@ export default {
 };
 ```
 
+## 使用 Agent 对话
+
+App 方法中使用 `this.getAgent()`，Page 脚本中使用 `getApp().getAgent()`，可发布上下文并发送消息或卡片。能力检查、确认接收的含义和清理要求，详见 [Agent 会话](/AIUI/api/ai-agent-session)。
+
 ## API Reference
 
 ### `getApp()`
 
 返回当前 `App` 实例，可用于从页面或组件访问应用级状态与方法。
+
+### 会话入口
+
+#### `app.getAgent()`
+
+返回当前 Agent 会话，不创建模型或新对话。会话可能不可用或缺少特定操作，详见 [Agent 会话](/AIUI/api/ai-agent-session)。
+
+#### `app.environment`
+
+独立的只读公开环境，包含主题、语言、显示模式、安全区域及 `change` 事件；不自动发布模型上下文，也不改变渲染或语言配置，详见 [Agent 会话](/AIUI/api/ai-agent-session)。
 
 ### `app.postMessage(data, options?)`
 

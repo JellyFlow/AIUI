@@ -1,3 +1,124 @@
+# v0.20.0
+
+AIUI 0.20.0 让智能体更好地参与当前对话：将用户正在查看的内容提供给 Agent，把业务结果展示为卡片，并在状态变化时更新同一张卡片。本次更新还带来权限状态查询、更完整的 WebAssembly 计算能力，以及图片着色和状态栏显示控制，帮助开发者构建连贯的对话与界面体验。
+
+## 让页面内容参与对话
+
+新增 Agent 会话 API。应用可以显式提供用户当前选择的商品、正在浏览的内容等背景信息，再发送用户消息，让对话围绕当前任务继续进行。
+
+```javascript
+const agent = getApp().getAgent();
+const selection = await agent.provideContext({
+  key: 'selection',
+  description: 'The product selected by the user',
+  value: { selectedSku: 'DEMO' },
+});
+await agent.conversation.sendMessage({
+  role: 'user',
+  content: [{ type: 'text', text: '请介绍当前选中的商品。' }],
+});
+```
+
+用户更换选择时调用 `selection.update(value)`，业务结束后调用 `selection.dispose()`。应用状态不会自动发布；发布成功表示会话确认接收，不保证模型已经读取。还可以通过会话调用远端工具、读取资源，完整用法见 [Agent 会话](/AIUI/api/ai-agent-session)。
+
+## 用可更新卡片呈现业务结果
+
+订单进度、库存、查询结果等内容可以展示在对话卡片中。通过返回的句柄更新同一张卡片，用户可以继续查看最新结果。
+
+```javascript
+const conversation = getApp().getAgent().conversation;
+const card = await conversation.sendCard({
+  title: '商品 DEMO',
+  data: { sku: 'DEMO', available: 100 },
+});
+await card.update({
+  title: '商品 DEMO',
+  data: { sku: 'DEMO', available: 99 },
+});
+```
+
+更新会完整替换卡片内容；省略的可选字段会清空。卡片用于展示，不会自动成为模型输入，需要模型使用的数据应另行发布为上下文。使用前可从 `agent.capabilities.operations` 检查当前会话支持的操作，详见 [Agent 会话](/AIUI/api/ai-agent-session)。
+
+## 感知权限状态，给用户明确反馈
+
+使用麦克风、相机或定位前，可以先读取权限状态，并在权限变化时更新界面。查询不会弹出授权界面，也不会开始采集。
+
+```javascript
+const microphone = await navigator.permissions.query({ name: 'microphone' });
+console.log(microphone.state); // 'granted'、'denied' 或 'prompt'
+microphone.addEventListener('change', () => {
+  console.log('麦克风权限：', microphone.state);
+});
+```
+
+申请使用能力时，仍需调用对应的采集或定位 API，并处理授权失败。应用清单声明与系统授权要求保持不变，详见[权限状态](/AIUI/api/permissions)。
+
+## 在应用中复用 WebAssembly 计算模块
+
+WebAssembly 现在支持更完整的模块复用、JavaScript 函数导入，以及 Memory、Table、Global 资源。可以把计算逻辑封装成模块，在原生和 Web 环境使用相同的受支持 API 子集。
+
+将导出 `add` 函数的 `math.wasm` 放入 `assets/` 后，可在 `app.js` 中加载并复用：
+
+```javascript
+import math from './assets/math.wasm';
+
+const { module, instance } = await WebAssembly.instantiate(math);
+console.log(instance.exports.add(13, 29)); // 42
+
+const another = await WebAssembly.instantiate(module);
+console.log(another.exports.add(1, 2)); // 3
+```
+
+同时支持同步 Module/Instance 构造、`i64` BigInt，以及从有效 `application/wasm` 网络响应加载的 `compileStreaming()` / `instantiateStreaming()`。构建方式、资源配额和支持范围见 [WebAssembly](/AIUI/api/webassembly)。
+
+## 让界面更贴合内容
+
+### 为图片统一着色
+
+新增 `tint-color`，可让 SVG 和栅格图片使用指定颜色，并保留原图透明区域，适合统一图标或状态标记的视觉风格。
+
+```xml
+<image
+  src="/assets/plane.svg"
+  tint-color="#adadad"
+  mode="aspectFit"
+/>
+```
+
+A2UI 图片也支持 `tintColor`，以及 `contain`、`cover`、`fill` 三种 `fit`；显式 `mode` 优先。SVG 的 `--image-svg-tint` 主题颜色优先于显式着色，规则见 [Image](/AIUI/components/image) 和 [A2UI](/AIUI/components/a2ui)。
+
+### 按页面任务调整状态栏
+
+阅读、演示等场景可以请求隐藏状态栏，结束后恢复默认偏好。返回状态区分请求的偏好与实际可见性，便于应用在无法控制时继续正常显示。
+
+```javascript
+export default {
+  async enterReading() {
+    const state = await this.setPreferredStatusBarVisibility('hidden');
+    console.log(state.supported, state.visible);
+  },
+  async leaveReading() {
+    await this.resetPreferredStatusBarVisibility();
+  },
+};
+```
+
+仅当前聚焦的前台 `_blank` 页面可使用此能力；偏好处理成功不保证实际显隐相同。查询状态和变化通知见 [Page](/AIUI/api/framework-page)。
+
+## 日常体验改进
+
+- **网络与长连接更稳定**：取消请求后及时释放资源，修复连续请求名额耗尽、超时未计入排队时间和 WebSocket 读写相互阻塞的问题。
+- **动画在内容更新后继续播放**：GIF 保留播放位置和循环次数，有限循环结束后保留末帧；A2UI 更新复用相同类型的图片，减少重复加载。
+- **资源和请求处理更方便**：GET/HEAD Fetch 可读取包根路径及包内 `file:///` URL；`Request` 新增 `text()`、`json()`、`arrayBuffer()` 和 `blob()`，方便检查和转换请求体。详见 [HTTPS](/AIUI/api/network-https)。
+- **复杂界面显示更一致**：修复纯色背景、渐变、文本裁切、A2UI 文字和按钮字号，以及自定义组件属性初始化等问题。
+- **点击反馈更准确**：指针和导航使用一致的完整 `tap` 行为，拖动、滚动、取消和非主键手势不会激活控件；窗口尺寸保持实时、只读。
+
+## 升级时需要注意
+
+- **拆分长时间同步计算**：每个实例默认有 2,000 ms 同步 JavaScript 执行预算；超时会中断脚本并请求关闭实例，交还控制权后的异步等待不计入。批量计算应分批并让出事件循环，详见 [JavaScript 兼容性](/AIUI/guide/runtime-js)。
+- **保留监听器的回调引用**：事件支持 `capture`、`once`、`passive` 和 `AbortSignal`。移除时须传入原回调及相同的 capture；省略回调不再清空全部监听器，详见[事件](/AIUI/framework/open-agent-format-page-events)。
+- **使用正确的模块复用入口**：`WebAssembly.validate()` 和 `compile()` 不再接收已编译 Module，请使用 `instantiate(module)`。共享内存、线程、SIMD、memory64 和 WASI 仍不可用。
+
 # v0.19.0
 
 AIUI 0.19.0 新增网络状态感知，并完善流式数据处理、加密、绘图、样式与动画能力。此次更新也优化了复杂页面的数据更新、资源加载和内存使用，并修复导航、生命周期、模板与基础 API 的行为。
